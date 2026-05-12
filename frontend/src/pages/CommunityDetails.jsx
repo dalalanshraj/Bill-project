@@ -8,7 +8,32 @@ export default function CommunityDetails() {
 
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [images, setImages] = useState([]);
+
+  // COMMUNITY DATA
+  const communityData = {
+    "crystal-sands": {
+      title: "Crystal Sands",
+
+      description:
+        "You can't describe the view from this unit. The sugar white sand, emerald green water and activity on the water and the sun setting in the evening leaves one wishing they had more time to enjoy Crystal Sands.",
+
+      heroImage:
+        "https://donnadaniel.mysawgrasspointe.com/gallery-uploads/1778084473593-2.17.jpg",
+    },
+
+    mediterranea: {
+      title: "Mediterranea",
+
+      description:
+        "The Mediterrania is very special and is designed with luxury in mind. It is close to wonderful restaurants, shopping, near Pompano Joes, and just minutes from the outlet mall and Destin Commons.",
+
+      heroImage:
+        "https://donnadaniel.mysawgrasspointe.com/gallery-uploads/1778256119380-3.3.jpg",
+    },
+  };
+
+  const currentCommunity =
+    communityData[slug] || {};
 
   useEffect(() => {
     fetchProperties();
@@ -16,112 +41,122 @@ export default function CommunityDetails() {
 
   const fetchProperties = async () => {
     try {
-      const res = await api.get("/listings/published");
+      const res = await api.get(
+        "/listings/published"
+      );
 
-  const filtered = res.data.filter((item) => {
+      const filtered = res.data.filter(
+        (item) => {
 
-  const title =
-    item.property?.title?.toLowerCase().trim() || "";
+          const title =
+            item.property?.title
+              ?.toLowerCase()
+              .trim() || "";
 
-  // CRYSTAL SANDS
-  if (slug === "crystal-sands") {
-    return (
-      title.includes("crystal") &&
-      title.includes("sand")
-    );
-  }
+          // CRYSTAL SANDS
+          if (slug === "crystal-sands") {
+            return (
+              title.includes("crystal") &&
+              title.includes("sand")
+            );
+          }
 
-  // MEDITERRANEA
-  if (slug === "mediterranea") {
-    return title.includes("med");
-  }
+          // MEDITERRANEA
+          if (slug === "mediterranea") {
+            return (
+              title.includes("med")
+            );
+          }
 
-  return false;
-});
+          return false;
+        }
+      );
 
       setProperties(filtered);
+
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
-  const getImageUrl = (path) => {
-    if (!path || typeof path !== "string") return "";
-    const base = import.meta.env.VITE_API_URL || "";
-    if (path.startsWith("http")) return path;
-    return base.replace(/\/$/, "") + "/" + path.replace(/^\//, "");
-  };
-
-  useEffect(() => {
-    api
-      .get("/gallery/published")
-      .then((res) => {
-        const data = res.data || [];
-        const formatted = data.map((img) => getImageUrl(img.image));
-        setImages(formatted);
-      })
-      .catch(console.log);
-  }, []);
-
-  const image1 =
-    images[0] || "https://images.unsplash.com/photo-1505691938895-1758d7feb511";
-
-  const image2 =
-    images[1] || "https://images.unsplash.com/photo-1560185007-cde436f6a4d0";
-
-  const image3 = images[4];
-  const heroImage = images[2] || image1;
 
   return (
     <>
       {/* HERO */}
       <section
-        className="relative h-[60vh] md:h-[70vh] bg-cover bg-center flex items-center justify-center text-white"
+        className="relative h-[60vh] md:h-[75vh] bg-cover bg-center flex items-center justify-center text-white"
         style={{
-          backgroundImage: `url(${heroImage})`,
+          backgroundImage: `url(${currentCommunity.heroImage})`,
         }}
       >
+        {/* OVERLAY */}
         <div className="absolute inset-0 bg-black/50"></div>
 
-        <h1 className="relative text-5xl md:text-6xl font-extrabold capitalize text-center px-4 mt-15">
-          {slug.replace(/-/g, " ")}
-        </h1>
+        {/* CONTENT */}
+        <div className="relative z-10 text-center px-4 max-w-4xl">
+
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-5 mt-16">
+            {currentCommunity.title}
+          </h1>
+
+          {/* <p className="text-lg md:text-xl leading-relaxed text-gray-100">
+            {currentCommunity.description}
+          </p> */}
+
+        </div>
       </section>
 
       {/* CONTENT */}
-      <div className="bg-gray-100 min-h-screen py-12 px-4 md:px-8">
+      <div className="bg-gray-100 min-h-screen py-14 px-4 md:px-8">
+
         <div className="max-w-7xl mx-auto">
+
           {/* HEADING */}
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#355e73]">
-              Available Properties
+          <div className="text-center mb-12">
+
+            <h2 className="text-3xl md:text-4xl font-bold text-[#355e73] uppercase">
+             {currentCommunity.title}
             </h2>
 
-            <p className="text-gray-500 mt-2">
-              Explore vacation rentals in {slug.replace(/-/g, " ")}
+            <p className="text-gray-500 mt-3 text-lg">
+              Explore vacation rentals in{" "}
+              {currentCommunity.description}
             </p>
+
           </div>
 
           {/* LOADING */}
           {loading && (
-            <div className="text-center text-lg">Loading properties...</div>
-          )}
-
-          {/* EMPTY */}
-          {!loading && properties.length === 0 && (
-            <div className="text-center text-red-500 text-lg">
-              No properties found
+            <div className="text-center text-lg">
+              Loading properties...
             </div>
           )}
 
-          {/* GRID */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* EMPTY */}
+          {!loading &&
+            properties.length === 0 && (
+              <div className="text-center text-red-500 text-lg">
+                No properties found
+              </div>
+            )}
+
+          {/* PROPERTY GRID */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
             {properties.map((listing) => (
-              <PropertyCard key={listing._id} listing={listing} />
+
+              <PropertyCard
+                key={listing._id}
+                listing={listing}
+              />
+
             ))}
+
           </div>
+
         </div>
+
       </div>
     </>
   );

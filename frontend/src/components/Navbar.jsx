@@ -30,14 +30,14 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-  const handleScroll = () => {
-    setScrolled(window.scrollY > 50);
-  };
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
 
-  window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,20 +50,20 @@ const Navbar = () => {
   const dropdowns = {
     // ABOUT: [{ name: "ABOUT", }],
     COMMUNITIES: [
-  {
-    name: "Crystal Sands",
-    link: "/community/crystal-sands",
-  },
-  {
-    name: "Mediterranea",
-    link: "/community/mediterranea",
-  },
-],
+      {
+        name: "Crystal Sands",
+        link: "/community/crystal-sands",
+      },
+      {
+        name: "Mediterranea",
+        link: "/community/mediterranea",
+      },
+    ],
   };
 
   const menuItems = [
     { name: "HOME", link: "/" },
-    { name: "ABOUT" , link: "/about-us"  },
+    { name: "ABOUT", link: "/about-us" },
     { name: "COMMUNITIES" },
     { name: "PROPERTIES", link: "/properties" },
     { name: "GALLERY", link: "/gallery" },
@@ -88,40 +88,39 @@ const Navbar = () => {
         </Link>
 
         {/* DESKTOP CONTACT */}
-        <div className="hidden md:flex items-center space-x-3">
-          <div className="text-right">
-            
-            <p
-              className={`text-xl font-bold ${
-                isScrolled ? "text-[#185089]" : "text-white"
-              }`}
-            >
-              Call today
+        <div className="hidden md:flex items-center gap-4 bg-gradient-to-r from-[#0B63F6] to-[#467FF7] px-3 py-2 rounded-2xl shadow-lg">
+          {/* Animated Phone Icon */}
+          <div className="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center animate-pulse">
+            <Phone className="text-white w-5 h-5 animate-bounce" />
+          </div>
+
+          {/* Divider */}
+          <div className="w-[1px] h-12 bg-white/50"></div>
+
+          {/* Text */}
+          <div>
+            <p className="text-sm text-white/80 leading-none mb-1">
+              Call Today
             </p>
-            <p
-              className={`text-xl font-bold ${
-                isScrolled ? "text-[#185089]" : "text-white"
-              }`}
+
+            <a
+              href="tel:4042756533"
+              className="text-1xl font-bold text-white hover:text-gray-200 transition"
             >
               404-275-6533
-            </p>
+            </a>
           </div>
-          <Phone
-            className={`${
-              isScrolled ? "text-[#185089]" : "text-white"
-            }`}
-          />
         </div>
 
         {/* MOBILE MENU BUTTON */}
-       <button
-  onClick={() => setMobileMenu(!mobileMenu)}
-  className={`md:hidden transition-colors duration-300 ${
-    scrolled ? "text-black" : "text-white"
-  }`}
->
-  {mobileMenu ? <X size={28} /> : <Menu size={28} />}
-</button>
+        <button
+          onClick={() => setMobileMenu(!mobileMenu)}
+          className={`md:hidden transition-colors duration-300 ${
+            scrolled ? "text-black" : "text-white"
+          }`}
+        >
+          {mobileMenu ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </div>
 
       {/* DESKTOP NAV */}
@@ -133,9 +132,7 @@ const Navbar = () => {
             <div
               key={item.name}
               className="relative px-10 py-6 cursor-pointer"
-              onMouseEnter={() =>
-                hasDropdown && setOpenDropdown(item.name)
-              }
+              onMouseEnter={() => hasDropdown && setOpenDropdown(item.name)}
               onMouseLeave={() => setOpenDropdown(null)}
             >
               {item.link ? (
@@ -177,9 +174,7 @@ const Navbar = () => {
                   onClick={() =>
                     hasDropdown
                       ? setMobileDropdown(
-                          mobileDropdown === item.name
-                            ? null
-                            : item.name
+                          mobileDropdown === item.name ? null : item.name,
                         )
                       : setMobileMenu(false)
                   }

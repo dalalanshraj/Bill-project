@@ -1,70 +1,107 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios.js";
-import { Link } from "react-router-dom";
 import ReviewModal from "../components/homeSection/ReviewModal";
 
 export default function Reviews() {
   const [reviews, setReviews] = useState([]);
+  const [allReviews, setAllReviews] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [images, setImages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(5);
+  const [totalPages, setTotalPages] = useState(1);
+  const [properties, setProperties] = useState([]);
+  const [selectedProperty, setSelectedProperty] = useState("all");
 
   // ==============================
-  // FETCH REVIEWS (BACKEND PAGINATION)
+  // FETCH REVIEWS
   // ==============================
   const fetchReviews = async (page = 1) => {
     try {
       const res = await api.get(`/listings/reviews?page=${page}`);
 
-      setReviews(res.data.reviews || []);
+      const data = res.data.reviews || [];
+
+      setReviews(data);
+
+      setAllReviews(data);
+
       setTotalPages(res.data.pages || 1);
     } catch (err) {
       console.error(err);
+
       setReviews([]);
     }
   };
 
   useEffect(() => {
     fetchReviews(currentPage);
-  }, []);
+  }, [currentPage]);
 
   // ==============================
-  // FETCH HERO IMAGES
+  // FILTER REVIEWS
   // ==============================
   useEffect(() => {
-    api
-      .get("/gallery/published")
-      .then((res) => {
-        const data = res.data || [];
-        const formatted = data.map((img) => getImageUrl(img.image));
-        setImages(formatted);
-      })
-      .catch(console.log);
+    if (selectedProperty === "all") {
+      setReviews(allReviews);
+    } else {
+      const filtered = allReviews.filter(
+        (item) => item.property?.title === selectedProperty,
+      );
+      setReviews(filtered);
+    }
+  }, [selectedProperty, allReviews]);
+
+  // ==============================
+  // UNIQUE PROPERTY LIST
+  // ==============================
+  const propertyOptions = [
+    ...new Set(allReviews.map((r) => r.property?.title)),
+  ];
+
+  // ==============================
+  // FETCH HERO IMAGE
+  // ==============================
+  useEffect(() => {
+    fetchProperties();
   }, []);
 
+  const fetchProperties = async () => {
+    try {
+      const res = await api.get("/listings/published");
+
+      setProperties(res.data || []);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // ==============================
+  // IMAGE URL
+  // ==============================
   const getImageUrl = (path) => {
     if (!path) return "";
+
     if (path.startsWith("http")) return path;
 
     const base = import.meta.env.VITE_API_URL || "";
+
     return base.replace(/\/$/, "") + "/" + path.replace(/^\//, "");
   };
 
-  const image1 =
+  const heroImage =
     images[0] || "https://images.unsplash.com/photo-1505691938895-1758d7feb511";
 
-  // ==============================
-  // UI
-  // ==============================
   return (
     <>
       {/* HERO */}
       <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center text-white">
         <div
           className="absolute inset-0 bg-fixed bg-cover bg-center"
-          style={{ backgroundImage: `url(${image1})` }}
+          style={{
+            backgroundImage: `url(${heroImage})`,
+          }}
         />
+
         <div className="absolute inset-0 bg-black/60" />
 
         <h1 className="relative text-3xl md:text-6xl font-bold mt-15">
@@ -72,62 +109,84 @@ export default function Reviews() {
         </h1>
       </section>
 
+      {/* MAIN */}
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-8">
         {/* TOP BAR */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-          {/* PAGINATION */}
-          <div className="flex gap-2 flex-wrap">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-              <button
-                key={num}
-                onClick={() => {
-                  setCurrentPage(num);
-                  fetchReviews(num);
-                }}
-                className={`px-3 py-1 rounded border ${
-                  currentPage === num ? "bg-yellow-500 text-white" : "bg-white"
-                }`}
-              >
-                {num}
-              </button>
-            ))}
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-4 mb-8">
+          {/* LEFT */}
+          <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+            {/* PAGINATION */}
+            <div className="flex gap-2 flex-wrap">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (num) => (
+                  <button
+                    key={num}
+                    onClick={() => {
+                      setCurrentPage(num);
+                    }}
+                    className={`px-4 py-2 rounded border transition ${
+                      currentPage === num
+                        ? "bg-yellow-500 text-white"
+                        : "bg-white hover:bg-gray-100"
+                    }`}
+                  >
+                    {num}
+                  </button>
+                ),
+              )}
+            </div>
+
+            {/* DROPDOWN */}
+            <select
+              value={selectedProperty}
+              onChange={(e) => setSelectedProperty(e.target.value)}
+              className="border px-4 py-2 rounded-lg bg-white min-w-[250px]"
+            >
+              <option value="all">All Properties</option>
+
+              {properties.map((item) => (
+                <option key={item._id} value={item.property?.title}>
+                  {item.property?.title}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* BUTTON */}
           <button
             onClick={() => setShowModal(true)}
-            className="bg-yellow-500 text-white px-6 py-2 rounded shadow w-full md:w-auto"
+            className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded shadow w-full md:w-auto transition"
           >
             WRITE REVIEW
           </button>
         </div>
 
-        {/* REVIEWS LIST */}
+        {/* REVIEWS */}
         <div className="space-y-6">
           {reviews.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-xl shadow p-4 hover:shadow-lg transition"
+              className="bg-white rounded-2xl shadow p-4 md:p-5 hover:shadow-xl transition"
             >
-              <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex flex-col md:flex-row gap-5">
                 {/* IMAGE */}
                 <img
                   src={getImageUrl(item.property?.image)}
-                  className="w-full md:w-40 h-48 md:h-28 object-cover rounded-lg"
+                  className="w-full md:w-44 h-56 md:h-32 object-cover rounded-xl"
                   alt=""
                 />
 
                 {/* CONTENT */}
                 <div className="flex-1">
-                  <h2 className="text-lg md:text-xl font-semibold text-gray-800">
+                  <h2 className="text-xl font-semibold text-gray-800">
                     {item.property?.title || "Property"}
                   </h2>
 
-                  <p className="text-gray-600 mt-1 text-sm md:text-base ">
+                  <p className="text-gray-600 mt-2 text-sm md:text-base leading-relaxed">
                     {item.review}
                   </p>
 
-                  <p className="text-blue-500 text-sm mt-2">
+                  <p className="text-blue-500 text-sm mt-3">
                     {item.user} •{" "}
                     {item.stayDate
                       ? new Date(item.stayDate).toLocaleDateString("en-US", {
@@ -139,24 +198,15 @@ export default function Reviews() {
                   </p>
                 </div>
 
-                {/* RIGHT SIDE */}
-                <div className="flex md:flex-col justify-between md:items-end items-center gap-3 md:text-right">
-                  <div>
-                    <p className="text-lg md:text-xl font-bold">
-                      {item.rating}.0 / 5
-                    </p>
+                {/* RIGHT */}
+                <div className="flex md:flex-col justify-between items-center md:items-end gap-3">
+                  <div className="text-center md:text-right">
+                    <p className="text-xl font-bold">{item.rating}.0 / 5</p>
 
-                    <div className="text-yellow-400 text-sm md:text-lg">
+                    <div className="text-yellow-400 text-lg">
                       {"★".repeat(item.rating || 5)}
                     </div>
                   </div>
-
-               {/* <Link
-  to={`/${item.listingId}`}
-  className="bg-green-500 text-white px-4 py-2 rounded text-sm md:text-base whitespace-nowrap"
->
-  READ REVIEWS
-</Link> */}
                 </div>
               </div>
             </div>

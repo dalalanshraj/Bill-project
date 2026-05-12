@@ -9,7 +9,7 @@ const activities = [
   {
     id: "party-boats",
     title: "Party Boats",
-    category: "$$, Activities",
+    // category: "$$, Activities",
     description:
       "Looking for fun on the water? Party boats are one of the best ways to enjoy Destin with friends and family. Cruise along the beautiful emerald coast, play music, relax, and celebrate special moments while soaking in stunning ocean views. It’s the perfect mix of entertainment, relaxation, and unforgettable memories",
     image:
@@ -18,7 +18,7 @@ const activities = [
   {
   id: "golf-cart-rental",
   title: "Golf Cart Rental",
-  category: "$$, Activities",
+  // category: "$$, Activities",
   description:
     "Explore Destin in a fun and convenient way with golf cart rentals. Perfect for short trips to the beach, local shops, and nearby attractions, golf carts offer a relaxed and easy way to get around while enjoying the coastal breeze with your family and friends.",
   image:
@@ -27,7 +27,7 @@ const activities = [
   {
     id: "boat-rentals",
     title: "Boat Rentals",
-    category: "$$, Excursions",
+    // category: "$$, Excursions",
     description:
       "There are so many places on the Harbor to rent boats and visit Crab Island and many other local spots. The boating rental options are plentiful in Destin!",
     image:

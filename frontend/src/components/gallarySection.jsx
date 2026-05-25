@@ -297,7 +297,7 @@ export default function GallerySection() {
           <Link to="/gallery">
             <button
               className="
-             px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-pink-500 transition-all duration-500
+             px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500
             "
             >
               Explore Gallery →

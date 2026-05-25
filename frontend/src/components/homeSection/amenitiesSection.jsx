@@ -84,7 +84,7 @@ export default function AmenitiesSection({ listingId }) {
         <div className="flex justify-center p-3">
           <button
             onClick={() => setOpen(true)}
-          className="px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-pink-500 transition-all duration-500"
+          className="px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500"
           >
             Show all {amenities.length} Amenities
           </button>

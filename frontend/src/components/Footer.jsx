@@ -84,7 +84,7 @@ export default function Footer({ listingId }) {
 
           <div className="flex flex-col items-center md:items-end">
             <Link to="/admin/login">
-              <button className="px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-pink-500 transition-all duration-500">
+              <button className="px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500">
                 Admin Login →
               </button>
             </Link>

@@ -332,7 +332,7 @@ export default function Navbar({ listingId }) {
                         w-0
                         h-3
                         md:h-4
-                        bg-pink-500
+                        bg-blue-500
                         -z-10
                         transition-all
                         duration-500
@@ -459,7 +459,7 @@ export default function Navbar({ listingId }) {
                       flex
                       items-center
                       justify-center
-                      hover:bg-pink-500
+                      hover:bg-blue-500
                       hover:text-white
                       hover:border-pink-500
                       transition-all

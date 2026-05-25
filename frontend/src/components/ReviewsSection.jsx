@@ -240,7 +240,7 @@ export default function ReviewsSection({ listingId }) {
                 onClick={() =>
                   setOpen(true)
                 }
-                className="px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-pink-500 transition-all duration-500"
+                className="px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500"
          
               >
                 View All Reviews →

@@ -101,7 +101,7 @@ export default function AboutSection() {
         {/* BUTTON */}
         <div className="flex justify-center mt-28">
           <Link to="/about">
-            <button className="px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-pink-500 transition-all duration-500">
+            <button className="px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500">
               Explore More
             </button>
           </Link>

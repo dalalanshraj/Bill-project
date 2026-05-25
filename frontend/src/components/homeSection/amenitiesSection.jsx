@@ -37,7 +37,7 @@ export default function AmenitiesSection({ listingId }) {
   return (
     <section className="py-1 px-6 md:px-16">
       {/* TOP */}
-      <p
+      {/* <p
         className="
         uppercase 
         text-center 
@@ -48,21 +48,17 @@ export default function AmenitiesSection({ listingId }) {
       "
       >
         Amenities
-      </p>
+      </p> */}
+      <div className="text-center mb-24">
 
       <h2
         className="
-        text-3xl 
-        text-center 
-        md:text-5xl 
-        font-semibold 
-        text-gray-800 
-        mb-10
+        font-playfair text-5xl md:text-7xl font-bold
       "
       >
         Our Amenities
       </h2>
-
+</div>
       {/* PREVIEW */}
       <div
         className="
@@ -77,20 +73,18 @@ export default function AmenitiesSection({ listingId }) {
         {preview
           .filter((item) => item?.trim() !== "")
           .map((name, i) => (
-            <div key={i} className="text-black font-medium text-xl" >
+            <p key={i} className="text-gray-600 text-lg md:text-2xl  font-light" >
               {name}
-            </div>
+            </p>
           ))}
       </div>
 
       {/* BUTTON */}
       {amenities.length > 0 && (
-        <div className="flex justify-center">
+        <div className="flex justify-center p-3">
           <button
             onClick={() => setOpen(true)}
-            className="
-           px-8 py-3 mt-5 rounded-full bg-[#FFE8BE] text-black font-medium shadow-md hover:scale-105  transition duration-300
-          "
+          className="px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-pink-500 transition-all duration-500"
           >
             Show all {amenities.length} Amenities
           </button>

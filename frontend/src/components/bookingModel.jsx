@@ -3,16 +3,19 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import api from "../api/axios";
 import emailjs from "@emailjs/browser";
-import modelImg from "../assets/img3.png";
+import modelImg from "../assets/img.jpg";
 
-
-export default function BookingModalContact({ listingId, onClose }) {
+export default function BookingModalContact({
+  listingId,
+  onClose,
+}) {
   const [calendarDates, setCalendarDates] = useState([]);
-  
 
-  const [selecting, setSelecting] = useState("checkIn");
+  const [selecting, setSelecting] =
+    useState("checkIn");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] =
+    useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -37,9 +40,13 @@ export default function BookingModalContact({ listingId, onClose }) {
 
   const fetchDates = async () => {
     try {
-      const res = await api.get(`/calendar/${listingId}/calendar`);
+      const res = await api.get(
+        `/calendar/${listingId}/calendar`
+      );
 
-      setCalendarDates(res.data.calendar || []);
+      setCalendarDates(
+        res.data.calendar || []
+      );
     } catch (err) {
       console.log(err);
     }
@@ -49,161 +56,149 @@ export default function BookingModalContact({ listingId, onClose }) {
   // DATE FORMAT
   // =====================================
 
-  
+  const formatLocalDate = (date) => {
+    return new Intl.DateTimeFormat(
+      "en-CA",
+      {
+        timeZone: "America/Chicago",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }
+    ).format(new Date(date));
+  };
 
   // =====================================
-  // MAP
+  // BLOCKED MAP
   // =====================================
 
-const formatLocalDate = (date) => {
+  const blockedMap = useMemo(() => {
+    const map = {};
 
-  return new Intl.DateTimeFormat(
-    "en-CA",
-    {
-      timeZone: "America/Chicago",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }
-  ).format(new Date(date));
+    calendarDates.forEach((item) => {
+      const itemDate = new Date(
+        new Date(item.date).toLocaleString(
+          "en-US",
+          {
+            timeZone:
+              "America/Chicago",
+          }
+        )
+      );
 
-};
+      const key =
+        formatLocalDate(itemDate);
 
-// =====================================
-// BLOCKED MAP
-// =====================================
+      if (!map[key]) {
+        map[key] = [];
+      }
 
-const blockedMap = useMemo(() => {
+      map[key].push(item.status);
+    });
 
-  const map = {};
-
-  calendarDates.forEach((item) => {
-
-    const itemDate = new Date(
-      new Date(item.date).toLocaleString(
-        "en-US",
-        {
-          timeZone: "America/Chicago",
-        }
-      )
-    );
-
-    const key =
-      formatLocalDate(itemDate);
-
-    if (!map[key]) {
-      map[key] = [];
-    }
-
-    map[key].push(item.status);
-
-  });
-
-  return map;
-
-}, [calendarDates]);
-
-// =====================================
-// DATE TYPE
-// =====================================
-
-const getDateType = useCallback((date) => {
-
-  const today = new Date();
-
-  today.setHours(0, 0, 0, 0);
-
-  const currentDate = new Date(date);
-
-  currentDate.setHours(0, 0, 0, 0);
-
-  // PAST
-  if (currentDate < today) {
-    return "past-day";
-  }
-
-  // CURRENT KEY
-  const currentKey =
-    formatLocalDate(currentDate);
-
-  const statuses =
-    blockedMap[currentKey] || [];
-
-  const hasCIN =
-    statuses.includes("CIN");
-
-  const hasCOUT =
-    statuses.includes("COUT");
-
-  const hasR =
-    statuses.includes("R");
-
-  const hasH =
-    statuses.includes("H");
+    return map;
+  }, [calendarDates]);
 
   // =====================================
-  // PREVIOUS DAY
+  // DATE TYPE
   // =====================================
 
-  const prevDay = new Date(currentDate);
+  const getDateType = useCallback(
+    (date) => {
+      const today = new Date();
 
-  prevDay.setDate(
-    prevDay.getDate() - 1
+      today.setHours(0, 0, 0, 0);
+
+      const currentDate = new Date(
+        date
+      );
+
+      currentDate.setHours(
+        0,
+        0,
+        0,
+        0
+      );
+
+      if (currentDate < today) {
+        return "past-day";
+      }
+
+      const currentKey =
+        formatLocalDate(currentDate);
+
+      const statuses =
+        blockedMap[currentKey] || [];
+
+      const hasCIN =
+        statuses.includes("CIN");
+
+      const hasCOUT =
+        statuses.includes("COUT");
+
+      const hasR =
+        statuses.includes("R");
+
+      const hasH =
+        statuses.includes("H");
+
+      const prevDay = new Date(
+        currentDate
+      );
+
+      prevDay.setDate(
+        prevDay.getDate() - 1
+      );
+
+      const prevKey =
+        formatLocalDate(prevDay);
+
+      const prevStatuses =
+        blockedMap[prevKey] || [];
+
+      const prevHasBooking =
+        prevStatuses.includes("R") ||
+        prevStatuses.includes("COUT");
+
+      if (hasCIN && hasCOUT) {
+        return "turnover-day";
+      }
+
+      if (
+        hasCIN &&
+        prevHasBooking
+      ) {
+        return "turnover-day";
+      }
+
+      if (hasCIN) {
+        return "checkin-day";
+      }
+
+      if (hasCOUT) {
+        return "checkout-day";
+      }
+
+      if (hasR) {
+        return "blocked-day";
+      }
+
+      if (hasH) {
+        return "hold-day";
+      }
+
+      return "available-day";
+    },
+    [blockedMap]
   );
 
-  const prevKey =
-    formatLocalDate(prevDay);
-
-  const prevStatuses =
-    blockedMap[prevKey] || [];
-
-  const prevHasBooking =
-    prevStatuses.includes("R") ||
-    prevStatuses.includes("COUT");
-
-  // =====================================
-  // TURNOVER
-  // =====================================
-
-  // SAME DAY
-  if (hasCIN && hasCOUT) {
-    return "turnover-day";
-  }
-
-  // PREVIOUS DAY BOOKED
-  // + CURRENT CHECKIN
-  if (hasCIN && prevHasBooking) {
-    return "turnover-day";
-  }
-
-  // CHECK-IN
-  if (hasCIN) {
-    return "checkin-day";
-  }
-
-  // CHECK-OUT
-  if (hasCOUT) {
-    return "checkout-day";
-  }
-
-  // BOOKED
-  if (hasR) {
-    return "blocked-day";
-  }
-
-  // HOLD
-  if (hasH) {
-    return "hold-day";
-  }
-
-  return "available-day";
-
-}, [blockedMap]);
   // =====================================
   // DATE SELECT
   // =====================================
 
-  const handleDateChange = (dates) => {
+  const handleDateChange = (
+    dates
+  ) => {
     const [start, end] = dates;
 
     if (selecting === "checkIn") {
@@ -227,21 +222,33 @@ const getDateType = useCallback((date) => {
   // SUBMIT
   // =====================================
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (
+    e
+  ) => {
     e.preventDefault();
 
-    if (!form.name || !form.email || !form.phone) {
-      return alert("Please fill all details");
+    if (
+      !form.name ||
+      !form.email ||
+      !form.phone
+    ) {
+      return alert(
+        "Please fill all details"
+      );
     }
 
-    if (!form.checkIn || !form.checkOut) {
-      return alert("Please select dates");
+    if (
+      !form.checkIn ||
+      !form.checkOut
+    ) {
+      return alert(
+        "Please select dates"
+      );
     }
 
     try {
       setLoading(true);
 
-      // DATABASE
       await api.post("/inquiries", {
         property: listingId,
         name: form.name,
@@ -254,33 +261,44 @@ const getDateType = useCallback((date) => {
         Kids: form.kids,
       });
 
-      // EMAIL
       await emailjs.send(
-        "service_ha362e7",
-        "template_m1386o8",
+        "service_t1dtkqc",
+        "template_1hmh0cs",
         {
           name: form.name,
           email: form.email,
           phone: form.phone,
 
-          checkIn: formatLocalDate(form.checkIn),
+          checkIn:
+            formatLocalDate(
+              form.checkIn
+            ),
 
-          checkOut: formatLocalDate(form.checkOut),
+          checkOut:
+            formatLocalDate(
+              form.checkOut
+            ),
 
           adults: form.adults,
           kids: form.kids,
           message: form.message,
         },
-         "gQXjMX4s-FM9aYRt5",
+        "jViExLAlcltfrIIX0"
       );
 
-      alert("Booking request sent");
+      alert(
+        "Booking request sent"
+      );
 
       onClose();
     } catch (err) {
       console.log(err);
 
-      alert(err?.response?.data?.error || "Something went wrong");
+      alert(
+        err?.response?.data
+          ?.error ||
+          "Something went wrong"
+      );
     } finally {
       setLoading(false);
     }
@@ -291,205 +309,477 @@ const getDateType = useCallback((date) => {
   // =====================================
 
   const nights =
-    form.checkIn && form.checkOut
-      ? Math.ceil((form.checkOut - form.checkIn) / (1000 * 60 * 60 * 24))
+    form.checkIn &&
+    form.checkOut
+      ? Math.ceil(
+          (form.checkOut -
+            form.checkIn) /
+            (1000 *
+              60 *
+              60 *
+              24)
+        )
       : 0;
 
   return (
     <>
-      <div className="fixed inset-0 z-[99999] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-        <div className="w-full max-w-5xl h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl flex">
+      {/* OVERLAY */}
+      <div className="fixed inset-0 z-[999999] bg-black/70 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+
+        {/* MODAL */}
+        <div
+          className="
+          relative
+          w-full
+          max-w-6xl
+          h-[95vh]
+          bg-[#faf8f5]
+          rounded-[30px]
+          overflow-hidden
+          shadow-[0_20px_80px_rgba(0,0,0,0.35)]
+          flex
+          flex-col
+          lg:flex-row
+          border
+          border-white/20
+        "
+        >
+
           {/* LEFT IMAGE */}
-          <div className="hidden md:block md:w-1/2 h-full">
-            <img src={modelImg} alt="" className="w-full h-full object-cover" />
+          <div className="hidden lg:block lg:w-[48%] h-full relative overflow-hidden">
+            <img
+              src={modelImg}
+              alt=""
+              className="
+              w-full
+              h-full
+              object-cover
+              scale-105
+              hover:scale-110
+              transition-all
+              duration-[3000ms]
+            "
+            />
+
+            {/* OVERLAY */}
+            <div className="absolute inset-0 bg-black/30" />
+
+            {/* TEXT */}
+            <div className="absolute bottom-12 left-10 z-10 text-white">
+              <p className="uppercase tracking-[5px] text-sm text-white/80 mb-4">
+                Luxury Stay
+              </p>
+
+              <h2 className="font-playfair text-5xl leading-tight">
+                Book Your
+                <br />
+                Dream Vacation
+              </h2>
+            </div>
           </div>
 
           {/* RIGHT */}
-          <div className="w-full md:w-1/2 h-full flex flex-col">
+          <div className="w-full lg:w-[52%] h-full flex flex-col">
+
             {/* HEADER */}
-            <div className="relative p-5">
-              <h2 className="text-2xl font-semibold text-center">
+            <div className="relative px-6 sm:px-8 pt-7 pb-5 border-b border-gray-200">
+
+              <p className="uppercase tracking-[4px] text-xs text-gray-400 mb-3">
+                Reservation
+              </p>
+
+              <h2 className="text-3xl sm:text-4xl font-playfair text-black">
                 Book Your Stay
               </h2>
 
+              {/* CLOSE */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 text-2xl"
+                className="
+                absolute
+                top-6
+                right-6
+                w-11
+                h-11
+                rounded-full
+                border
+                border-gray-300
+                flex
+                items-center
+                justify-center
+                text-xl
+                hover:bg-black
+                hover:text-white
+                transition-all
+                duration-300
+              "
               >
                 ✕
               </button>
             </div>
 
             {/* BODY */}
-            <div className="flex-1 overflow-y-auto p-5">
-              <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="flex-1 overflow-y-auto px-5 sm:px-8 py-6">
+
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-5"
+              >
+
+                {/* NAME */}
                 <input
                   type="text"
-                  placeholder="Name"
-                  className="w-full border p-3 rounded-lg"
+                  placeholder="Full Name"
+                  className="
+                  w-full
+                  border
+                  border-gray-300
+                  bg-white
+                  px-5
+                  py-4
+                  rounded-xl
+                  outline-none
+                  focus:border-black
+                  transition-all
+                  duration-300
+                "
                   onChange={(e) =>
                     setForm({
                       ...form,
-                      name: e.target.value,
+                      name:
+                        e.target.value,
                     })
                   }
                 />
 
+                {/* EMAIL */}
                 <input
                   type="email"
-                  placeholder="Email"
-                  className="w-full border p-3 rounded-lg"
+                  placeholder="Email Address"
+                  className="
+                  w-full
+                  border
+                  border-gray-300
+                  bg-white
+                  px-5
+                  py-4
+                  rounded-xl
+                  outline-none
+                  focus:border-black
+                  transition-all
+                  duration-300
+                "
                   onChange={(e) =>
                     setForm({
                       ...form,
-                      email: e.target.value,
+                      email:
+                        e.target.value,
                     })
                   }
                 />
 
+                {/* PHONE */}
                 <input
                   type="text"
-                  placeholder="Phone"
-                  className="w-full border p-3 rounded-lg"
+                  placeholder="Phone Number"
+                  className="
+                  w-full
+                  border
+                  border-gray-300
+                  bg-white
+                  px-5
+                  py-4
+                  rounded-xl
+                  outline-none
+                  focus:border-black
+                  transition-all
+                  duration-300
+                "
                   onChange={(e) =>
                     setForm({
                       ...form,
-                      phone: e.target.value,
+                      phone:
+                        e.target.value,
                     })
                   }
                 />
 
                 {/* GUESTS */}
-                <div className="flex gap-3">
-                  <div className="w-full">
-                    <label className="text-sm text-gray-500">Adults</label>
+                <div className="grid grid-cols-2 gap-4">
+
+                  <div>
+                    <label className="text-sm text-gray-500 mb-2 block">
+                      Adults
+                    </label>
 
                     <input
                       type="number"
                       min="1"
                       value={form.adults}
-                      className="w-full border p-3 rounded-lg"
+                      className="
+                      w-full
+                      border
+                      border-gray-300
+                      bg-white
+                      px-5
+                      py-4
+                      rounded-xl
+                      outline-none
+                      focus:border-black
+                    "
                       onChange={(e) =>
                         setForm({
                           ...form,
-                          adults: Number(e.target.value),
+                          adults:
+                            Number(
+                              e.target
+                                .value
+                            ),
                         })
                       }
                     />
                   </div>
 
-                  <div className="w-full">
-                    <label className="text-sm text-gray-500">Kids</label>
+                  <div>
+                    <label className="text-sm text-gray-500 mb-2 block">
+                      Kids
+                    </label>
 
                     <input
                       type="number"
                       min="0"
                       value={form.kids}
-                      className="w-full border p-3 rounded-lg"
+                      className="
+                      w-full
+                      border
+                      border-gray-300
+                      bg-white
+                      px-5
+                      py-4
+                      rounded-xl
+                      outline-none
+                      focus:border-black
+                    "
                       onChange={(e) =>
                         setForm({
                           ...form,
-                          kids: Number(e.target.value),
+                          kids:
+                            Number(
+                              e.target
+                                .value
+                            ),
                         })
                       }
                     />
                   </div>
+
                 </div>
 
                 {/* DATE BOXES */}
-                <div className="flex gap-3">
+                <div className="grid grid-cols-2 gap-4">
+
                   <div
-                    onClick={() => setSelecting("checkIn")}
-                    className="w-full p-3 border rounded-lg text-center cursor-pointer"
+                    onClick={() =>
+                      setSelecting(
+                        "checkIn"
+                      )
+                    }
+                    className="
+                    py-4
+                    border
+                    border-gray-300
+                    bg-white
+                    rounded-xl
+                    text-center
+                    cursor-pointer
+                    hover:border-black
+                    transition-all
+                    duration-300
+                    font-medium
+                  "
                   >
-                    {form.checkIn ? formatLocalDate(form.checkIn) : "Check-In"}
+                    {form.checkIn
+                      ? formatLocalDate(
+                          form.checkIn
+                        )
+                      : "Check-In"}
                   </div>
 
                   <div
-                    onClick={() => setSelecting("checkOut")}
-                    className="w-full p-3 border rounded-lg text-center cursor-pointer"
+                    onClick={() =>
+                      setSelecting(
+                        "checkOut"
+                      )
+                    }
+                    className="
+                    py-4
+                    border
+                    border-gray-300
+                    bg-white
+                    rounded-xl
+                    text-center
+                    cursor-pointer
+                    hover:border-black
+                    transition-all
+                    duration-300
+                    font-medium
+                  "
                   >
                     {form.checkOut
-                      ? formatLocalDate(form.checkOut)
+                      ? formatLocalDate(
+                          form.checkOut
+                        )
                       : "Check-Out"}
                   </div>
+
                 </div>
 
                 {/* CALENDAR */}
-                <div className="border rounded-xl p-2">
+                <div className="border border-gray-200 rounded-2xl bg-white p-3 overflow-x-auto">
                   <DatePicker
                     inline
                     selectsRange
-                    startDate={form.checkIn}
-                    endDate={form.checkOut}
-                    onChange={handleDateChange}
-                    minDate={new Date()}
-                    dayClassName={getDateType}
+                    startDate={
+                      form.checkIn
+                    }
+                    endDate={
+                      form.checkOut
+                    }
+                    onChange={
+                      handleDateChange
+                    }
+                    minDate={
+                      new Date()
+                    }
+                    dayClassName={
+                      getDateType
+                    }
                     fixedHeight
-                    showPopperArrow={false}
-                    showOtherMonths={false}
-                    filterDate={(date) => {
-                      const today = new Date();
+                    showPopperArrow={
+                      false
+                    }
+                    showOtherMonths={
+                      false
+                    }
+                    filterDate={(
+                      date
+                    ) => {
+                      const today =
+                        new Date();
 
-                      today.setHours(0, 0, 0, 0);
+                      today.setHours(
+                        0,
+                        0,
+                        0,
+                        0
+                      );
 
-                      const current = new Date(date);
+                      const current =
+                        new Date(date);
 
-                      current.setHours(0, 0, 0, 0);
+                      current.setHours(
+                        0,
+                        0,
+                        0,
+                        0
+                      );
 
-                      return current >= today;
+                      return (
+                        current >=
+                        today
+                      );
                     }}
                   />
                 </div>
 
+                {/* MESSAGE */}
                 <textarea
                   placeholder="Your Message"
-                  className="w-full border p-3 rounded-lg"
+                  className="
+                  w-full
+                  border
+                  border-gray-300
+                  bg-white
+                  px-5
+                  py-4
+                  rounded-xl
+                  outline-none
+                  focus:border-black
+                  transition-all
+                  duration-300
+                  min-h-[120px]
+                  resize-none
+                "
                   onChange={(e) =>
                     setForm({
                       ...form,
-                      message: e.target.value,
+                      message:
+                        e.target.value,
                     })
                   }
                 />
 
+                {/* NIGHTS */}
                 {nights > 0 && (
                   <p className="text-sm text-gray-600">
-                    {nights} nights selected
+                    {nights} nights
+                    selected
                   </p>
                 )}
 
+                {/* BUTTON */}
                 <button
                   disabled={loading}
-                  className="w-full bg-[#FFE8BE] py-3 rounded-lg"
+                  className="
+                  w-full
+                  bg-black
+                  hover:bg-[#1a1a1a]
+                  text-white
+                  py-4
+                  rounded-full
+                  uppercase
+                  tracking-[3px]
+                  text-sm
+                  transition-all
+                  duration-300
+                  hover:scale-[1.02]
+                "
                 >
-                  {loading ? "Sending..." : "Send Booking"}
+                  {loading
+                    ? "Sending..."
+                    : "Send Booking"}
                 </button>
+
               </form>
             </div>
           </div>
         </div>
       </div>
 
-      {/* STYLES */}
-      <style>{` 
-     
+      {/* CALENDAR STYLES */}
+      <style>{`
 
 .react-datepicker {
   border: none;
   width: 100%;
-  max-width: 320px;
-  margin: auto;
+  max-width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+.react-datepicker__month-container {
+  width: 100%;
 }
 
 .react-datepicker__header {
   background: white;
   border-bottom: none;
+  padding-top: 10px;
 }
 
 .react-datepicker__current-month {
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 10px;
+  font-size: 18px;
 }
 
 .react-datepicker__week {
@@ -502,9 +792,8 @@ const getDateType = useCallback((date) => {
   width: 38px;
   height: 38px;
   line-height: 38px;
-  margin: 2px;
-  border-radius: 8px;
-  position: relative;
+  margin: 3px;
+  border-radius: 10px;
 }
 
 /* AVAILABLE */
@@ -525,7 +814,7 @@ const getDateType = useCallback((date) => {
   color: black !important;
 }
 
-/* CHECK-IN */
+  /* CHECK-IN */
 .react-datepicker__day.checkin-day {
 
   background: linear-gradient(
@@ -549,38 +838,20 @@ const getDateType = useCallback((date) => {
   color: black !important;
 }
 
+/* TURNOVER */
 .react-datepicker__day.turnover-day {
 
   position: relative !important;
 
-  isolation: isolate;
-
-  overflow: hidden !important;
+  background: linear-gradient(
+    315deg,
+    #5C5CFF 50%,
+    #5C5CFF 50%
+  ) !important;
 
   color: black !important;
 
-  z-index: 10 !important;
-}
-
-.react-datepicker__day.turnover-day::before {
-
-  content: "";
-
-  position: absolute;
-
-  inset: 0;
-
-  border-radius: 8px;
-
-  background: linear-gradient(
-    to bottom right,
-    #5C5CFF 0%,
-    #5C5CFF 49%,
-    #5C5CFF 51%,
-    #5C5CFF 100%
-  );
-
-  z-index: -1;
+  overflow: hidden;
 }
 
 .react-datepicker__day.turnover-day::after {
@@ -589,50 +860,27 @@ const getDateType = useCallback((date) => {
 
   position: absolute;
 
-  width: 180%;
-
-  height: 3px;
+  width: 160%;
+  height: 2px;
 
   background: black;
 
   top: 50%;
-
-  left: -40%;
+  left: -30%;
 
   transform: rotate(-45deg);
 
-  z-index: 20;
+  z-index: 5;
 }
-  
-
-/* TEXT ABOVE */
-.react-datepicker__day.turnover-day span,
-.react-datepicker__day.turnover-day {
-
-  position: relative;
-
-  z-index: 10;
-}
-
-/* PAST */
-.react-datepicker__day.past-day {
-
-  background: #f1f5f9 !important;
-
-  color: #94a3b8 !important;
-
-  opacity: 0.7 !important;
-
-  cursor: not-allowed !important;
-}
-
-/* OUTSIDE */
+/* OUTSIDE DAYS */
 .react-datepicker__day--outside-month {
 
   visibility: hidden !important;
-
   pointer-events: none !important;
+
 }
+
+     
 
       `}</style>
     </>

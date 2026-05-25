@@ -4,41 +4,50 @@ export default function AmenitiesModal({
 }) {
   return (
     <div
+      onClick={onClose}
       className="
-      fixed 
-      inset-0 
-      bg-black/50 
-      flex 
-      items-center 
-      justify-center 
-      z-50
+      fixed
+      inset-0
+      bg-black/60
+      z-[999999]
+      flex
+      items-center
+      justify-center
       p-4
-    "
-    >
-      <div
-        className="
-        bg-white 
-        w-full 
-        max-w-5xl 
-        rounded-3xl 
-        p-8 
-        relative 
-        max-h-[90vh] 
-        overflow-y-auto
+      animate-fadeIn
       "
+    >
+      {/* MODAL BOX */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="
+        bg-white
+        w-full
+        max-w-5xl
+        rounded-3xl
+        p-6 md:p-10
+        relative
+        max-h-[90vh]
+        overflow-y-auto
+        animate-scaleIn
+        "
       >
-        {/* CLOSE */}
+        
+        {/* CLOSE BUTTON */}
         <button
           onClick={onClose}
           className="
-          absolute 
-          top-5 
-          right-5 
-          text-2xl
+          absolute
+          top-5
+          right-5
+          text-3xl
+          text-black
+          cursor-pointer
           hover:rotate-90
           transition-all
           duration-300
-        "
+          z-50
+          "
         >
           ✕
         </button>
@@ -46,12 +55,12 @@ export default function AmenitiesModal({
         {/* TITLE */}
         <h2
           className="
-          text-3xl 
-          md:text-4xl 
-          font-semibold 
-          text-gray-800 
+          text-3xl
+          md:text-5xl
+          font-semibold
+          text-gray-800
           mb-10
-        "
+          "
         >
           Amenities ({amenities.length})
         </h2>
@@ -59,20 +68,25 @@ export default function AmenitiesModal({
         {/* GRID */}
         <div
           className="
-          grid 
-          grid-cols-1 
-          sm:grid-cols-2 
-          md:grid-cols-3 
+          grid
+          grid-cols-1
+          sm:grid-cols-2
+          md:grid-cols-3
           gap-5
-        "
+          "
         >
           {amenities.map((name, i) => (
-            <div
+            <p
               key={i}
-              className="text-black font-medium text-xl"
+              className="
+              text-gray-600 text-lg md:text-2xl  font-light
+              border-b
+              border-gray-200
+              pb-3
+              "
             >
               {name}
-            </div>
+            </p>
           ))}
         </div>
       </div>

@@ -1,4 +1,4 @@
-import infoImge from "../../assets/8-2.jpg";
+// import infoImge from "../../assets/8-2.jpg";
 
 export default function InfoSection() {
   return (

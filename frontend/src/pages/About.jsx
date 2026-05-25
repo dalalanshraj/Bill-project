@@ -1,183 +1,453 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
-import AboutSection from "../components/homeSection/About";
-import { Link } from "react-router-dom";
 
-export default function About({ listingId }) {
-  const [images, setImages] = useState([]);
-  const [listing, setListing] = useState(null);
+export default function About() {
 
-  const getImageUrl = (path) => {
-    if (!path || typeof path !== "string") return "";
+  const [images, setImages] =
+    useState([]);
 
-    const base = import.meta.env.VITE_API_URL || "";
+  // =====================================
+  // IMAGE URL
+  // =====================================
 
-    if (path.startsWith("http")) return path;
+  const getImageUrl = (
+    path
+  ) => {
 
-    return base.replace(/\/$/, "") + "/" + path.replace(/^\//, "");
+    if (
+      !path ||
+      typeof path !== "string"
+    )
+      return "";
+
+    const base =
+      import.meta.env
+        .VITE_API_URL || "";
+
+    if (
+      path.startsWith(
+        "http"
+      )
+    )
+      return path;
+
+    return (
+      base.replace(/\/$/, "") +
+      "/" +
+      path.replace(/^\//, "")
+    );
   };
 
+  // =====================================
+  // FETCH IMAGES
+  // =====================================
+
   useEffect(() => {
+
     api
-      .get("/gallery/published")
+      .get(
+        "/gallery/published"
+      )
+
       .then((res) => {
-        const data = res.data || [];
 
-        const formatted = data.map((img) => getImageUrl(img.image));
+        const data =
+          res.data || [];
 
-        setImages(formatted);
+        setImages(data);
+
       })
+
       .catch(console.log);
+
   }, []);
 
-  const image =
-    listing?.photos?.length > 0
-      ? getImageUrl(listing.photos[0])
-      : "https://via.placeholder.com/600x400";
+  // =====================================
+  // GET SECTION IMAGE
+  // =====================================
 
-  // 👉 fallback images (important)
-  const image1 =
-    images[0] || "https://images.unsplash.com/photo-1505691938895-1758d7feb511";
+  const getSectionImage = (
+    type
+  ) => {
 
-  const image2 =
-    images[1] || "https://images.unsplash.com/photo-1560185007-cde436f6a4d0";
+    const found =
+      images.find(
+        (img) =>
+          img.sectionType ===
+            type &&
+          img.status ===
+            "published"
+      );
 
-  const image3 = images[4];
+    return found
+      ? getImageUrl(
+          found.image
+        )
+      : "https://images.unsplash.com/photo-1505691938895-1758d7feb511";
+  };
 
-  const heroImage = images[2] || image1;
+  // =====================================
+  // SECTIONS
+  // =====================================
+
+  const sections = [
+    {
+      title:
+        "THE PENTHOUSE",
+
+      subtitle:
+        "Luxury Gulf View Condo",
+
+      description:
+        "Welcome to our stunning 20th-floor penthouse at Laketown Wharf Resort, where breathtaking gulf views and luxury beachfront living create the perfect vacation experience.",
+
+      image:
+        getSectionImage(
+          "penthouse"
+        ),
+    },
+
+    {
+      title:
+        "PRIME LOCATION",
+
+      subtitle:
+        "Steps From The Beach",
+
+      description:
+        "Located just a short 3-minute walk from Panama City Beach’s famous white sandy beaches, the condo offers easy access to restaurants, shopping, entertainment, and endless coastal adventures.",
+
+      image:
+        getSectionImage(
+          "prime-location"
+        ),
+    },
+
+    {
+      title:
+        "LUXURY LIVING ROOM",
+
+      subtitle:
+        "Open & Elegant Space",
+
+      description:
+        "Relax in the bright and airy living room featuring large windows, modern interiors, comfortable seating, natural sunlight, and direct balcony access with magical ocean and sunset views.",
+
+      image:
+        getSectionImage(
+          "living-room"
+        ),
+    },
+
+    {
+      title:
+        "MASTER BEDROOM",
+
+      subtitle:
+        "Private Gulf View Suite",
+
+      description:
+        "The luxurious master suite features a king-sized bed, elegant décor, flat-screen TV, spa-style bathroom, walk-in shower, and stunning gulf views directly from the bedroom.",
+
+      image:
+        getSectionImage(
+          "master-bedroom"
+        ),
+    },
+
+    {
+      title:
+        "GUEST BEDROOMS",
+
+      subtitle:
+        "Comfort For Everyone",
+
+      description:
+        "Our spacious condo comfortably sleeps up to 12 guests with multiple king bedrooms, cozy guest suites, a bunk room, and a queen sleeper sofa perfect for families and large groups.",
+
+      image:
+        getSectionImage(
+          "guest-bedroom"
+        ),
+    },
+
+    {
+      title:
+        "BUNK ROOM",
+
+      subtitle:
+        "Perfect For Kids",
+
+      description:
+        "The stylish bunk room is designed especially for children and families, featuring comfortable bunk beds and a relaxing environment for unforgettable beach vacations.",
+
+      image:
+        getSectionImage(
+          "bunk-room"
+        ),
+    },
+
+    {
+      title:
+        "GOURMET KITCHEN",
+
+      subtitle:
+        "Fully Equipped Luxury Kitchen",
+
+      description:
+        "Cook and gather with ease in our fully stocked gourmet kitchen featuring modern appliances, cookware, spacious countertops, dining essentials, refrigerator, oven, and everything needed for family meals.",
+
+      image:
+        getSectionImage(
+          "kitchen"
+        ),
+    },
+
+    {
+      title:
+        "PRIVATE BALCONY",
+
+      subtitle:
+        "Magical Gulf Views",
+
+      description:
+        "Enjoy breathtaking sunrise and sunset views from your private balcony overlooking the Gulf of Mexico. The perfect space for relaxing mornings and evening conversations.",
+
+      image:
+        getSectionImage(
+          "balcony"
+        ),
+    },
+
+    // {
+    //   title:
+    //     "RESORT AMENITIES",
+
+    //   subtitle:
+    //     "Luxury Resort Experience",
+
+    //   description:
+    //     "Laketown Wharf Resort offers premium amenities including five swimming pools, hot tubs, private beach access, fitness center, putting green, outdoor gazebos, and relaxing resort-style living.",
+
+    //   image:
+    //     getSectionImage(
+    //       "amenities"
+    //     ),
+    // },
+
+    {
+      title:
+        "BEACH ACCESS",
+
+      subtitle:
+        "White Sandy Beaches",
+
+      description:
+        "Spend your days enjoying crystal-clear water and the world-famous white sandy beaches just steps away from the condo.",
+
+      image:
+        getSectionImage(
+          "beach-access"
+        ),
+    },
+
+    {
+      title:
+        "FAMILY FRIENDLY",
+
+      subtitle:
+        "Perfect Vacation Stay",
+
+      description:
+        "Designed for families and groups, our penthouse offers spacious living areas, kid-friendly accommodations, relaxing resort amenities, and everything needed for a comfortable stay.",
+
+      image:
+        getSectionImage(
+          "family-friendly"
+        ),
+    },
+
+    {
+      title:
+        "UNFORGETTABLE EXPERIENCE",
+
+      subtitle:
+        "Your Dream Beach Getaway",
+
+      description:
+        "Whether you're planning a romantic escape, family vacation, or relaxing coastal retreat, Reel Paradise delivers luxury, comfort, breathtaking views, and unforgettable beach experiences.",
+
+      image:
+        getSectionImage(
+          "experience"
+        ),
+    },
+  ];
 
   return (
-    <>
-      {/* 🔥 HERO */}
-      <section className="relative h-[60vh] flex items-center justify-center text-white">
-        <div
-          className="absolute inset-0 bg-fixed bg-cover bg-center"
-          style={{
-            backgroundImage: `url(${heroImage})`,
-          }}
-        />
 
-        <div className="absolute inset-0 bg-black/60" />
+    <section className="bg-[#f5f5f3] py-20 overflow-hidden">
 
-        <div className="relative text-center px-6">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">About Us</h1>
-          <p className="text-gray-200 max-w-xl mx-auto">
-            Discover comfort, luxury, and unforgettable stays with us.
+      <div className="max-w-7xl mx-auto px-5 md:px-10">
+
+        {/* HEADING */}
+        <div className="text-center mb-28">
+
+          <h1
+            className="
+            font-playfair
+            text-black
+            font-bold
+            leading-[0.95]
+            text-center
+            text-5xl
+            sm:text-6xl
+            md:text-7xl
+            lg:text-[90px]
+          "
+          >
+            About
+            <br />
+            Reel Paradise
+          </h1>
+
+          <p
+            className="
+            mt-8
+            text-gray-600
+            max-w-4xl
+            mx-auto
+            text-lg
+            md:text-xl
+            leading-[2]
+          "
+          >
+            Experience luxury beachfront living with premium interiors,
+            breathtaking ocean views, resort-style amenities, and unforgettable
+            family vacations at Reel Paradise.
           </p>
+
         </div>
-      </section>
 
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-14 mt-20 items-center py-20 px-6 md:px-16">
-        {/* TEXT */}
-        <div>
-          <p className="uppercase text-xs tracking-[3px] text-[#2f9bad] mb-3">
-            About us
-          </p>
-          <h3 className="text-3xl md:text-5xl font-semibold text-gray-800 mb-8">
-            About this Property
-          </h3>
-          <p className="text-gray-600 leading-relaxed ">
-            This beautiful beachfront condo in Panama City Beach offers the
-            perfect mix of comfort, luxury, and relaxation. Located on the 4th
-            floor of the West Tower, the condo features two spacious bedrooms
-            with king beds, two private bathrooms, and a cozy Murphy bed for
-            additional guests. Enjoy breathtaking ocean and sunset views from
-            your private balcony while experiencing resort-style amenities
-            including a tiki bar, fire pits, live music, and complimentary beach
-            chairs with an umbrella. With a fully stocked kitchen, modern
-            appliances, and direct beach access, this condo is the ideal
-            destination for unforgettable family vacations, romantic escapes, or
-            relaxing coastal getaways.
-          </p>
+        {/* SECTIONS */}
+        <div className="space-y-32">
 
-          {/* <div
-            className="text-gray-600 leading-relaxed mb-3"
-          
-            // dangerouslySetInnerHTML={{
-            //   __html: listing?.description || "No description available",
-            // }}
-           
-          /> */}
-          <div className="p-3 flex mx-[-12px]">
-            <span className="font-bold  uppercase">owner&nbsp; - &nbsp;</span>
-            <p className="text-[#2f9bad] ">Julie Shurden</p>
-          </div>
+          {sections.map(
+            (
+              item,
+              index
+            ) => (
 
-          <Link to={"/about"}>
-            {" "}
-            <button className="px-6 py-3 bg-[#FFE8BE] text-black rounded-full font-semibold hover:scale-105 transition">
-              Know More →
-            </button>
-          </Link>
+              <div
+                key={index}
+                className={`
+                  grid
+                  grid-cols-1
+                  lg:grid-cols-2
+                  gap-16
+                  lg:gap-24
+                  items-center
+                  ${
+                    index % 2 !== 0
+                      ? "lg:[&>*:first-child]:order-2"
+                      : ""
+                  }
+                `}
+              >
+
+                {/* IMAGE */}
+                <div
+                  className="
+                  overflow-hidden
+                  group
+                "
+                >
+
+                  <img
+                    src={
+                      item.image
+                    }
+
+                    alt={
+                      item.title
+                    }
+
+                    className="
+                      w-full
+                      h-[300px]
+                      sm:h-[420px]
+                      lg:h-[520px]
+                      object-cover
+                      transition
+                      duration-700
+                      group-hover:scale-105
+                    "
+                  />
+
+                </div>
+
+                {/* CONTENT */}
+                <div
+                  className="
+                  text-center
+                  px-2
+                  md:px-10
+                "
+                >
+
+                  {/* TITLE */}
+                  <h3
+                    className="
+                    uppercase
+                    tracking-[10px]
+                    text-black
+                    text-lg
+                    md:text-2xl
+                    mb-8
+                    font-light
+                  "
+                  >
+                    {item.title}
+                  </h3>
+
+                  {/* SUBTITLE */}
+                  <h4
+                    className="
+                    uppercase
+                    tracking-[6px]
+                    text-gray-400
+                    text-xs
+                    md:text-sm
+                    mb-8
+                  "
+                  >
+                    {item.subtitle}
+                  </h4>
+
+                  {/* DESCRIPTION */}
+                  <p
+                    className="
+                    text-gray-600
+                    text-lg
+                    md:text-[22px]
+                    leading-[2]
+                    font-light
+                  "
+                  >
+                    {item.description}
+                  </p>
+
+                </div>
+
+              </div>
+
+            )
+          )}
+
         </div>
-        {/* IMAGE */}
-        <div className="relative group overflow-hidden rounded-2xl">
-          <img
-            src={image1}
-            alt="property"
-            className="w-full h-[280px] sm:h-[380px] md:h-[450px] object-cover transition duration-700 group-hover:scale-110"
-            onError={(e) => {
-              e.target.src = "https://via.placeholder.com/600x400";
-            }}
-          />
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-
-          {/* <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium shadow">
-            {listing?.property?.tag || "Premium Property"}
-          </div> */}
-        </div>
       </div>
 
-      <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center text-white">
-        {/* FIXED BACKGROUND */}
-        <div
-          className="absolute inset-0 bg-fixed bg-cover bg-center"
-          style={{
-            backgroundImage: `url(${image3})`,
-          }}
-        />
-
-        {/* <div className="absolute inset-0 bg-black/60" /> */}
-
-        <div className="relative text-center px-4 sm:px-6"></div>
-      </section>
-      {/* 🔥 WHY CHOOSE US */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 md:px-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
-          {/* CONTENT */}
-          <div>
-            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-black leading-tight">
-              Why Choose Us
-            </h3>
-
-            <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-              Choosing the right vacation rental can make all the difference,
-              and our property is designed to give you the perfect blend of
-              comfort, convenience, and luxury. Located in the heart of Panama
-              City Beach, the condo offers breathtaking ocean views, direct
-              beach access, and resort-style amenities that create an
-              unforgettable experience. From spacious bedrooms and a fully
-              equipped modern kitchen to relaxing fire pits, a tiki bar, and
-              live entertainment, every detail is thoughtfully designed for your
-              comfort. Guests also enjoy complimentary beach chairs and
-              umbrellas, making beach days effortless and relaxing. Whether
-              you’re planning a family vacation, couples retreat, or weekend
-              getaway, our property provides the ideal setting for a memorable
-              coastal escape.
-            </p>
-          </div>
-
-          {/* IMAGE */}
-          <div className="overflow-hidden rounded-2xl group">
-            <img
-              src={image2}
-              className="w-full h-[250px] sm:h-[350px] md:h-[450px] object-cover transition duration-700 group-hover:scale-110"
-              alt="Why Choose Us"
-            />
-          </div>
-        </div>
-      </section>
-    </>
+    </section>
   );
 }

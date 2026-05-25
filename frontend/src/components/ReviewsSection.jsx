@@ -45,24 +45,11 @@ export default function ReviewsSection({ listingId }) {
 
         {/* HEADER */}
         <div className="mb-14 text-center">
-          <p
-            className="
-            uppercase 
-            text-xs 
-            tracking-[3px] 
-            text-[#2f9bad]
-            mb-3
-          "
-          >
-            Testimonials
-          </p>
+         
 
           <h2
             className="
-            text-3xl 
-            md:text-5xl 
-            font-semibold 
-            text-gray-800
+           font-playfair text-5xl md:text-7xl font-bold
           "
           >
             What Our Clients Say
@@ -148,9 +135,20 @@ export default function ReviewsSection({ listingId }) {
                         {preview[0]?.name}
                       </p>
 
-                      <p className="text-sm text-gray-400">
-                        {preview[0]?.stayDate}
-                      </p>
+                    <p className="text-sm text-gray-400">
+  {preview[0]?.stayDate
+    ? new Date(
+        preview[0].stayDate
+      ).toLocaleDateString(
+        "en-US",
+        {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        }
+      )
+    : ""}
+</p>
                     </div>
 
                   </div>
@@ -242,18 +240,8 @@ export default function ReviewsSection({ listingId }) {
                 onClick={() =>
                   setOpen(true)
                 }
-                className="
-                px-8 
-                py-3 
-                rounded-full 
-                bg-[#FFE8BE] 
-                text-black 
-                font-medium 
-                shadow-md 
-                hover:scale-105  
-                transition 
-                duration-300
-              "
+                className="px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-pink-500 transition-all duration-500"
+         
               >
                 View All Reviews →
               </button>
@@ -369,15 +357,21 @@ export default function ReviewsSection({ listingId }) {
                   </p>
 
                   {/* DATE */}
-                  <p
-                    className="
-                    text-sm 
-                    text-gray-400 
-                    mt-3
-                  "
-                  >
-                    {r?.stayDate}
+                 <p className="text-sm text-gray-400">
+  {preview[0]?.stayDate
+    ? new Date(
+        preview[0].stayDate
+      ).toLocaleDateString(
+        "en-US",
+        {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        }
+      )
+    : ""}
                   </p>
+                  
 
                   {/* USER */}
                   <div className="mt-4 flex items-center gap-2">

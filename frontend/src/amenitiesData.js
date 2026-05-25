@@ -26,6 +26,8 @@ export const amenitiesData = [
       "Freestanding Bathtub",
       "Whirlpool/Jacuzzi Bathtub",
       "Hairdryer",
+      "Cleaning products",
+      "Hot water",
     ],
   },
   {
@@ -144,6 +146,7 @@ export const amenitiesData = [
       "6 Queen Beds",
       "7 Trundle Beds",
       "8 Bunk Beds",
+      "Washing machine"
     ],
   },
   {
@@ -181,6 +184,7 @@ export const amenitiesData = [
       "Ceiling Fans",
       "Central Air Conditioning",
       "Window A/C Units",
+      "Central heating",
       
     ],
   },
@@ -243,6 +247,7 @@ export const amenitiesData = [
       "Netflix",
       "Bikes Included",
       "Wedding Friendly",
+      "Exercise equipment",
       
     ],
   },
@@ -254,6 +259,26 @@ export const amenitiesData = [
       "Reading Library",
       "Foosball",
       "Ping Pong Table",
+      
+    ],
+  },
+    {
+     title: "Home safety",
+    type: "checkbox",
+    options: [
+      "Exterior security cameras on property",
+      "Smoke alarm",
+      "Carbon monoxide alarm",
+      "Fire extinguisher",
+      
+    ],
+  },
+   {
+     title: "Internet and office",
+    type: "checkbox",
+    options: [
+      "Wifi",
+      "Dedicated workspace",
       
     ],
   },
@@ -316,6 +341,25 @@ export const amenitiesData = [
       "Crock Pot",
       "Keurig",
       "Wet Bar",
+      "Dryer – In unit",
+       "Washing machine",
+        "Essentials",
+         "Hangers",
+          "Bed linen",
+           "Extra pillows and blankets",
+            "Clothes storage: wardrobe and chest of drawers",
+            "Kitchen",
+            "Fridge",
+            "Cooking basics",
+            "Crockery and cutlery",
+            "Freezer",
+            "Cooker",
+            "Coffee maker: filter coffee maker",
+            "Wine glasses",
+            "Baking sheet",
+
+            
+            
 
       
     ],
@@ -350,6 +394,11 @@ export const amenitiesData = [
     "Boat Dock",
     "Fenced yard",
     "LSV (Low Speed Vehicle)",
+    "Beach access",
+    "Lake access",
+    "Paid resort access",
+
+
       
     ],
   },
@@ -387,18 +436,29 @@ export const amenitiesData = [
       
     ],
   },
-//    {
-//     title: "Bedroom Extras",
-//     type: "checkbox",
-//     options: [
-//       "Private Bathroom",
-//       "Walk-in Closet",
-//       "Alarm Clock",
-//       "Balcony/Patio off Master",
-//       "Fireplace",
-//       "Skylight",
-//       "Crib",
+   {
+    title: "Cooling Comfort",
+    type: "checkbox",
+    options: [
+      "Private patio or balcony",
+      "Outdoor furniture",
+      "Outdoor dining area",
+      "Balcony/Patio off Master",
+      "Sun loungers",
+      "Shared gym in building",
       
-//     ],
-//   },
+      
+    ],
+  },
+   {
+    title: "Services",
+    type: "checkbox",
+    options: [
+      "Self check-in",
+      "Keypad",
+     
+      
+      
+    ],
+  },
 ];

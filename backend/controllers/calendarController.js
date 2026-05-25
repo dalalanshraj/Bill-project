@@ -332,9 +332,14 @@ export const clearCalendar = async (req, res) => {
 
 export const importICal = async (req, res) => {
   try {
+
     const { id } = req.params;
 
     const { url } = req.body;
+
+    // =====================================
+    // VALIDATE URL
+    // =====================================
 
     if (!url) {
       return res.status(400).json({
@@ -342,29 +347,88 @@ export const importICal = async (req, res) => {
       });
     }
 
+    console.log("IMPORTING:", url);
+
     // =====================================
     // FETCH ICAL
     // =====================================
 
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      method: "GET",
+
+      redirect: "follow",
+
+      headers: {
+        "User-Agent": "Mozilla/5.0",
+        Accept: "text/calendar,text/plain",
+      },
+    });
+
+    console.log(
+      "FETCH STATUS:",
+      response.status
+    );
+
+    // =====================================
+    // INVALID URL
+    // =====================================
 
     if (!response.ok) {
+
       return res.status(400).json({
         error: "Invalid iCal URL",
       });
     }
 
+    // =====================================
+    // GET RAW DATA
+    // =====================================
+
     const data = await response.text();
+
+    console.log(
+      "ICAL DATA:",
+      data.slice(0, 300)
+    );
+
+    // =====================================
+    // VALIDATE ICAL
+    // =====================================
+
+    if (
+      !data.includes(
+        "BEGIN:VCALENDAR"
+      )
+    ) {
+
+      return res.status(400).json({
+        error:
+          "Invalid iCal format",
+      });
+    }
+
+    // =====================================
+    // PARSE ICAL
+    // =====================================
 
     let events;
 
     try {
-      events = ical.parseICS(data);
+
+      events = ical.parseICS(
+        data
+      );
+
     } catch (e) {
-      console.error("ICS PARSE ERROR:", e);
+
+      console.error(
+        "ICS PARSE ERROR:",
+        e
+      );
 
       return res.status(500).json({
-        error: "Invalid iCal format",
+        error:
+          "Invalid iCal format",
       });
     }
 
@@ -372,138 +436,194 @@ export const importICal = async (req, res) => {
     // FIND LISTING
     // =====================================
 
-    const listing = await Listing.findById(id);
+    const listing =
+      await Listing.findById(id);
 
     if (!listing) {
+
       return res.status(404).json({
-        error: "Listing not found",
+        error:
+          "Listing not found",
       });
     }
 
     // =====================================
-    // REMOVE OLD ICAL DATA
+    // REMOVE OLD ICAL
     // =====================================
 
-    listing.calendar = (listing.calendar || []).filter(
-      (c) => c.source !== "ical",
-    );
+    listing.calendar =
+      (listing.calendar || []).filter(
+        (c) =>
+          c.source !== "ical"
+      );
+
+    // =====================================
+    // NEW BOOKING DATES
+    // =====================================
 
     const bookingDates = [];
 
-   
+    // =====================================
+    // LOOP EVENTS
+    // =====================================
 
-   // 🔥 parse all bookings
-// =====================================
-// LOOP EVENTS
-// =====================================
+    for (const key in events) {
 
-for (const key in events) {
+      const event = events[key];
 
-  const event = events[key];
+      if (
+        event.type !== "VEVENT"
+      )
+        continue;
 
-  if (event.type !== "VEVENT") continue;
+      if (
+        !event.start ||
+        !event.end
+      )
+        continue;
 
-  if (!event.start || !event.end) continue;
+      // =====================================
+      // SAFE DATES
+      // =====================================
 
-  // =====================================
-  // SAFE DATES
-  // =====================================
+      const start =
+        new Date(
+          event.start.getFullYear(),
+          event.start.getMonth(),
+          event.start.getDate(),
+          12,
+          0,
+          0,
+          0
+        );
 
-  const start = new Date(
-    event.start.getFullYear(),
-    event.start.getMonth(),
-    event.start.getDate(),
-    12, 0, 0, 0
-  );
+      const end =
+        new Date(
+          event.end.getFullYear(),
+          event.end.getMonth(),
+          event.end.getDate(),
+          12,
+          0,
+          0,
+          0
+        );
 
-  const end = new Date(
-    event.end.getFullYear(),
-    event.end.getMonth(),
-    event.end.getDate(),
-    12, 0, 0, 0
-  );
+      // =====================================
+      // TOTAL NIGHTS
+      // =====================================
 
-  // TOTAL NIGHTS
-  const totalNights = Math.round(
-    (end - start) /
-    (1000 * 60 * 60 * 24)
-  );
+      const totalNights =
+        Math.round(
+          (end - start) /
+            (1000 *
+              60 *
+              60 *
+              24)
+        );
 
-  if (totalNights <= 0) continue;
+      if (totalNights <= 0)
+        continue;
 
-  // =====================================
-  // SINGLE NIGHT
-  // =====================================
+      // =====================================
+      // SINGLE NIGHT
+      // =====================================
 
-  if (totalNights === 1) {
+      if (totalNights === 1) {
 
-    bookingDates.push({
-      date: new Date(start),
-      status: "CIN",
-      source: "ical",
-    });
+        bookingDates.push({
+          date:
+            new Date(start),
 
-    bookingDates.push({
-      date: new Date(end),
-      status: "COUT",
-      source: "ical",
-    });
+          status: "CIN",
 
-  }
+          source: "ical",
+        });
 
-  // =====================================
-  // MULTI NIGHT
-  // =====================================
+        bookingDates.push({
+          date:
+            new Date(end),
 
-  else {
+          status: "COUT",
 
-    // CHECK-IN
-    bookingDates.push({
-      date: new Date(start),
-      status: "CIN",
-      source: "ical",
-    });
+          source: "ical",
+        });
+      }
 
-    // BOOKED NIGHTS
-    for (let i = 1; i < totalNights; i++) {
+      // =====================================
+      // MULTI NIGHT
+      // =====================================
 
-      const booked = new Date(start);
+      else {
 
-      booked.setDate(
-        start.getDate() + i
-      );
+        // CHECK-IN
+        bookingDates.push({
+          date:
+            new Date(start),
 
-      booked.setHours(
-        12, 0, 0, 0
-      );
+          status: "CIN",
 
-      bookingDates.push({
-        date: booked,
-        status: "R",
-        source: "ical",
-      });
+          source: "ical",
+        });
+
+        // BOOKED NIGHTS
+        for (
+          let i = 1;
+          i < totalNights;
+          i++
+        ) {
+
+          const booked =
+            new Date(start);
+
+          booked.setDate(
+            start.getDate() +
+              i
+          );
+
+          booked.setHours(
+            12,
+            0,
+            0,
+            0
+          );
+
+          bookingDates.push({
+            date: booked,
+
+            status: "R",
+
+            source: "ical",
+          });
+        }
+
+        // CHECK-OUT
+        bookingDates.push({
+          date:
+            new Date(end),
+
+          status: "COUT",
+
+          source: "ical",
+        });
+      }
     }
 
-    // REAL CHECKOUT DAY
-    bookingDates.push({
-      date: new Date(end),
-      status: "COUT",
-      source: "ical",
-    });
-  }
-}
-
     // =====================================
-    // MERGE DATES
+    // MERGE CALENDAR
     // =====================================
 
     const map = new Map();
 
-    // KEEP MANUAL DATES
+    // KEEP NON ICAL
     listing.calendar
-      .filter((c) => c.source !== "ical")
+      .filter(
+        (c) =>
+          c.source !== "ical"
+      )
       .forEach((c) => {
-        const key = dateOnly(c.date);
+
+        const key =
+          dateOnly(c.date);
 
         if (!map.has(key)) {
           map.set(key, []);
@@ -512,57 +632,61 @@ for (const key in events) {
         map.get(key).push(c);
       });
 
-  // ADD ICAL DATES
-bookingDates.forEach((d) => {
+    // =====================================
+    // ADD ICAL DATES
+    // =====================================
 
-  const key = dateOnly(d.date);
+    bookingDates.forEach((d) => {
 
-  // CREATE ARRAY
-  if (!map.has(key)) {
-    map.set(key, []);
-  }
+      const key =
+        dateOnly(d.date);
 
-  const existing =
-    map.get(key) || [];
+      if (!map.has(key)) {
+        map.set(key, []);
+      }
 
-  // =====================================
-  // PREVENT SAME STATUS DUPLICATE
-  // =====================================
+      const existing =
+        map.get(key) || [];
 
-  const alreadyExists =
-    existing.some(
-      (x) =>
-        x.source === "ical" &&
-        x.status === d.status
-    );
+      const alreadyExists =
+        existing.some(
+          (x) =>
+            x.source ===
+              "ical" &&
+            x.status ===
+              d.status
+        );
 
-  // =====================================
-  // ALLOW:
-  // SAME DATE + DIFFERENT STATUS
-  // =====================================
+      // ALLOW SAME DATE
+      // DIFFERENT STATUS
+      if (!alreadyExists) {
 
-  if (!alreadyExists) {
+        existing.push({
+          date: d.date,
 
-    existing.push({
-      date: d.date,
-      status: d.status,
-      source: d.source,
+          status: d.status,
+
+          source: d.source,
+        });
+      }
+
+      map.set(key, existing);
     });
-
-  }
-
-  map.set(key, existing);
-
-});
 
     // =====================================
     // FINAL CALENDAR
     // =====================================
 
-    listing.calendar = Array.from(map.values()).flat();
+    listing.calendar =
+      Array.from(
+        map.values()
+      ).flat();
 
     // REMOVE INVALID
-    listing.calendar = listing.calendar.filter((c) => c && c.date);
+    listing.calendar =
+      listing.calendar.filter(
+        (c) => c && c.date
+      );
 
     // SAVE URL
     listing.icalUrl = url;
@@ -575,15 +699,29 @@ bookingDates.forEach((d) => {
     // =====================================
 
     res.json({
-      message: "iCal imported successfully",
-      total: bookingDates.length,
-      calendar: listing.calendar,
+      success: true,
+
+      message:
+        "iCal imported successfully",
+
+      total:
+        bookingDates.length,
+
+      calendar:
+        listing.calendar,
     });
+
   } catch (err) {
-    console.error("ICAL FINAL ERROR:", err);
+
+    console.error(
+      "ICAL FINAL ERROR:",
+      err
+    );
 
     res.status(500).json({
-      error: err.message,
+      error:
+        err.message ||
+        "iCal import failed",
     });
   }
 };

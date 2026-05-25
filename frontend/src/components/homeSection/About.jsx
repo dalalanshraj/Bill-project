@@ -1,163 +1,111 @@
-import { useEffect, useState } from "react";
-import api from "../../api/axios";
-import DisplayCalendar from "../miniCalendar";
+import condoImg from "../../assets/about-Img1.png";
+import bedroomImg from "../../assets/about-img2.png";
+import kitchenImg from "../../assets/about-img3.png";
+import beachImg from "../../assets/about-img4.jpeg";
+
 import { Link } from "react-router-dom";
 
-export default function AboutSection({ listingId }) {
-  const [listing, setListing] = useState(null);
-  const [loading, setLoading] = useState(true);
+export default function AboutSection() {
+  const sections = [
+    {
+      title: "THE PENTHOUSE CONDO",
+      subtitle: "Luxury Gulf View Penthouse",
+      description:
+        "Experience luxury beachfront living in our stunning penthouse condo located at Laketown Wharf Resort. Enjoy breathtaking gulf views, modern interiors, resort-style amenities, and spacious accommodations designed for unforgettable vacations with family and friends.",
+      image: condoImg,
+    },
 
-  const getImageUrl = (path) => {
-    if (!path || typeof path !== "string") return "";
-    const base = import.meta.env.VITE_API_URL || "";
-    // already full URL
-    if (path.startsWith("http")) return path;
-    return base.replace(/\/$/, "") + "/" + path.replace(/^\//, "");
-  };
+    {
+      title: "PRIMARY BEDROOM",
+      subtitle: "Luxury Gulf-Front Bedroom",
+      description:
+        "Relax in our beautifully designed primary suite featuring a king-size bed, elegant interiors, private bathroom, and direct balcony access with breathtaking gulf views.",
+      image: bedroomImg,
+    },
 
-  // ===========================
-  // FETCH LISTING
-  // ===========================
-  useEffect(() => {
-    if (!listingId) return;
+    {
+      title: "GOURMET KITCHEN",
+      subtitle: "Modern Luxury Kitchen",
+      description:
+        "Our fully equipped gourmet kitchen includes premium appliances, spacious countertops, cookware, coffee station, dining essentials, and everything needed for memorable family meals.",
+      image: kitchenImg,
+    },
 
-    api
-      .get(`/listings/${listingId}`)
-      .then((res) => {
-        setListing(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => setLoading(false));
-  }, [listingId]);
-
-  // ===========================
-  // LOADING UI
-  // ===========================
-  if (loading) {
-    return (
-      <div className="py-20 text-center text-gray-500">Loading property...</div>
-    );
-  }
-
-  if (!listing) {
-    return (
-      <div className="py-20 text-center text-red-500">Property not found</div>
-    );
-  }
-
-  // ===========================
-  // 🔥 ACTIVE RATE LOGIC
-  // ===========================
-  const today = new Date();
-
-  const activeRate = listing?.rates?.find((rate) => {
-    const from = new Date(rate.from);
-    const to = new Date(rate.to);
-    return today >= from && today <= to;
-  });
-
-  const rate = activeRate || listing?.rates?.[0] || {};
-
-  const nightly = rate?.nightly || "N/A";
-  const minNights = rate?.minNights || 1;
-
-  // ===========================
-  // IMAGE
-  // ===========================
-  const image =
-    listing?.photos?.length > 0
-      ? getImageUrl(listing.photos[0])
-      : "https://via.placeholder.com/600x400";
+    {
+      title: "FAMILY FRIENDLY",
+      subtitle: "Perfect Stay For Families",
+      description:
+        "Designed for families and groups, the condo includes beach toys, high chair, pack n play, bunk room, spacious living areas, and kid-friendly amenities for a comfortable beach vacation.",
+      image: beachImg,
+    },
+  ];
 
   return (
-    <section className="w-full bg-[#f8f8f8] py-20 px-6 md:px-16">
-      {/* ================= TOP ================= */}
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-          {/* RIGHT CALENDAR */}
+    <section className="bg-[#f8f8f8] py-20 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-5 md:px-10">
+        
+        {/* MAIN HEADING */}
+        <div className="text-center mb-24">
+        <h1 className="font-playfair text-5xl md:text-7xl font-bold">
+  Luxury Penthouse Condo
+</h1>
 
-      <DisplayCalendar listingId={listing._id} />
-        {/* LEFT CONTENT */}
-        <div>
-          <p className="uppercase text-xs tracking-[3px] mx-1  text-[#2f9bad] mb-3">
-            {listing?.property?.title || "Welcome"}
+          <p className="mt-8 text-gray-600 max-w-4xl mx-auto text-lg md:text-xl leading-9">
+            Discover our luxury beachfront penthouse condo featuring stunning
+            gulf views, premium interiors, resort-style amenities, and spacious
+            accommodations perfect for unforgettable vacations with family and
+            friends.
           </p>
-
-          <h2 className="text-3xl md:text-5xl font-semibold text-gray-800">
-            {listing?.property?.tagline ||
-              "Luxury Coastal Getaway with Stunning Resort Views"}
-          </h2>
-
-          <p className="text-gray-600 text-base mt-2">
-            {listing?.property?.summary ||
-              "2BR/2BA • Pool • Lagoon Front"}
-          </p>
-         
-          {/* <Link to={"/booking-policy"}>
-            <button className="px-6 py-3 mt-3 bg-[#FFE8BE] text-black rounded-full font-semibold hover:scale-105 transition">
-              Booking Policy
-            </button>
-          </Link> */}
         </div>
 
-      
-      </div>
+        {/* SECTIONS */}
+        <div className="space-y-32">
+          {sections.map((item, index) => (
+           <div
+  className={`grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center ${
+    index % 2 !== 0 ? "lg:[&>*:first-child]:order-2" : ""
+  }`}
+>
+  
+  {/* IMAGE */}
+  <div className="w-full">
+    <img
+      src={item.image}
+      alt={item.title}
+      className="w-full h-[300px] sm:h-[450px] lg:h-[550px] object-cover"
+    />
+  </div>
 
-      {/* ================= BOTTOM ================= */}
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-14 mt-20 items-center">
+  {/* CONTENT */}
+  <div className="flex flex-col justify-center text-center lg:text-center px-2 md:px-8 lg:px-14">
+    
+    {/* TOP TITLE */}
+    <h3 className="uppercase tracking-[8px] text-black text-lg md:text-2xl mb-8 font-light">
+      {item.title}
+    </h3>
 
-          {/* TEXT */}
-        <div>
-          <p className="uppercase text-xs tracking-[3px] text-[#2f9bad] mb-3">
-            About us
-          </p>
-          <h3 className="text-3xl md:text-5xl font-semibold text-gray-800 mb-8">
-            About this Property
-          </h3>
-          <p className="text-gray-600 leading-relaxed ">
-           This beautiful beachfront condo in Panama City Beach offers the perfect mix of comfort, luxury, and relaxation. Located on the 4th floor of the West Tower, the condo features two spacious bedrooms with king beds, two private bathrooms, and a cozy Murphy bed for additional guests. Enjoy breathtaking ocean and sunset views from your private balcony while experiencing resort-style amenities including a tiki bar, fire pits, live music, and complimentary beach chairs with an umbrella. With a fully stocked kitchen, modern appliances, and direct beach access, this condo is the ideal destination for unforgettable family vacations, romantic escapes, or relaxing coastal getaways.
-          </p>
+    {/* SUBTITLE */}
+    <h4 className="uppercase tracking-[6px] text-gray-400 text-xs md:text-sm mb-8">
+      {item.subtitle}
+    </h4>
 
-          {/* <div
-            className="text-gray-600 leading-relaxed mb-3"
-          
-            // dangerouslySetInnerHTML={{
-            //   __html: listing?.description || "No description available",
-            // }}
-           
-          /> */}
-          <div className="p-3 flex mx-[-12px]">
-             <span className="font-bold  uppercase">owner&nbsp; -
-            &nbsp;</span><p className="text-[#2f9bad] ">Julie Shurden</p> 
-          </div>
+    {/* DESCRIPTION */}
+    <p className="text-gray-600 text-lg md:text-2xl  font-light">
+      {item.description}
+    </p>
+  </div>
+</div>
+          ))}
+        </div>
 
-          <Link to={"/about"}>
-            {" "}
-            <button className="px-6 py-3 bg-[#FFE8BE] text-black rounded-full font-semibold hover:scale-105 transition">
-              Know More →
+        {/* BUTTON */}
+        <div className="flex justify-center mt-28">
+          <Link to="/about">
+            <button className="px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-pink-500 transition-all duration-500">
+              Explore More
             </button>
           </Link>
         </div>
-        {/* IMAGE */}
-        <div className="relative group overflow-hidden rounded-2xl">
-          <img
-            src={image}
-            alt="property"
-            className="w-full h-[280px] sm:h-[380px] md:h-[450px] object-cover transition duration-700 group-hover:scale-110"
-            onError={(e) => {
-              e.target.src = "https://via.placeholder.com/600x400";
-            }}
-          />
-
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-
-          {/* <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium shadow">
-            {listing?.property?.tag || "Premium Property"}
-          </div> */}
-        </div>
-
-      
       </div>
     </section>
   );

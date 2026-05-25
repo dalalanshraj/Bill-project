@@ -6,9 +6,9 @@ import GallerySection from "../components/gallarySection";
 import AmenitiesSection from "../components/homeSection/amenitiesSection";
 import api from "../api/axios.js";
 
-import bgImage from "../assets/img.png";
-import bgImagetwo from "../assets/img3.png";
-import imgthree from "../assets/4-2.jpg";
+import bgImage from "../assets/heroImg.png";
+// import bgImagetwo from "../assets/img3.png";
+// import imgthree from "../assets/4-2.jpg";
 
 import BookingModalContact from "../components/bookingModel.jsx";
 import FeesTable from "../components/FeesTable.jsx";
@@ -42,9 +42,9 @@ export default function Hero({listingId}) {
   // ===========================
   // DATA SAFE EXTRACTION
   // ===========================
-  const image = featured?.photos?.[4]
-    ? getImageUrl(featured.photos[0])
-    : bgImagetwo;
+  // const image = featured?.photos?.[4]
+  //   ? getImageUrl(featured.photos[0])
+  //   : bgImagetwo;
 
   const title = featured?.property?.title || "Luxury Villa";
   const beds = featured?.property?.bedrooms || 4;
@@ -66,89 +66,98 @@ export default function Hero({listingId}) {
 
   return (
     <>
-      <section className="relative h-[75vh] md:h-[90vh] w-full overflow-hidden">
-        {/* BG */}
-        <div
-          className="absolute inset-0  pointer-events-none z-0"
-          style={{
-            transform: `translateY(${offset}px) scale(1.1)`,
+     <section
+      className="relative h-screen bg-fixed bg-center bg-cover"
+       style={{
+            
             backgroundImage: `url(${bgImage})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
-        />
+    >
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/45"></div>
 
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/50 to-transparent" />
-        <div className="absolute inset-0 backdrop-blur-[1px]" />
+      {/* Content */}
+    <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+        
+  {/* Small Subtitle */}
+  <p className="uppercase tracking-[6px] text-white/80 text-sm md:text-base mb-6">
+    Luxury Penthouse Condo
+  </p>
 
-        {/* CONTENT */}
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between h-full px-6 md:px-16">
-          {/* LEFT */}
-          <div className="max-w-xl text-white mt-34 md:mt-24">
-            {/* <p className="uppercase tracking-widest font-bold text-[#2f9bad] text-xs mb-4">
-              Luxury Vacation Homes
-            </p> */}
+  {/* Main Heading */}
+ <h1 className="font-playfair text-white font-bold leading-[1.05] max-w-6xl text-5xl sm:text-6xl md:text-7xl lg:text-[95px]">
+  Stunning Gulf View
+  <br />
+  <span className="italic font-medium">
+    Penthouse Condo
+  </span>
+</h1>
 
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Luxury Oceanfront Condo with Stunning Sunset Views in Panama City
-              Beach
-            </h1>
+  {/* Description */}
+  <p className="mt-8 text-white/90 text-lg md:text-2xl max-w-3xl leading-relaxed">
+    Experience luxury beachfront living with breathtaking ocean
+    views, premium interiors, and unforgettable resort amenities.
+  </p>
 
-            <p className="text-gray-300 mb-8">
-              Enjoy a relaxing beachfront escape featuring two king suites,
-              resort-style amenities, breathtaking ocean views, live music, fire
-              pits, and complimentary beach chairs & umbrella.
-            </p>
-
-            <button
-              onClick={() => {
-                
-                setOpen(true);
-              }}
-              className="px-6 py-3 bg-[#FFE8BE] text-black rounded-full font-semibold hover:scale-105 transition"
-            >
-              Book Now
-            </button>
-          </div>
-
-          {/* FLOATING CARD */}
-          <div className="hidden md:flex relative">
-            <div className="absolute -inset-4 bg-[#FFE8BE]/20 blur-2xl rounded-3xl"></div>
-
-            <div className="relative bg-white/10 backdrop-blur-2xl rounded-3xl p-4 shadow-2xl animate-float">
-              <img
-                src={image}
-                alt="villa"
-                className="rounded-2xl w-[420px] h-[260px] object-cover"
-              />
-
-              <div className="absolute bottom-4 left-4 right-4 bg-white/90 rounded-xl p-3 flex justify-between items-center">
-                <div>
-                  <p className="text-sm font-semibold">{title}</p>
-                  <p className="text-xs text-gray-500">
-                    {beds} Beds • {baths} Baths
-                  </p>
-                </div>
-
-                {/* <span className="text-sm font-bold">${price}/night</span> */}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ANIMATION */}
-        <style>
-          {`
-          .animate-float {
-            animation: float 6s ease-in-out infinite;
-          }
-          @keyframes float {
-            0%,100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-          }
-        `}
-        </style>
-      </section>
+  {/* Button */}
+  <div className="flex gap-4">
+     <Link to={listingId="6a0fa92e7591f49c6ad3eef0"} >
+  <button
+  className="
+    px-12
+    py-4
+    bg-white/10
+    backdrop-blur-sm
+    border
+    border-white/20
+    text-white
+    uppercase
+    tracking-[4px]
+    text-sm
+    rounded-full
+    hover:scale-105
+    hover:backdrop-blur-xl
+    hover:border-white/40
+    active:scale-95
+    transition-all
+    duration-500
+  "
+>
+  More Info
+</button>
+  </Link>
+ 
+  <button
+  onClick={() => {
+    setOpen(true);
+  }}
+  className="
+    px-12
+    py-4
+    bg-white/10
+    backdrop-blur-sm
+    border
+    border-white/20
+    text-white
+    uppercase
+    tracking-[4px]
+    text-sm
+    rounded-full
+    hover:scale-105
+    hover:backdrop-blur-xl
+    hover:border-white/40
+    active:scale-95
+    transition-all
+    duration-500
+  "
+>
+  Book Now
+</button>
+   </div>
+</div>
+    </section>
 
       {/* MODAL */}
       {open && featured && (
@@ -158,12 +167,12 @@ export default function Hero({listingId}) {
         />
       )}
       {/* OTHER SECTIONS */}
-      <AboutSection listingId="6a04c24a43652c16fdde1a52" />
+      <AboutSection  />
       {/* <FeesTable /> */}
       {/* <InfoSection /> */}
-      <Properties />
+      {/* <Properties /> */}
 
-      <section className="py-16 px-6 md:px-16 bg-white">
+      {/* <section className="py-16 px-6 md:px-16 bg-white">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <img
             src={imgthree}
@@ -193,11 +202,11 @@ export default function Hero({listingId}) {
             </p>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      <AmenitiesSection listingId="6a04c24a43652c16fdde1a52" />
+      <AmenitiesSection  listingId="6a0fa92e7591f49c6ad3eef0" />
       <GallerySection />
-      <ReviewsSection  listingId="6a04c24a43652c16fdde1a52"/>
+      <ReviewsSection  listingId="6a0fa92e7591f49c6ad3eef0"/>
     </>
   );
 }

@@ -1,233 +1,490 @@
-import { useState, useEffect, useRef } from "react";
-import { Menu, X, ChevronDown, Phone } from "lucide-react";
-import api from "../api/axios.js";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaTwitter,
+} from "react-icons/fa";
 
-import logo from "../assets/logo/LOGO.png";
+import {
+  Link,
+  useLocation,
+} from "react-router-dom";
+
+import api from "../api/axios";
+
+// ================= LOGOS =================
+import WhiteLogo from "../assets/logo/LOGO.png";
+import BlackLogo from "../assets/logo/LOGO2.png";
 
 export default function Navbar({ listingId }) {
+
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [dropdown, setDropdown] = useState(false);
-  const timeoutRef = useRef(null);
-  const [contactNumber, setContactNumber] = useState("");
+
+  const [listing, setListing] =
+    useState(null);
+
+  const location = useLocation();
+
+  // =====================================
+  // FETCH LISTING
+  // =====================================
 
   useEffect(() => {
+
     if (!listingId) return;
 
     api
       .get(`/listings/${listingId}`)
-      .then((res) => {
-        console.log(res.data);
 
-        // ✅ SAME AS ABOUT SECTION
-        setContactNumber(res.data?.property?.altPhone || "");
+      .then((res) => {
+        setListing(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+
+      .catch(console.log);
+
   }, [listingId]);
 
-  // SCROLL EFFECT
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+  // =====================================
+  // BACKEND DATA
+  // =====================================
 
-    window.addEventListener("scroll", handleScroll);
+  const address =
+    listing?.location?.address ||
+    "Panama City Beach";
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const email =
+    listing?.property?.altEmail ||
+    "info@example.com";
 
-  // DROPDOWN
-  const handleEnter = () => {
-    clearTimeout(timeoutRef.current);
-    setDropdown(true);
-  };
+  const phone =
+    listing?.property?.altPhone ||
+    "000-000-0000";
 
-  const handleLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setDropdown(false);
-    }, 200);
-  };
+  const title =
+    listing?.property?.title ||
+    "Luxury Condo";
 
-  // MENU LINKS
-  const links = [
-    { name: "Home", path: "/" },
+  // =====================================
+  // PAGE CHECK
+  // =====================================
+
+  const pathname =
+    location.pathname;
+
+  // HOME PAGE
+  const isHome =
+    pathname === "/";
+
+  // SINGLE PROPERTY PAGE
+  const isPropertyPage =
+    /^\/[^/]+$/.test(pathname) &&
+    pathname !== "/about" &&
+    pathname !== "/gallery" &&
+    pathname !== "/contact-us";
+
+  // =====================================
+  // LOGO CHANGE
+  // =====================================
+
+  const currentLogo =
+    isHome || isPropertyPage
+      ? WhiteLogo
+      : BlackLogo;
+
+  // =====================================
+  // MENU
+  // =====================================
+
+  const menuItems = [
+    {
+      name: "Home",
+      path: "/",
+    },
 
     {
-      name: "Photos",
+      name: "About",
+      path: "/about",
+    },
+
+    {
+      name: "Gallery",
       path: "/gallery",
     },
 
-    { name: "About", path: "/about" },
-
     {
       name: "Contact",
-      path: "/contect-us",
+      path: "/contact-us",
     },
   ];
 
   return (
-    <nav
-      className={`fixed w-full  z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-black/70 backdrop-blur-md shadow-lg"
-          : "bg-black/20 backdrop-blur-sm"
-      }`}
-    >
-      <div className="max-w-7xl  mx-auto px-6 md:px-10 py-4">
-        {/* MAIN NAV */}
-        <div className="flex items-center justify-between">
-          {/* LEFT MENU */}
-          <ul className="hidden md:flex items-center gap-8 text-white">
-            {links.map((link, i) => (
-              <li key={i} className="relative group text-[19px] font-medium">
-                <Link to={link.path}>{link.name}</Link>
+    <div className="relative">
 
-                <span
-                  className="
-                  absolute 
-                  left-0 
-                  -bottom-1 
-                  w-0 
-                  h-[2px] 
-                  bg-yellow-400 
-                  transition-all 
-                  duration-300 
-                  group-hover:w-full
-                "
-                ></span>
-              </li>
-            ))}
-          </ul>
+      {/* ================= NAVBAR ================= */}
 
-          {/* CENTER LOGO */}
-          <div
-            className=" pt-13
-            absolute 
-            left-1/2 
-            -translate-x-1/2"
-          >
-            <Link to="/">
-              <img src={logo} alt="logo" className="w-32 md:w-30" />
-            </Link>
-          </div>
-
-          {/* RIGHT CONTACT */}
-          <div className="hidden md:flex items-center">
-            <a
-              href={`tel:${contactNumber}`}
-              className="
-              flex 
-              items-center 
-              gap-3
-              bg-white/10
-              border
-              border-white/20
-              backdrop-blur-md
-              px-5
-              py-3
-              rounded-full
-              hover:bg-yellow-400
-              hover:text-black
-              transition-all
-              duration-300
-              text-white
-            "
-            >
-              <div
-                className="
-                w-10 
-                h-10 
-                rounded-full 
-                bg-yellow-400 
-                text-black
-                flex 
-                items-center 
-                justify-center
-              "
-              >
-                <Phone size={18} />
-              </div>
-
-              <div className="leading-tight">
-                <p className="text-xs uppercase tracking-wider">
-                  Contact Today
-                </p>
-
-                <p className="font-semibold text-[15px]">{contactNumber}</p>
-              </div>
-            </a>
-          </div>
-
-          {/* MOBILE BUTTON */}
-          <div className="md:hidden ml-auto text-white">
-            <button onClick={() => setOpen(!open)}>
-              {open ? <X size={30} /> : <Menu size={30} />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* MOBILE MENU */}
-      <div
-        className={`md:hidden overflow-hidden transition-all duration-500 ${
-          open ? "max-h-[500px]" : "max-h-0"
-        }`}
+      <header
+        className="
+        absolute
+        top-0
+        left-0
+        w-full
+        flex
+        items-center
+        justify-between
+        px-5
+        md:px-10
+        py-6
+        z-[999999]
+      "
       >
-        <div
+
+        {/* ================= LOGO ================= */}
+
+        <Link to="/">
+
+          <img
+           src={open ? BlackLogo : currentLogo}
+            alt="logo"
+            className="
+              w-32
+              md:w-40
+              object-contain
+            "
+          />
+
+        </Link>
+
+        {/* ================= TOGGLE ================= */}
+
+        <button
+          onClick={() =>
+            setOpen(!open)
+          }
+
           className="
-          bg-black/95
-          backdrop-blur-lg
-          px-6
-          py-6
-          text-white
-          space-y-5
+          relative
+          z-[999999]
+          w-12
+          h-12
+          flex
+          flex-col
+          justify-center
+          items-center
+          cursor-pointer
         "
         >
-          {links.map((link, i) => (
-            <Link
-              key={i}
-              to={link.path}
-              onClick={() => setOpen(false)}
-              className="
-              block
-              text-lg
-              border-b
-              border-white/10
-              pb-3
-            "
-            >
-              {link.name}
-            </Link>
-          ))}
 
-          {/* MOBILE CONTACT */}
-          <a
-            href={`tel:${contactNumber}`}
+          {/* TOP */}
+          <span
+            className={`
+              block
+              absolute
+              h-[2px]
+              w-10
+              rounded-full
+              transition-all
+              duration-500
+              ease-in-out
+              ${
+                open
+                  ? "rotate-45 bg-black"
+                  : `-translate-y-3 ${
+                      isHome ||
+                      isPropertyPage
+                        ? "bg-white"
+                        : "bg-black"
+                    }`
+              }
+            `}
+          />
+
+          {/* MIDDLE */}
+          <span
+            className={`
+              block
+              absolute
+              h-[2px]
+              w-10
+              rounded-full
+              transition-all
+              duration-500
+              ease-in-out
+              ${
+                open
+                  ? "opacity-0"
+                  : `opacity-100 ${
+                      isHome ||
+                      isPropertyPage
+                        ? "bg-white"
+                        : "bg-black"
+                    }`
+              }
+            `}
+          />
+
+          {/* BOTTOM */}
+          <span
+            className={`
+              block
+              absolute
+              h-[2px]
+              w-10
+              rounded-full
+              transition-all
+              duration-500
+              ease-in-out
+              ${
+                open
+                  ? "-rotate-45 bg-black"
+                  : `translate-y-3 ${
+                      isHome ||
+                      isPropertyPage
+                        ? "bg-white"
+                        : "bg-black"
+                    }`
+              }
+            `}
+          />
+
+        </button>
+
+      </header>
+
+      {/* ================= OVERLAY ================= */}
+
+      <div
+        className={`
+        fixed
+        top-0
+        right-0
+        h-screen
+        w-full
+        bg-[#f5f5f5]
+        z-[99999]
+        transition-all
+        duration-700
+        ease-in-out
+        overflow-y-auto
+        ${
+          open
+            ? "translate-x-0"
+            : "translate-x-full"
+        }
+      `}
+      >
+
+        <div
+          className="
+          min-h-screen
+          flex
+          flex-col
+          lg:flex-row
+          items-start
+          justify-center
+          gap-16
+          lg:gap-40
+          px-6
+          sm:px-10
+          md:px-20
+          py-50
+        "
+        >
+
+          {/* ================= LEFT ================= */}
+
+          <div className="w-full lg:w-auto">
+
+            <ul className="space-y-5 md:space-y-7">
+
+              {menuItems.map(
+                (item, i) => (
+
+                  <li key={i}>
+
+                    <Link
+                      to={item.path}
+
+                      onClick={() =>
+                        setOpen(false)
+                      }
+
+                      className="
+                      relative
+                      inline-block
+                      text-4xl
+                      sm:text-5xl
+                      md:text-6xl
+                      font-playfair
+                      font-semibold
+                      text-black
+                      group
+                    "
+                    >
+
+                      {item.name}
+
+                      <span
+                        className="
+                        absolute
+                        left-0
+                        bottom-1
+                        md:bottom-2
+                        w-0
+                        h-3
+                        md:h-4
+                        bg-pink-500
+                        -z-10
+                        transition-all
+                        duration-500
+                        group-hover:w-full
+                      "
+                      />
+
+                    </Link>
+
+                  </li>
+
+                )
+              )}
+
+            </ul>
+
+          </div>
+
+          {/* ================= RIGHT ================= */}
+
+          <div
             className="
             flex
-            items-center
-            gap-3
-            bg-yellow-400
-            text-black
-            rounded-2xl
-            px-5
-            py-4
-            mt-6
+            flex-col
+            md:flex-row
+            gap-14
+            lg:gap-24
+            w-full
+            lg:w-auto
           "
           >
-            <Phone size={20} />
+
+            {/* CONTACT */}
+
+            <div className="max-w-sm">
+
+              <h3
+                className="
+                uppercase
+                tracking-[4px]
+                text-gray-400
+                text-xs
+                md:text-sm
+                mb-8
+              "
+              >
+                Contact Info
+              </h3>
+
+              <div
+                className="
+                space-y-5
+                text-gray-700
+                text-base
+                md:text-lg
+                leading-8
+              "
+              >
+
+                <p>{address}</p>
+
+                <a
+                  href={`mailto:${email}`}
+                  className="
+                  hover:text-pink-500
+                  transition
+                  break-all
+                  block
+                "
+                >
+                  {email}
+                </a>
+
+                <a
+                  href={`tel:${phone}`}
+                  className="
+                  hover:text-pink-500
+                  transition
+                  block
+                "
+                >
+                  {phone}
+                </a>
+
+              </div>
+
+            </div>
+
+            {/* SOCIAL */}
 
             <div>
-              <p className="text-sm">Contact Today</p>
 
-              <p className="font-bold">{contactNumber}</p>
+              <h3
+                className="
+                uppercase
+                tracking-[4px]
+                text-gray-400
+                text-xs
+                md:text-sm
+                mb-8
+              "
+              >
+                {title}
+              </h3>
+
+              <div className="flex gap-4 mt-8">
+
+                {[
+                  FaFacebookF,
+                  FaInstagram,
+                  FaTwitter,
+                ].map(
+                  (Icon, i) => (
+
+                    <div
+                      key={i}
+
+                      className="
+                      w-11
+                      h-11
+                      rounded-full
+                      border
+                      border-gray-300
+                      flex
+                      items-center
+                      justify-center
+                      hover:bg-pink-500
+                      hover:text-white
+                      hover:border-pink-500
+                      transition-all
+                      duration-300
+                      cursor-pointer
+                    "
+                    >
+
+                      <Icon size={16} />
+
+                    </div>
+
+                  )
+                )}
+
+              </div>
+
             </div>
-          </a>
+
+          </div>
+
         </div>
+
       </div>
-    </nav>
+
+    </div>
   );
 }

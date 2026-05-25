@@ -9,20 +9,70 @@ export default function ListingCard({
 
   if (!listing) return null;
 
-  const getImageUrl = (path) => {
-    if (!path || typeof path !== "string") return "";
+  const getImageUrl = (photo) => {
+  const base =
+    import.meta.env.VITE_API_URL || "";
 
-    const base = import.meta.env.VITE_API_URL || "";
+  // string
+  if (typeof photo === "string") {
+    if (photo.startsWith("http")) {
+      return photo;
+    }
 
-    if (path.startsWith("http")) return path;
+    return (
+      base.replace(/\/$/, "") +
+      "/" +
+      photo.replace(/^\//, "")
+    );
+  }
 
-    return base.replace(/\/$/, "") + "/" + path.replace(/^\//, "");
-  };
+  // proper object
+  if (
+    photo &&
+    typeof photo === "object"
+  ) {
+    // normal object
+    if (photo.url) {
+      return (
+        base.replace(/\/$/, "") +
+        "/" +
+        String(photo.url).replace(
+          /^\//,
+          ""
+        )
+      );
+    }
 
-  const image =
-    listing?.photos?.length > 0
-      ? `${import.meta.env.VITE_API_URL}${listing.photos[0]}`
-      : "https://via.placeholder.com/400x300?text=No+Image";
+    // corrupted mongo object
+    const reconstructed =
+      Object.values(photo)
+        .filter(
+          (v) => typeof v === "string"
+        )
+        .join("");
+
+    if (
+      reconstructed.includes(
+        "/gallery-uploads/"
+      )
+    ) {
+      return (
+        base.replace(/\/$/, "") +
+        "/" +
+        reconstructed.replace(
+          /^\//,
+          ""
+        )
+      );
+    }
+  }
+
+  return "https://via.placeholder.com/400x300?text=No+Image";
+};
+
+  const image = getImageUrl(
+  listing?.photos?.[0]
+);
   // console.log("photos:", listing.photos);
   // console.log("image url:", image);
   const price =

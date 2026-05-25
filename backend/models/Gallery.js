@@ -7,6 +7,16 @@ const gallerySchema = new mongoose.Schema(
       required: true,
     },
 
+    order: {
+      type: Number,
+      default: 0,
+    },
+
+    sectionType: {
+      type: String,
+      default: "",
+    },
+
     status: {
       type: String,
       enum: ["draft", "published"],
@@ -16,4 +26,7 @@ const gallerySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Gallery", gallerySchema);
+export default mongoose.model(
+  "Gallery",
+  gallerySchema
+);

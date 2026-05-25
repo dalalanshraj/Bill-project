@@ -35,8 +35,8 @@ const allowedOrigins = [
    "http://localhost:5174",
   "http://localhost:5173",
   "http://localhost:5176",
-  "https://calypso401.mysawgrasspointe.com",
-  "https://www.calypso401.mysawgrasspointe.com",
+  "https://floridapanhandlebeachescape.com",
+  "https://floridapanhandlebeachescape.com",
  
 ];
 

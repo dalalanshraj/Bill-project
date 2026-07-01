@@ -31,7 +31,7 @@ import icalcalendarRoutes from "./routes/icalRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 
 const app = express();
-const PORT = process.env.PORT || 4009;
+const PORT = process.env.PORT || 4010;
 const allowedOrigins = [
    "https://rentemeraldcoastcondos.com",
   "https://www.rentemeraldcoastcondos.com",

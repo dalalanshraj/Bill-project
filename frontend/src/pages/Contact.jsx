@@ -217,7 +217,7 @@ export default function Contact({ listingId }) {
 
     const recipients = [
   listing?.property?.email,
-  listing?.property?.altEmail,
+  listing?.property?.email,
 ].filter(Boolean);
 
 const emailPayload = {
@@ -242,13 +242,13 @@ const emailPayload = {
 
 for (const recipient of recipients) {
   await emailjs.send(
-    "service_t1dtkqc",
-    "template_1hmh0cs",
+    "service_04sk77i",
+    "template_h8d4zrt",
     {
       ...emailPayload,
       to_email: recipient,
     },
-    "jViExLAlcltfrIIX0"
+    "xppi5YZRRXZI6aHUJ"
   );
 }
 
@@ -351,7 +351,7 @@ for (const recipient of recipients) {
                     <h3 className="font-semibold text-xl mb-2">Email</h3>
 
                     <p className="text-gray-600 break-all">
-                      {listing?.property?.altEmail || "info@example.com"}
+                      {listing?.property?.email || "info@example.com"}
                     </p>
                   </div>
                 </div>
@@ -369,7 +369,7 @@ for (const recipient of recipients) {
                     <h3 className="font-semibold text-xl mb-2">Phone</h3>
 
                     <p className="text-gray-600">
-                      {listing?.property?.altPhone || "Phone not available"}
+                      {listing?.property?.phone || "Phone not available"}
                     </p>
                   </div>
                 </div>
@@ -475,8 +475,8 @@ for (const recipient of recipients) {
                   minDate={new Date()}
                   placeholderText="Select check in"
                   dateFormat="MMM dd, yyyy"
-                  dayClassName={getDateType}
-                  filterDate={(date) => !isBlocked(date)}
+                  // dayClassName={getDateType}
+                  // filterDate={(date) => !isBlocked(date)}
                   onChange={(date) => {
                     setForm({
                       ...form,
@@ -510,8 +510,8 @@ for (const recipient of recipients) {
                   minDate={form.checkIn || new Date()}
                   placeholderText="Select check out"
                   dateFormat="MMM dd, yyyy"
-                  dayClassName={getDateType}
-                  filterDate={(date) => !isBlocked(date)}
+                  // dayClassName={getDateType}
+                  // filterDate={(date) => !isBlocked(date)}
                   onChange={(date) => {
                     setForm({
                       ...form,

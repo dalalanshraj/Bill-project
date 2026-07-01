@@ -145,26 +145,31 @@ export default function GalleryAdmin() {
         {/* RIGHT */}
         <div className="flex flex-wrap gap-3">
           {/* SELECT */}
-          <select
-            value={sectionType}
-            onChange={(e) => setSectionType(e.target.value)}
-            className="border border-gray-300 px-4 py-2 rounded-xl outline-none"
-          >
-            <option value="">Select Section (Optional)</option>
-            <option value="hero">The Condo</option>
-<option value="gulf-views">Prime Location</option>
-<option value="living-room">Living Room</option>
-<option value="master-bedroom">Master Bedroom</option>
-<option value="second-bedroom">Second Bedroom</option>
-<option value="third-bedroom">Third Bedroom</option>
-<option value="kitchen">Fully Equipped Kitchen</option>
-<option value="balcony">Private Balcony</option>
-<option value="pool-hot-tub">Pool & Hot Tub</option>
-<option value="community-amenities">Community Amenities</option>
-<option value="beach-access">Beach Access</option>
-<option value="family-friendly">Family Friendly</option>
-<option value="local-attractions">Local Attractions</option>
-          </select>
+        <select
+  value={sectionType}
+  onChange={(e) => setSectionType(e.target.value)}
+  className="border border-gray-300 px-4 py-2 rounded-xl outline-none"
+>
+  <option value="">Select Section (Optional)</option>
+
+  <option value="hero">The Condos</option>
+
+  <option value="gulf-views">Prime Locations</option>
+
+  <option value="living-room">Spacious Living</option>
+
+  <option value="kitchen">Fully Equipped Kitchens</option>
+
+  <option value="balcony">Private Balconies</option>
+
+  <option value="pool-hot-tub">Resort Amenities</option>
+
+  <option value="community-amenities">Premium Resort Features</option>
+
+  <option value="family-friendly">Perfect for Families</option>
+
+  <option value="local-attractions">Dining & Entertainment</option>
+</select>
 
           {/* UPLOAD */}
           <label

@@ -1,29 +1,59 @@
 import { useState, useEffect } from "react";
 import api from "../api/axios";
 
-export default function ReviewsSection({ listingId }) {
+export default function ReviewsSection( ) {
   const [open, setOpen] = useState(false);
 
   const [reviews, setReviews] = useState([]);
 
   // FETCH REVIEWS FROM LISTING
-  useEffect(() => {
-    if (!listingId) return;
+useEffect(() => {
+  const fetchReviews = async () => {
+    try {
+      const { data } = await api.get("/listings");
 
-    api
-      .get(`/listings/${listingId}`)
-      .then((res) => {
-        console.log("FULL LISTING:", res.data);
+      let allReviews = [];
 
-        // 👇 YOUR REVIEWS ARRAY
-        const data = res.data?.reviews || res.data?.listing?.reviews || [];
+      data.forEach((listing) => {
+        const publishedReviews = (listing.reviews || []).filter(
+          (review) => review.published
+        );
 
-        setReviews(data);
-      })
-      .catch((err) => {
-        console.log(err);
+        allReviews.push(
+          ...publishedReviews.map((review) => ({
+            ...review,
+            listingId: listing._id,
+            propertyTitle: listing.property?.title,
+            propertyImage: listing.photos?.[0]?.url || "",
+          }))
+        );
       });
-  }, [listingId]);
+
+      // Remove duplicate reviews
+      const uniqueReviews = allReviews.filter(
+        (review, index, self) =>
+          index ===
+          self.findIndex(
+            (r) =>
+              r.name === review.name &&
+              r.message === review.message &&
+              r.title === review.title
+          )
+      );
+
+      // Newest first
+      uniqueReviews.sort(
+        (a, b) => new Date(b.stayDate || 0) - new Date(a.stayDate || 0)
+      );
+
+      setReviews(uniqueReviews);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  fetchReviews();
+}, []);
 
   // PREVIEW
   const preview = reviews.slice(0, 3);

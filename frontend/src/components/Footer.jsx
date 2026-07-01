@@ -36,8 +36,8 @@ export default function Footer({ listingId }) {
   // =====================================
 
   const address = listing?.location?.address || "Panama City Beach, Florida";
-  const email = listing?.property?.altEmail || "info@example.com";
-  const phone = listing?.property?.altPhone || "000-000-0000";
+  const email = listing?.property?.email || "info@example.com";
+  const phone = listing?.property?.phone || "000-000-0000";
   const title = listing?.property?.title || "Luxury Condo";
 
   return (
@@ -46,7 +46,7 @@ export default function Footer({ listingId }) {
 
       <div className="w-full h-[240px] overflow-hidden">
         <iframe
-          src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3488.005436644214!2d-86.22698012438342!3d30.346048174773113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8893e2503b66d4e5%3A0xee3109dac02d5b72!2s4045%20W%20County%20Hwy%2030A%2C%20Santa%20Rosa%20Beach%2C%20FL%2032459%2C%20USA!5e1!3m2!1sen!2sin!4v1782505488684!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin`}
+          src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3646.3127583903492!2d-85.82724312422495!3d30.187725574851665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88938ecb097a0661%3A0xd797f4a7f130d8d!2s11800%20Front%20Beach%20Rd%20Unit%202-804%2C%20Panama%20City%20Beach%2C%20FL%2032407%2C%20USA!5e1!3m2!1sen!2sin!4v1782848999456!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin `}
           className="w-full h-100 border-0"
           allowFullScreen=""
           loading="lazy"
@@ -61,7 +61,7 @@ export default function Footer({ listingId }) {
           {/* ================= LEFT ================= */}
 
           <div className="text-center md:text-left">
-            <img src={logo} alt="logo" className="w-48 mx-auto md:mx-0 mb-6" />
+            <img src={logo} alt="logo" className="w-48 mx-auto md:mx-10 mb-6" />
 
             <p className="text-gray-400 text-sm leading-7">
              © 2026 <a href="https://digifyamerica.com/">Digify America.</a> All rights reserved.
@@ -71,9 +71,9 @@ export default function Footer({ listingId }) {
           {/* ================= CENTER ================= */}
 
           <div className="text-center">
-            <h3 className="text-3xl font-semibold mb-6">{title}</h3>
+            <h3 className="text-3xl font-semibold mb-6">Find Your Perfect Beachfront Vacation Rental</h3>
 
-            <p className="text-gray-300 leading-8">{address}</p>
+            <p className="text-gray-300 leading-8">11800 Front Beach Rd, Unit 2-804 Panama City Beach Florida 32407</p>
 
             <p className="mt-5 text-gray-300">{phone}</p>
 

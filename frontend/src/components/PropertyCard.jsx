@@ -1,101 +1,348 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { BedDouble, Bath, MapPin } from "lucide-react";
+import { Link, Links } from "react-router-dom";
+import { TfiLocationPin } from "react-icons/tfi";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
 
-const PropertyCard = ({ listing }) => {
-  if (!listing) return null;
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
-  const getImageUrl = (path) => {
-    if (!path || typeof path !== "string") return "";
+import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
 
-    const base = import.meta.env.VITE_API_URL || "";
+export default function PropertyCard({ listing }) {
+  const sliderId = listing._id;
+  const photos =
+    listing?.photos?.length > 0
+      ? listing.photos
+      : [{ url: "/placeholder.jpg" }];
 
-    if (path.startsWith("http")) return path;
+  const imageUrl = (photo) => {
+    if (!photo?.url) return "/placeholder.jpg";
 
-    return base.replace(/\/$/, "") + "/" + path.replace(/^\//, "");
+    return photo.url.startsWith("http")
+      ? photo.url
+      : `${import.meta.env.VITE_API_URL}${photo.url}`;
   };
 
-  const image =
-    listing?.photos?.length > 0
-      ? getImageUrl(listing.photos[0]) // ✅ index 0 use karo
-      : "https://via.placeholder.com/400x300?text=No+Image";
-
-  const originalPrice = listing?.rates?.[0]?.nightly || null;
-  const dealPrice = listing?.deal?.discountedRate;
+  const price =
+    listing?.rates?.[0]?.nightly ||
+    listing?.rates?.[0]?.price ||
+    listing?.property?.price ||
+    199;
 
   return (
-    <Link to={`/${listing?._id}`}>
-      <div className="group bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition duration-500">
-        {/* IMAGE */}
-        <div className="relative overflow-hidden">
-          <img
-            src={image}
-            alt="property"
-            className="w-full h-[240px] object-cover transition duration-700 group-hover:scale-110"
-            onError={(e) => {
-              e.target.src =
-                "https://via.placeholder.com/400x300?text=No+Image";
+    <Link  to={`/${listing._id}`}
+  className="
+  group
+  bg-white
+  rounded-[28px]
+  overflow-hidden
+  shadow-xl
+  flex
+  flex-col
+  h-full
+  hover:-translate-y-2
+  duration-500
+"
+
+    >
+      {/* IMAGE */}
+
+      <div className="relative h-[280px] md:h-[340px] overflow-hidden">
+        
+        <Swiper
+  modules={[Navigation, Pagination]}
+  loop
+  pagination={{ clickable: true }}
+  navigation={{
+    prevEl: `.prev-${sliderId}`,
+    nextEl: `.next-${sliderId}`,
+  }}
+  onBeforeInit={(swiper) => {
+    swiper.params.navigation.prevEl = `.prev-${sliderId}`;
+    swiper.params.navigation.nextEl = `.next-${sliderId}`;
+  }}
+>
+          {photos.map((photo, index) => (
+            <SwiperSlide key={index}>
+              <img
+                src={imageUrl(photo)}
+                alt={listing?.property?.title}
+                className="
+                h-full
+                w-full
+                object-cover
+                duration-700
+                group-hover:scale-110
+              "
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        {/* Gradient */}
+
+        <div
+          className="
+          absolute
+          inset-0
+          bg-gradient-to-t
+          from-black/60
+          via-black/10
+          to-transparent
+          z-10
+          pointer-events-none
+        "
+        />
+
+        {/* Left Arrow */}
+
+     <button
+  className={`
+    prev-${sliderId}
+    absolute
+    left-4
+    top-1/2
+    -translate-y-1/2
+    z-30
+
+    w-10
+    h-10
+
+    rounded-full
+    bg-white
+    shadow-lg
+
+    flex
+    items-center
+    justify-center
+
+    opacity-0
+    invisible
+
+    group-hover:opacity-100
+    group-hover:visible
+
+    transition-opacity
+    duration-200
+  `}
+>
+  <ChevronLeft size={20} />
+</button>
+
+        {/* Right Arrow */}
+
+    <button
+  className={`
+    next-${sliderId}
+    absolute
+    right-4
+    top-1/2
+    -translate-y-1/2
+    z-30
+    w-10
+    h-10
+    rounded-full
+    bg-white/90
+    backdrop-blur-md
+    shadow-lg
+    flex
+    items-center
+    justify-center
+    opacity-0
+    invisible
+    group-hover:opacity-100
+    group-hover:visible
+    transition-all
+    duration-200
+  `}
+>
+  <ChevronRight size={20} />
+</button>
+
+        {/* Price */}
+
+        <div
+          className="
+          absolute
+          left-5
+          bottom-5
+
+          z-20
+
+          text-white
+
+          font-bold
+
+          text-4xl
+        "
+        >
+          ${price.toLocaleString()}
+        </div>
+
+        {/* Heart */}
+
+        {/* <button
+          className="
+          absolute
+
+          right-5
+          bottom-[-28px]
+
+          z-30
+
+          w-14
+          h-14
+
+          rounded-full
+
+          bg-white
+
+          shadow-xl
+
+          flex
+          items-center
+          justify-center
+
+          hover:bg-red-500
+          hover:text-white
+
+          duration-300
+        "
+        >
+          <Heart size={22} />
+        </button> */}
+      </div>
+
+      {/* CONTENT */}
+
+      <div className="bg-white pt-10 px-6 pb-6">
+        {/* Property type */}
+
+        <p className="uppercase tracking-[3px] text-xs text-gray-400">
+          Luxury Vacation Rental
+        </p>
+
+        {/* Title */}
+
+        <h2
+          className="
+          mt-3
+          text-3xl
+          font-bold
+          leading-tight
+          font-playfair
+        "
+        >
+          {listing?.property?.title}
+        </h2>
+
+        {/* Location */}
+
+        <p
+          className="
+          mt-3
+          text-gray-500
+          text-[15px] flex 
+        "
+        >
+         <TfiLocationPin className="mt-0" size={20} />  {listing?.location?.address || listing?.property?.city}
+        </p>
+        {/* DESCRIPTION */}
+
+        {/* <p className="mt-5 text-gray-600 leading-7 line-clamp-2">
+          <div
+            className="  mt-5 text-gray-600  min-h-[84px] leading-7 line-clamp-2"
+            dangerouslySetInnerHTML={{
+              __html: listing?.description || "",
             }}
           />
+        </p> */}
 
-          {/* Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+        {/* PROPERTY INFO */}
 
-          {/* DEAL BADGE */}
-          {listing?.deal && (
-            <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs px-3 py-1 rounded-full shadow">
-              DEAL
-            </div>
-          )}
+        <div className="grid grid-cols-3 gap-4 mt-auto pt-8">
+          <div className="text-center py-4 rounded-2xl bg-gray-50">
+            <p className="text-2xl font-bold">
+              {listing?.property?.bedrooms || 1}
+            </p>
 
-          {/* PRICE */}
-          <div className="absolute bottom-4 left-4 text-white">
-            {listing?.deal ? (
-              <div className="flex items-center gap-2">
-                <span className="text-xl font-bold">
-                  ${listing.deal.discountedRate}
-                </span>
-                <span className="line-through text-sm opacity-70">
-                  ${originalPrice}
-                </span>
-              </div>
-            ) : (
-              <span className="text-xl font-semibold">
-                {/* ${originalPrice || "Call"} */}
-              </span>
-            )}
+            <span className="text-sm text-gray-500">Bedrooms</span>
+          </div>
+
+          <div className="text-center py-4 rounded-2xl bg-gray-50">
+            <p className="text-2xl font-bold">
+              {listing?.property?.bathrooms || 1}
+            </p>
+
+            <span className="text-sm text-gray-500">Bathrooms</span>
+          </div>
+
+          <div className="text-center py-4 rounded-2xl bg-gray-50">
+            <p className="text-2xl font-bold">
+              {listing?.property?.guests || 2}
+            </p>
+
+            <span className="text-sm text-gray-500">Sleeps</span>
           </div>
         </div>
 
-        {/* CONTENT */}
-        <div className="p-4">
-          {/* TITLE */}
-          <h3 className="text-lg font-semibold mb-1 group-hover:text-black transition">
-            {listing?.property?.title || "Luxury Property"}
-          </h3>
+        {/* FEATURES */}
 
-          {/* LOCATION */}
-          <div className="flex items-center text-gray-500 text-sm mb-2 gap-1">
-            <MapPin className="font-bold" color="green" size={18} />
-            {listing?.location?.address || "Beach Area"}
+        {/* <div className="flex flex-wrap gap-2 mt-7">
+
+          <span className="px-4 py-2 rounded-full bg-[#eef7ff] text-[#2563eb] text-sm font-medium">
+            🌊 Gulf View
+          </span>
+
+          <span className="px-4 py-2 rounded-full bg-[#f4fff4] text-[#15803d] text-sm font-medium">
+            🏖 Beachfront
+          </span>
+
+          <span className="px-4 py-2 rounded-full bg-[#fff8ec] text-[#d97706] text-sm font-medium">
+            🏊 Pool
+          </span>
+
+          <span className="px-4 py-2 rounded-full bg-[#faf5ff] text-[#9333ea] text-sm font-medium">
+            🔥 Hot Tub
+          </span>
+
+        </div> */}
+
+        {/* DIVIDER */}
+
+        <div className="border-t my-8"></div>
+
+        {/* FOOTER */}
+
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-gray-500 text-sm">Starting From</p>
+
+            <h3 className="text-3xl font-bold">
+              ${price}
+              <span className="text-lg text-gray-400 font-normal">/night</span>
+            </h3>
           </div>
 
-          {/* FEATURES */}
-          <div className="flex items-center justify-between text-gray-600 text-sm mt-3">
-            <div className="flex items-center gap-1">
-              <BedDouble color="green" size={16} />
-              <span>{listing?.property?.bedrooms || 3} Beds</span>
-            </div>
-
-            <div className="flex items-center gap-1">
-              <Bath color="green" size={16} />
-              <span>{listing?.property.bathrooms || 2} Baths</span>
-            </div>
-          </div>
+          <Link
+            to={`/${listing._id}`}
+            className="
+          px-5
+            py-3
+            rounded-full
+            bg-black
+            text-white
+            hover:bg-[#2f9bad]
+            transition-all
+            duration-300
+            font-medium
+          "
+          >
+            View Property →
+          </Link>
         </div>
       </div>
     </Link>
   );
-};
-
-export default PropertyCard;
+}

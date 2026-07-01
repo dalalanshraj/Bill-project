@@ -1,43 +1,42 @@
 import condoImg from "../../assets/about-Img1.png";
-import bedroomImg from "../../assets/about-img2.jpeg";
-import kitchenImg from "../../assets/about-img3.jpg";
-import beachImg from "../../assets/about-img4.jpeg";
+import bedroomImg from "../../assets/about-img2.png";
+import amenitiesImg from "../../assets/about-img3.png";
+import locationImg from "../../assets/about-img4.jpeg";
 
 import { Link } from "react-router-dom";
 
 export default function AboutSection() {
  const sections = [
   {
-    title: "THE CONDO",
-    subtitle: "Luxury Gulf View Retreat",
+    title: "THE CONDOS",
+    subtitle: "Luxury Beachfront Living",
     description:
-      "Escape to this beautifully furnished top-floor condo featuring breathtaking Gulf views, a spacious private balcony, direct beach access, and resort-style amenities. Perfect for families seeking a relaxing getaway on Santa Rosa Beach.",
+      "Our professionally furnished beachfront condos offer stunning Gulf views, spacious living areas, private balconies, modern interiors, and everything needed for a relaxing coastal vacation.",
     image: condoImg,
   },
 
   {
-    title: "PRIMARY BEDROOM",
-    subtitle: "Comfortable King Suite",
+    title: "COMFORTABLE BEDROOMS",
+    subtitle: "Rest & Recharge",
     description:
-      "The spacious primary suite features a luxurious king-size bed, Smart TV, private en-suite bathroom with a walk-in shower, USB charging ports, and a peaceful atmosphere for the perfect night's sleep.",
+      "Featuring king and queen bedrooms, additional sleeping arrangements, and comfortable living spaces, our properties are designed to accommodate couples, families, and groups with ease.",
     image: bedroomImg,
   },
 
   {
-    title: "FULLY EQUIPPED KITCHEN",
-    subtitle: "Everything You Need",
+     title: "RESORT AMENITIES",
+    subtitle: "Relax Like Never Before",
     description:
-      "Prepare delicious meals in the modern kitchen featuring granite countertops, stainless steel appliances, a Keurig coffee maker, blender, cookware, dining essentials, and plenty of space for family gatherings.",
-    image: kitchenImg,
+      "Enjoy heated pools, hot tubs, fitness centers, tiki bars, beach chair service, private beach access, on-site restaurants, and many other premium amenities available throughout our resorts.",
+    image: amenitiesImg,
   },
 
   {
-    title: "FAMILY GETAWAY",
-    subtitle: "Perfect for Every Vacation",
-     description:
-    "Just a short drive from the condo, Camp Helen State Park offers breathtaking coastal scenery, nature trails, kayaking, wildlife viewing, and peaceful beaches. It's the perfect escape for guests looking to experience the natural beauty of Florida's Emerald Coast.",
-  image: beachImg,
-        image: beachImg,
+    title: "PRIME BEACH LOCATIONS",
+    subtitle: "Everything Nearby",
+    description:
+      "Located near Pier Park, Bay County Pier, shopping, restaurants, water sports, and Panama City Beach's famous white-sand shoreline, our vacation rentals place you close to everything you need for an unforgettable getaway.",
+    image: locationImg,
   },
 ];
 
@@ -48,11 +47,11 @@ export default function AboutSection() {
         {/* MAIN HEADING */}
         <div className="text-center mb-24">
         <h1 className="font-playfair text-5xl md:text-7xl font-bold">
-   Luxury Gulf View Condo
+   Luxury Beachfront Vacation Rentals
 </h1>
 
           <p className="mt-8 text-gray-600 max-w-4xl mx-auto text-lg md:text-xl leading-9">
-             Escape to our beautifully furnished top-floor condo at San Remo on Santa Rosa Beach. Enjoy breathtaking Gulf views, direct beach access, resort-style amenities, and spacious accommodations designed for relaxing family vacations and unforgettable coastal getaways.
+             Experience the best of Panama City Beach with our handpicked collection of luxury beachfront vacation rentals. Whether you're staying at Grand Panama Beach Resort or Beach Time at Calypso Tower 3, you'll enjoy breathtaking Gulf views, spacious accommodations, resort-style amenities, and convenient access to the area's best beaches, dining, shopping, and attractions.
           </p>
         </div>
 

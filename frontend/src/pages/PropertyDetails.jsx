@@ -25,6 +25,7 @@ const PropertyDetail = () => {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [openIVacation, setOpenIVacation] = useState(false);
   const [openReview, setOpenReview] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
 
@@ -34,6 +35,7 @@ const PropertyDetail = () => {
   const [blockedDates, setBlockedDates] = useState([]);
   const [openInquiry, setOpenInquiry] = useState(false);
   const [calendarData, setCalendarData] = useState([]);
+  const [owner, setOwner] = useState(null);
 
   // ================= FETCH LISTING =================
   useEffect(() => {
@@ -46,6 +48,11 @@ const PropertyDetail = () => {
       .catch(() => setLoading(false));
   }, [id]);
 
+  useEffect(() => {
+    api
+      .get(`/profile/public/6a42e54f4d210e7c35805167`)
+      .then((res) => setOwner(res.data));
+  }, []);
   // ================= FETCH CALENDAR =================
   useEffect(() => {
     api.get(`/listings/${id}/calendar`).then((res) => {
@@ -102,8 +109,7 @@ const PropertyDetail = () => {
   if (!listing) return <p className="p-10">Property not found</p>;
 
   // ================= IMAGES =================
-  const imageUrls =
-  listing.photos || [];
+  const imageUrls = listing.photos || [];
   // ================= REVIEWS =================
   const publishedReviews =
     listing.reviews?.filter((r) => r.published === true) || [];
@@ -120,12 +126,11 @@ const PropertyDetail = () => {
 
   // ================= MAP =================
   const getMapEmbedUrl = (lat, lng) => {
+    const finalLat = Number(lat);
+    const finalLng = Number(lng);
 
-  const finalLat = Number(lat);
-  const finalLng = Number(lng);
-
-  return `https://maps.google.com/maps?q=${finalLat},${finalLng}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
-};
+    return `https://maps.google.com/maps?q=${finalLat},${finalLng}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+  };
   const formatDate = (date) => {
     if (!date) return "";
 
@@ -138,6 +143,16 @@ const PropertyDetail = () => {
 
   // ================= MIN NIGHT AUTO FIX =================
   // 🔹 single function
+
+  const formatIVacationDate = (date) => {
+  if (!date) return "";
+
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${month}/${day}/${year}`; // Example: 07/15/2026
+};
 
   return (
     <>
@@ -243,34 +258,20 @@ const PropertyDetail = () => {
           )}
 
           {/* MAP */}
-          {listing?.location?.lat &&
- listing?.location?.lng && (
+          {listing?.location?.lat && listing?.location?.lng && (
+            <div className="mt-10">
+              <h2 className="text-2xl font-semibold mb-4">Location</h2>
 
-  <div className="mt-10">
-
-    <h2 className="text-2xl font-semibold mb-4">
-      Location
-    </h2>
-
-    <iframe
-      src={getMapEmbedUrl(
-        listing.location.lat,
-        listing.location.lng
-      )}
-
-      className="w-full h-96 rounded-xl border"
-
-      loading="lazy"
-
-      allowFullScreen
-
-      referrerPolicy="no-referrer-when-downgrade"
-
-      title="Property Location"
-    />
-
-  </div>
-)}
+              <iframe
+                src={getMapEmbedUrl(listing.location.lat, listing.location.lng)}
+                className="w-full h-96 rounded-xl border"
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Property Location"
+              />
+            </div>
+          )}
 
           {/* REVIEWS */}
           {publishedReviews.length > 0 && (
@@ -331,72 +332,224 @@ const PropertyDetail = () => {
 
         {/* RIGHT BOOKING */}
         {/* CALENDAR */}
-
+        {/* <a href=""> <button>book now</button>
+       </a> */}
         <div className="lg:col-span-1">
-          <div className="sticky top-[0px] self-start bg-white rounded-2xl shadow p-6 space-y-5 ">
-            <div className="flex gap-2">
-              <DatePicker
-                selected={checkIn}
-                onChange={(date) => {
-                  setCheckIn(date);
-                  setCheckOut(null);
-                }}
-                excludeDates={blockedDates}
-                placeholderText="Check-in"
-                minDate={new Date()}
-                className="border p-3 rounded w-full"
-              />
+          <div
+            className="
+sticky
+top-24
 
-              <DatePicker
-                selected={checkOut}
-                onChange={(date) => setCheckOut(date)}
-                excludeDates={blockedDates}
-                placeholderText="Check-out"
-                minDate={
-                  checkIn
-                    ? (() => {
-                        const d = new Date(checkIn);
+bg-white
 
-                        // ✅ IMPORTANT FIX
-                        d.setHours(12, 0, 0, 0);
+rounded-[32px]
 
-                        d.setDate(d.getDate() + getMinNightsForDate(checkIn));
+relative
 
-                        return d;
-                      })()
-                    : new Date()
-                }
-                className="border p-3 rounded w-full"
-              />
-            </div>
-            {/* <button
-            disabled={!checkIn || !checkOut}
-            onClick={() => setOpenBooking(true)}
-            className={`w-full py-3 rounded-xl font-semibold text-white 
-      ${!checkIn || !checkOut
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700 cursor-pointer"
-              }`}
+shadow-[0_25px_70px_rgba(0,0,0,.12)]
+"
           >
-            Book Now
-          </button> */}
-            <button
-              onClick={() => setOpenInquiry(true)}
-              className="w-full py-3 rounded-xl font-semibold bg-green-600 hover:bg-green-700 text-white cursor-pointer"
+            {/* ================= OWNER ================= */}
+
+            <div
+              className="
+        relative
+
+        pt-20
+        pb-10
+        px-8
+        
+        bg-gradient-to-br
+        from-[#0c8b8d]
+        via-[#1587d6]
+        to-[#2557e5]
+
+        text-white
+      "
             >
-              Send Inquiry
-            </button>
-            <PropertyminiCalendar listingId={listing._id} className="mt-20" />
-            <div className="overflow-hidden">
-            {openInquiry && (
-              <InquiryModal
-                propertyId={id}
-                onClose={() => setOpenInquiry(false)}
-              />
-              
-            )}
+              {/* IMAGE */}
+
+              <div
+                className="
+          absolute
+
+       top-0
+translate-y-[-50%]
+          left-1/2
+          -translate-x-1/2
+
+          w-24
+          h-24
+
+          rounded-full
+
+          overflow-hidden
+
+          border-[5px]
+          border-white
+
+          shadow-2xl
+
+          bg-white
+        "
+              >
+                <img
+                  src={`${import.meta.env.VITE_API_URL}${owner?.photo}`}
+                  alt={owner?.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <p
+                className="
+          text-center
+
+          uppercase
+
+          tracking-[5px]
+
+          text-xs
+
+          text-white/80
+        "
+              >
+                Property Host
+              </p>
+
+              <h2
+                className="
+          mt-2
+
+          text-center
+
+          text-3xl
+
+          font-bold
+        "
+              >
+                {owner?.name}
+              </h2>
+
+              <p
+                className="
+          mt-6
+
+          leading-8
+
+          text-white/95
+
+          text-[15px]
+
+          text-center
+
+          line-clamp-5
+        "
+              >
+                {owner?.about}
+              </p>
+            </div>
+
+            {/* ================= BOOKING ================= */}
+
+            <div className="p-8">
+              {/* <h3 className="text-2xl font-bold mb-6">Check Availability</h3> */}
+
+              {/* DATES */}
+
+              {/* <div className="grid grid-cols-2 gap-4">
+                <DatePicker
+                  selected={checkIn}
+                  popperPlacement="bottom-start"
+  popperStrategy="fixed"
+
+                  onChange={(date) => {
+                    setCheckIn(date);
+                    setCheckOut(null);
+                  }}
+                  excludeDates={blockedDates}
+                  placeholderText="Check In"
+                  minDate={new Date()}
+                  className="
+w-full
+h-14
+border-2
+border-gray-200
+rounded-xl
+text-center
+font-medium
+outline-none
+focus:border-[#2f9bad]"
+                />
+
+                <DatePicker
+                  selected={checkOut}
+                  popperPlacement="bottom-start"
+  popperStrategy="fixed"
+
+                  onChange={(date) => setCheckOut(date)}
+                  excludeDates={blockedDates}
+                  placeholderText="Check Out"
+                  minDate={
+                    checkIn
+                      ? (() => {
+                          const d = new Date(checkIn);
+
+                          d.setHours(12, 0, 0, 0);
+
+                          d.setDate(d.getDate() + getMinNightsForDate(checkIn));
+
+                          return d;
+                        })()
+                      : new Date()
+                  }
+                  className="
+w-full
+h-14
+border-2
+border-gray-200
+rounded-xl
+text-center
+font-medium
+outline-none
+focus:border-[#2f9bad]
+          "
+                />
+              </div> */}
+
+              {/* Divider */}
+
+              <div className="border-t border-dashed my-4"></div>
+
+              {/* BUTTONS */}
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setOpenIVacation(true)}
+                  className="
+           px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500
+          "
+                >
+                  Book Now
+                </button>
+
+                <button
+                  onClick={() => setOpenInquiry(true)}
+                  className="
+           px-12 py-4 border-2 text-black uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500"
+                >
+                  Send Inquiry
+                </button>
+              </div>
             </div>
           </div>
+
+          {openInquiry && (
+  <InquiryModal
+    propertyId={id}
+    listing={listing}
+    onClose={() => setOpenInquiry(false)}
+  />
+)}
         </div>
       </div>
 
@@ -408,6 +561,32 @@ const PropertyDetail = () => {
           checkOut={formatDate(checkOut)}
           onClose={() => setOpenBooking(false)}
         />
+      )}
+      {openIVacation && (
+        <div className="fixed inset-0 bg-black/70 z-[9999] flex items-center justify-center p-5">
+          <div className="bg-white rounded-2xl w-full max-w-6xl h-[90vh] relative overflow-hidden">
+            <button
+              onClick={() => setOpenIVacation(false)}
+              className="absolute top-4 right-5 text-3xl z-20"
+            >
+              ×
+            </button>
+
+           <iframe
+  title="Booking"
+  src={`https://ivacationonline.com/cframe/calendar.asp?PropertyID=${
+    listing.property.iVacationPropertyId
+  }&P=MPS&CheckIn=${encodeURIComponent(
+    formatIVacationDate(checkIn)
+  )}&CheckOut=${encodeURIComponent(
+    formatIVacationDate(checkOut)
+  )}`}
+  width="100%"
+  height="100%"
+  frameBorder="0"
+/>
+          </div>
+        </div>
       )}
     </>
   );

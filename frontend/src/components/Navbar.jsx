@@ -80,6 +80,7 @@ export default function Navbar({ listingId }) {
     /^\/[^/]+$/.test(pathname) &&
     pathname !== "/about" &&
     pathname !== "/gallery" &&
+    pathname !== "/properties" &&
     pathname !== "/contact-us";
 
   // =====================================
@@ -104,6 +105,10 @@ export default function Navbar({ listingId }) {
     {
       name: "About",
       path: "/about",
+    },
+    {
+      name: "Properties",
+      path: "/properties",
     },
 
     {
@@ -392,7 +397,7 @@ export default function Navbar({ listingId }) {
               "
               >
 
-                <p>{address}</p>
+                <p>11800 Front Beach Rd, Unit 2-804 Panama City Beach Florida 32407</p>
 
                 <a
                   href={`mailto:${email}`}

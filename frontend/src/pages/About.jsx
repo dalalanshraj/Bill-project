@@ -51,108 +51,76 @@ export default function About() {
   // SECTIONS
   // =====================================
 
-  const sections = [
+const sections = [
   {
-    title: "THE CONDO",
-    subtitle: "Top Floor Gulf View Retreat",
+    title: "THE CONDOS",
+    subtitle: "Luxury Beachfront Retreats",
     description:
-      "Escape to this beautifully furnished top-floor condo featuring breathtaking Gulf views, a spacious private balcony, direct beach access, and resort-style amenities. Perfect for families seeking a relaxing getaway on Santa Rosa Beach.",
+      "Experience two exceptional beachfront vacation rentals offering breathtaking Gulf views, stylish interiors, private balconies, and thoughtfully designed spaces for couples, families, and groups seeking the perfect coastal getaway.",
     image: getSectionImage("hero"),
   },
 
   {
-    title: "PRIME LOCATION",
-    subtitle: "Santa Rosa Beach",
+    title: "PRIME LOCATIONS",
+    subtitle: "Steps from the Beach & Attractions",
     description:
-      "Located on scenic Santa Rosa Beach, the condo is only a short walk across the private beach boardwalk to the Gulf. Gulf Place shopping, local restaurants, bike paths, and Seaside are all just minutes away.",
+      "Located in the heart of Panama City Beach, our vacation rentals are just minutes from Pier Park, Bay County Pier, restaurants, shopping, entertainment, and direct access to the beautiful white-sand beaches of the Emerald Coast.",
     image: getSectionImage("gulf-views"),
   },
 
   {
-    title: "LIVING ROOM",
-    subtitle: "Relax In Comfort",
+    title: "SPACIOUS LIVING",
+    subtitle: "Comfort for Everyone",
     description:
-      "The inviting living room features comfortable seating, a 55-inch Smart TV, plenty of natural light, and direct access to the spacious private balcony overlooking the pool, hot tub, pond, and Gulf.",
+      "Relax in bright, open living spaces featuring comfortable seating, Smart TVs, sleeper sofas, and large windows that fill the rooms with natural light while showcasing spectacular Gulf views.",
     image: getSectionImage("living-room"),
   },
 
-  // {
-  //   title: "MASTER BEDROOM",
-  //   subtitle: "Private King Suite",
-  //   description:
-  //     "The master suite includes a king-size bed, 42-inch flat-screen TV, USB charging ports, private bathroom with a renovated walk-in shower, and direct access to a relaxing coastal retreat.",
-  //   image: getSectionImage("master-bedroom"),
-  // },
-
-  // {
-  //   title: "SECOND BEDROOM",
-  //   subtitle: "Comfortable King Bedroom",
-  //   description:
-  //     "The second bedroom offers a king-size bed, a 42-inch flat-screen TV, and convenient access to the guest bathroom, making it ideal for another couple or family members.",
-  //   image: getSectionImage("second-bedroom"),
-  // },
-
-  // {
-  //   title: "THIRD BEDROOM",
-  //   subtitle: "Twin Beds For Guests",
-  //   description:
-  //     "Perfect for children or friends, the third bedroom features two comfortable twin beds and a 32-inch flat-screen TV for added convenience during your stay.",
-  //   image: getSectionImage("third-bedroom"),
-  // },
-
   {
-    title: "FULLY EQUIPPED KITCHEN",
-    subtitle: "Everything You Need",
+    title: "FULLY EQUIPPED KITCHENS",
+    subtitle: "Cook with Ease",
     description:
-      "The updated kitchen features granite countertops, modern appliances, a Keurig coffee maker, blender, cookware, and everything needed to prepare meals throughout your vacation.",
+      "Each condo includes a fully equipped kitchen with modern appliances, cookware, coffee makers, dining essentials, and everything you need to prepare meals for the entire family.",
     image: getSectionImage("kitchen"),
   },
 
   {
-    title: "PRIVATE BALCONY",
-    subtitle: "350 Sq Ft Outdoor Living",
+    title: "PRIVATE BALCONIES",
+    subtitle: "Spectacular Gulf Views",
     description:
-      "Relax on the oversized 350-square-foot furnished balcony with unobstructed views of the resort pool, hot tub, private pond, and the emerald waters of the Gulf. It's the perfect place for morning coffee or evening sunsets.",
+      "Enjoy your morning coffee or evening sunset from private furnished balconies overlooking the Gulf of Mexico, resort pools, and the stunning coastline of Panama City Beach.",
     image: getSectionImage("balcony"),
   },
 
   {
-    title: "POOL & HOT TUB",
+    title: "RESORT AMENITIES",
     subtitle: "Relax & Recharge",
     description:
-      "Enjoy the large resort swimming pool and hot tub, heated during select holiday periods. The beautifully maintained pool area offers the perfect place to unwind after a day at the beach.",
+      "Guests can enjoy heated pools, hot tubs, fitness centers, tiki bars, cabanas, beach chair service, on-site restaurants, fire pits, and direct beach access for an unforgettable resort experience.",
     image: getSectionImage("pool-hot-tub"),
   },
 
   {
-    title: "COMMUNITY AMENITIES",
-    subtitle: "Resort Features",
+    title: "PREMIUM RESORT FEATURES",
+    subtitle: "Everything You Need",
     description:
-      "San Remo offers gated security, a fitness center with updated equipment, a large community room with a full kitchen, beautifully landscaped grounds, and easy access to the private beach boardwalk.",
+      "From beautifully maintained grounds and modern fitness facilities to convenient beach access, resort dining, and family-friendly amenities, every stay is designed to provide comfort, convenience, and lasting memories.",
     image: getSectionImage("community-amenities"),
   },
 
-  // {
-  //   title: "BEACH ACCESS",
-  //   subtitle: "Private Beach Boardwalk",
-  //   description:
-  //     "Take a short walk from the condo along the private beach boardwalk and enjoy Santa Rosa Beach's famous sugar-white sand and crystal-clear emerald Gulf waters.",
-  //   image: getSectionImage("beach-access"),
-  // },
-
   {
-    title: "FAMILY FRIENDLY",
-    subtitle: "Everything For Families",
+    title: "PERFECT FOR FAMILIES",
+    subtitle: "Create Lasting Memories",
     description:
-      "Just a short drive from the condo, Camp Helen State Park offers breathtaking coastal scenery, nature trails, kayaking, wildlife viewing, and peaceful beaches. It's the perfect escape for guests looking to experience the natural beauty of Florida's Emerald Coast.",
+      "Whether you're planning a romantic escape, family vacation, or group getaway, our beachfront condos provide spacious accommodations and easy access to beaches, water activities, parks, and local attractions for guests of all ages.",
     image: getSectionImage("family-friendly"),
   },
 
   {
-    title: "LOCAL ATTRACTIONS",
-    subtitle: "Dining & Shopping Nearby",
+    title: "DINING & ENTERTAINMENT",
+    subtitle: "Discover Panama City Beach",
     description:
-      "Walk to Gulf Place for shopping and restaurants like The Perfect Pig, Shunk Gully Oyster Bar, Pizza by the Sea, Goatfeathers, Blue Mabel, and Stinky's Fish Camp. Destin, Seaside, and Panama City's attractions are also within easy driving distance.",
+      "Explore Pier Park, Bay County Pier, waterfront restaurants, local seafood, shopping, nightlife, family attractions, and endless beach activities—all just minutes from your vacation rental.",
     image: getSectionImage("local-attractions"),
   },
 ];

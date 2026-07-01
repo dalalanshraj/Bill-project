@@ -5,10 +5,19 @@ import Properties from "./Properties";
 import GallerySection from "../components/gallarySection";
 import AmenitiesSection from "../components/homeSection/amenitiesSection";
 import api from "../api/axios.js";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, EffectFade } from "swiper/modules";
 
-import bgImage from "../assets/heroImg.png";
-// import bgImagetwo from "../assets/img3.png";
-// import imgthree from "../assets/4-2.jpg";
+import "swiper/css";
+import "swiper/css/effect-fade";
+
+ 
+import bg1 from "../assets/heroImg1.png";
+import bg2 from "../assets/heroImg2.png";
+import bg3 from "../assets/heroImg3.png";
+import bg4 from "../assets/heroImg4.png";
+
+const heroImages = [bg1, bg2, bg3];
 
 import BookingModalContact from "../components/bookingModel.jsx";
 import FeesTable from "../components/FeesTable.jsx";
@@ -66,107 +75,106 @@ export default function Hero({listingId}) {
 
   return (
     <>
-     <section
-      className="relative h-screen bg-fixed bg-center bg-cover"
-       style={{
-            
-            backgroundImage: `url(${bgImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+     <section className="relative h-screen overflow-hidden">
+
+  {/* Background Slider */}
+  <Swiper
+    modules={[Autoplay, EffectFade]}
+    effect="fade"
+    loop={true}
+    speed={2500}          // Slow transition
+    autoplay={{
+      delay: 2000,        // 8 sec per image
+      disableOnInteraction: false,
+    }}
+    className="absolute inset-0 h-full w-full"
+  >
+    {heroImages.map((image, index) => (
+      <SwiperSlide key={index}>
+        <div
+          className="h-screen w-full bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${image})`,
           }}
-    >
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/45"></div>
+        />
+      </SwiperSlide>
+    ))}
+  </Swiper>
 
-      {/* Content */}
-    <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 ">
-        
-  {/* Small Subtitle */}
-  <p className="uppercase tracking-[6px] text-white/80 text-[10px]  md:text-base mt-5  md:mt-0">
-    Luxury Beachfront Retreat
-  </p>
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-black/46 z-10"></div>
 
-  {/* Main Heading */}
- <h1 className="font-playfair text-white font-bold leading-[1.05] max-w-6xl text-5xl sm:text-6xl md:text-7xl lg:text-[95px]">
- San Remo 407
-  <br />
-  <span className="italic font-medium">
-    3 Bedroom Condo
-  </span>
-</h1>
+  {/* Content */}
+  <div className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center px-6">
 
-  {/* Description */}
-  <p className="mt-8 text-white/90 text-lg md:text-2xl max-w-3xl leading-relaxed">
-    Relax in a beautifully furnished top-floor condo featuring breathtaking Gulf views,
-  a spacious private balcony, resort-style pool, hot tub, and direct beach access—
-  perfectly designed for unforgettable family vacations.
-  </p>
+    <p className="uppercase tracking-[6px] text-white/80 text-[10px] md:text-base mt-5 md:mt-0">
+      Luxury Beachfront Retreat
+    </p>
 
-  {/* Button */}
-  <div className="flex gap-4">
-     <Link to={listingId="6a3e9653df70881c017f104c"} >
-  <button
-  className="
-    px-12
-    py-4
-    bg-white/10
-    backdrop-blur-sm
-    border
-    border-white/20
-    text-white
-    uppercase
-    tracking-[4px]
-    text-sm
-    rounded-full
-    hover:scale-105
-    hover:backdrop-blur-xl
-    hover:border-white/40
-    active:scale-95
-    transition-all
-    duration-500
-  "
->
-  More Info
-</button>
-  </Link>
- 
-  <button
-  onClick={() => {
-    setOpen(true);
-  }}
-  className="
-    px-12
-    py-4
-    bg-white/10
-    backdrop-blur-sm
-    border
-    border-white/20
-    text-white
-    uppercase
-    tracking-[4px]
-    text-sm
-    rounded-full
-    hover:scale-105
-    hover:backdrop-blur-xl
-    hover:border-white/40
-    active:scale-95
-    transition-all
-    duration-500
-  "
->
-  Book Now
-</button>
-   </div>
-</div>
-    </section>
+    <h1 className="font-playfair text-white font-bold leading-[1.05] max-w-6xl text-5xl sm:text-6xl md:text-7xl lg:text-[95px]">
+      Find Your Perfect Beachfront Vacation Rental
+    </h1>
+
+    <p className="mt-8 text-white/90 text-lg md:text-2xl max-w-3xl leading-relaxed">
+     Explore handpicked luxury condos with breathtaking Gulf views, world-class amenities, and unforgettable coastal experiences.
+    </p>
+
+    <div className="flex gap-4 mt-8">
+
+      <Link to={"/properties"}>
+        <button
+          className="
+            px-12 py-4
+            bg-white/10
+            backdrop-blur-sm
+            border border-white/20
+            text-white uppercase
+            tracking-[4px]
+            text-sm rounded-full
+            hover:scale-105
+            hover:backdrop-blur-xl
+            hover:border-white/40
+            active:scale-95
+            transition-all duration-500
+          "
+        >
+         Our Properties
+        </button>
+      </Link>
+
+      {/* <button
+        onClick={() => setOpen(true)}
+        className="
+          px-12 py-4
+          bg-white/10
+          backdrop-blur-sm
+          border border-white/20
+          text-white uppercase
+          tracking-[4px]
+          text-sm rounded-full
+          hover:scale-105
+          hover:backdrop-blur-xl
+          hover:border-white/40
+          active:scale-95
+          transition-all duration-500
+        "
+      >
+        Book Now
+      </button> */}
+
+    </div>
+
+  </div>
+
+</section>
 
       {/* MODAL */}
-      {open && featured && (
+      {/* {open && featured && (
         <BookingModalContact
           onClose={() => setOpen(false)}
           listingId={featured._id}
         />
-      )}
+      )} */}
       {/* OTHER SECTIONS */}
       <AboutSection  />
       {/* <FeesTable /> */}
@@ -205,9 +213,16 @@ export default function Hero({listingId}) {
         </div>
       </section> */}
 
-      <AmenitiesSection  listingId="6a3e9653df70881c017f104c" />
+      <AmenitiesSection
+  // listingIds={[
+  //   "6a42e6944d210e7c358051a7", // Property 1
+  //   "6a43e422d3ad27d20eeaefd9",        // Property 2
+  // ]}
+/>
       <GallerySection />
-      <ReviewsSection  listingId="6a3e9653df70881c017f104c"/>
+      <ReviewsSection  
+      // listingId="6a42e6944d210e7c358051a7"
+      />
     </>
   );
 }

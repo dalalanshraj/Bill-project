@@ -21,12 +21,15 @@ const Properties = () => {
 
       {/* LISTINGS */}
       <div className="p-10 bg-gray-100 ">
-         <p className="uppercase text-xs text-center tracking-[3px] text-[#2f9bad]
-  mb-3">Properties</p>
-        <h2 className="text-3xl md:text-5xl text-center font-semibold text-gray-800 mb-8">
-          Our Properties
-        </h2>
+         <div className="text-center mt-24">
+       <h1 className="font-playfair text-5xl md:text-7xl font-bold">
+  Stay Where Every <br/> Vacation Becomes a Memory
+</h1>
 
+<p className="mt-8 text-gray-600 max-w-4xl mx-auto text-lg md:text-xl leading-9">
+  Experience Panama City Beach through our carefully curated collection of luxury beachfront vacation rentals. Enjoy breathtaking Gulf views, beautifully appointed accommodations, resort-style amenities, and prime locations just moments from the beach, dining, shopping, and local attractions.
+</p>
+        </div>
         {loading && (
           <p className="text-center text-gray-500">
             Loading properties...
@@ -39,7 +42,7 @@ const Properties = () => {
           </p>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-5">
           
           {listings.map((listing) => (
             <PropertyCard

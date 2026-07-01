@@ -5,22 +5,35 @@ import "react-datepicker/dist/react-datepicker.css";
 import { IoMdClose } from "react-icons/io";
 import emailjs from "@emailjs/browser";
 
-export default function InquiryModal({ propertyId, onClose }) {
+export default function InquiryModal({
+  propertyId,
+  listing,
+  arrival,
+  departure,
+  onClose,
+}) {
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
-    Arrival: null,
-    Departure: null,
-    Adults: "",
-    Kids: "",
+    Arrival: arrival || null,
+    Departure: departure || null,
+    Adults: "1",
+    Kids: "0",
     message: "",
   });
-
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [propertyTitle, setPropertyTitle] = useState("");
+
+  //  useEffect(() => {
+  //   setForm((prev) => ({
+  //     ...prev,
+  //     Arrival: arrival || null,
+  //     Departure: departure || null,
+  //   }));
+  // }, [arrival, departure]);
 
   // 🔒 Lock background scroll
   useEffect(() => {
@@ -41,80 +54,107 @@ export default function InquiryModal({ propertyId, onClose }) {
     setError("");
     setSuccess("");
 
-    // 🔒 basic validation
-    if (!form.name || !form.email) {
-      setError("Name and Email are required");
-      setLoading(false);
-      return;
-    }
-
-    if (!form.Arrival || !form.Departure) {
-      setError("Please select arrival and departure dates");
-      setLoading(false);
-      return;
-    }
-
-    if (!propertyId) {
-      setError("Property ID missing");
-      setLoading(false);
-      return;
-    }
-
     try {
-      const payload = {
-        name: form.name,
-        email: form.email,
-        phone: form.phone,
-        Arrival: form.Arrival.toISOString(),
-        Departure: form.Departure.toISOString(),
-        adults: Number(form.Adults) || 1,
-        kids: Number(form.Kids) || 0,
-        message: form.message,
-        property: propertyId,
-      };
+      // Validation
+      if (!propertyId) {
+        throw new Error("Property ID missing");
+      }
 
-      console.log("Sending payload:", payload); // 🔍 debug
+      if (!form.Arrival || !form.Departure) {
+        throw new Error("Please select dates");
+      }
+
+      // =====================================
+      // DATABASE SAVE
+      // =====================================
+
+     const payload = {
+  property: propertyId,
+
+  name: form.name,
+  email: form.email,
+  phone: form.phone,
+  message: form.message,
+
+  Arrival: form.Arrival,
+  Departure: form.Departure,
+
+  Adults: String(form.Adults || "1"),
+  Kids: String(form.Kids || "0"),
+};
+      // console.log("PAYLOAD:", payload);
+      console.log({
+        Arrival: form.Arrival,
+        Departure: form.Departure,
+      });
 
       const res = await api.post("/inquiries", payload);
 
-      // 🔥 GET PROPERTY NAME
+      // console.log("DB SUCCESS:", res.data);
+
+      // =====================================
+      // EMAILJS TEST
+      // =====================================
+
+      const toEmail = [listing?.property?.email, listing?.property?.altEmail]
+        .filter(Boolean)
+        .join(",");
+
+      // console.log("TO EMAIL:", toEmail);
+
+      if (!toEmail) {
+        throw new Error("No recipient email found");
+      }
       const propertyName =
-        res.data?.inquiry?.property?.property?.title || "Property";
+        listing?.property?.title ||
+        res?.data?.inquiry?.property?.property?.title ||
+        "Property";
 
-      // 🔥 SEND EMAIL
-      await emailjs.send(
-        "service_t1dtkqc",
-        "template_1hmh0cs",
-        {
-          name: form.name,
-          email: form.email,
-          phone: form.phone,
-          Arrival: form.Arrival.toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          }),
+    const templateParams = {
+  to_email: toEmail,
 
-          Departure: form.Departure.toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          }),
-          adults: form.Adults,
-          kids: form.Kids,
-          message: form.message,
+  name: form.name,
+  email: form.email,
+  phone: form.phone,
 
-          property: propertyName, // 🔥 IMPORTANT
-        },
-        "jViExLAlcltfrIIX0",
+  Arrival: form.Arrival
+    ? form.Arrival.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "",
+
+  Departure: form.Departure
+    ? form.Departure.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "",
+
+  adults: form.Adults || "1",
+  kids: form.Kids || "0",
+
+  message: form.message || "",
+  property: propertyName,
+};
+
+      // console.log("EMAIL PARAMS:", templateParams);
+
+      const emailRes = await emailjs.send(
+        "service_04sk77i",
+        "template_h8d4zrt",
+        templateParams,
+        "xppi5YZRRXZI6aHUJ",
       );
 
-      // UI
-      setPropertyTitle(propertyName);
-      console.log("FULL RESPONSE:", res.data);
-      setSuccess("Inquiry sent successfully!");
+      // console.log("EMAIL SUCCESS:", emailRes);
 
-      setPropertyTitle(res.data?.inquiry?.property?.title || "");
+      // =====================================
+      // SUCCESS
+      // =====================================
+
       setSuccess("Inquiry sent successfully!");
 
       setForm({
@@ -128,12 +168,17 @@ export default function InquiryModal({ propertyId, onClose }) {
         message: "",
       });
 
-      setTimeout(() => onClose(), 1500);
+      setTimeout(() => {
+        onClose();
+      }, 1500);
     } catch (err) {
-      console.error("❌ Backend error:", err.response?.data);
+      // console.error("FULL ERROR:", err);
+
       setError(
-        err.response?.data?.error ||
-          err.response?.data?.message ||
+        err?.text ||
+          err?.message ||
+          err?.response?.data?.message ||
+          err?.response?.data?.error ||
           "Something went wrong",
       );
     } finally {
@@ -143,7 +188,7 @@ export default function InquiryModal({ propertyId, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-start z-[9999] pt-34 px-4 overflow-y-auto"
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-start z-[9999] pt-3 px-4 overflow-y-auto"
       onClick={onClose}
     >
       <div
@@ -210,29 +255,27 @@ export default function InquiryModal({ propertyId, onClose }) {
           />
 
           {/* DATE PICKER */}
-         <div className="grid grid-cols-2 gap-4 items-start">
-  {/* ARRIVAL */}
-  <div className="w-full min-w-0">
-    <DatePicker
-      selected={form.Arrival}
-      onChange={(date) =>
-        setForm({ ...form, Arrival: date })
-      }
-      placeholderText="Arrival Date"
-      dateFormat="dd-MM-yyyy"
-      minDate={new Date()}
-      popperPlacement="bottom-start"
-      popperClassName="z-[999999]"
-      showPopperArrow={false}
-      wrapperClassName="w-full"
-      calendarClassName="shadow-xl border rounded-xl"
-        popperModifiers={[
-    {
-      name: "flip",
-      enabled: false,
-    },
-  ]}
-      className="
+          <div className="grid grid-cols-2 gap-4 items-start">
+            {/* ARRIVAL */}
+            <div className="w-full min-w-0">
+              <DatePicker
+                selected={form.Arrival}
+                onChange={(date) => setForm({ ...form, Arrival: date })}
+                placeholderText="Arrival Date"
+                dateFormat="dd-MM-yyyy"
+                minDate={new Date()}
+                popperPlacement="bottom-start"
+                popperClassName="z-[999999]"
+                showPopperArrow={false}
+                wrapperClassName="w-full"
+                calendarClassName="shadow-xl border rounded-xl"
+                // popperModifiers={[
+                //   {
+                //     name: "flip",
+                //     enabled: false,
+                //   },
+                // ]}
+                className="
         w-full
         min-w-0
         h-[52px]
@@ -242,31 +285,29 @@ export default function InquiryModal({ propertyId, onClose }) {
         outline-none
         focus:ring-2 focus:ring-blue-500
       "
-    />
-  </div>
+              />
+            </div>
 
-  {/* DEPARTURE */}
-  <div className="w-full min-w-0">
-    <DatePicker
-      selected={form.Departure}
-      onChange={(date) =>
-        setForm({ ...form, Departure: date })
-      }
-      placeholderText="Departure Date"
-      dateFormat="dd-MM-yyyy"
-      minDate={form.Arrival || new Date()}
-      popperPlacement="bottom-start"
-      popperClassName="z-[999999]"
-      showPopperArrow={false}
-      wrapperClassName="w-full"
-      calendarClassName="shadow-xl border rounded-xl"
-        popperModifiers={[
-    {
-      name: "flip",
-      enabled: false,
-    },
-  ]}
-      className="
+            {/* DEPARTURE */}
+            <div className="w-full min-w-0">
+              <DatePicker
+                selected={form.Departure}
+                onChange={(date) => setForm({ ...form, Departure: date })}
+                placeholderText="Departure Date"
+                dateFormat="dd-MM-yyyy"
+                minDate={form.Arrival || new Date()}
+                popperPlacement="bottom-start"
+                popperClassName="z-[999999]"
+                showPopperArrow={false}
+                wrapperClassName="w-full"
+                calendarClassName="shadow-xl border rounded-xl"
+                // popperModifiers={[
+                //   {
+                //     name: "flip",
+                //     enabled: false,
+                //   },
+                // ]}
+                className="
         w-full
         min-w-0
         h-[52px]
@@ -276,9 +317,9 @@ export default function InquiryModal({ propertyId, onClose }) {
         outline-none
         focus:ring-2 focus:ring-blue-500
       "
-    />
-  </div>
-</div>
+              />
+            </div>
+          </div>
 
           {/* GUESTS */}
           <div className="grid grid-cols-2 gap-4">

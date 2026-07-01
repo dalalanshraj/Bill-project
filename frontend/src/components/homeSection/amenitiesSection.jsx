@@ -2,34 +2,52 @@ import { useState, useEffect } from "react";
 import api from "../../api/axios";
 import AmenitiesModal from "./AmenitiesModal";
 
-export default function AmenitiesSection({ listingId }) {
+export default function AmenitiesSection( ) {
   const [open, setOpen] = useState(false);
 
   const [amenities, setAmenities] = useState([]);
 
   // FETCH AMENITIES FROM BACKEND
-  useEffect(() => {
-    if (!listingId) return;
+useEffect(() => {
+  const fetchAmenities = async () => {
+    try {
+      const { data } = await api.get("/listings");
+console.log("Listing:", data);
 
-    api
-      .get(`/listings/${listingId}`)
-      .then((res) => {
-        console.log("FULL DATA:", res.data);
+data.forEach((listing) => {
+  console.log("Amenities:", listing.amenities);
+});
+      let allAmenities = [];
 
-        // 👇 OBJECT TO ARRAY
-        const amenitiesObject =
-          res.data?.amenities || res.data?.property?.amenities || {};
+      data.forEach((listing) => {
+     console.log(listing);
 
-        const data = Object.keys(amenitiesObject).filter(
-          (key) => amenitiesObject[key] === true,
+const amenitiesObject =
+  listing.amenities ??
+  listing.property?.amenities ??
+  {};
+
+console.log("Amenities Object:", amenitiesObject);
+
+        const amenities = Object.keys(amenitiesObject).filter(
+          (key) => amenitiesObject[key] === true
         );
 
-        setAmenities(data);
-      })
-      .catch((err) => {
-        console.log(err);
+        allAmenities.push(...amenities);
       });
-  }, [listingId]);
+
+      // Remove duplicates
+      const uniqueAmenities = [...new Set(allAmenities)].sort();
+
+      setAmenities(uniqueAmenities);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  fetchAmenities();
+}, []);
+
 
   // PREVIEW
   const preview = amenities.slice(0, 12);

@@ -29,6 +29,8 @@ import About from "./pages/About";
 import ScrollToTop from "./components/ScrollToTop";
 import Contact from "./pages/Contact";
 import BookingPolicy from "./pages/bookingPolicy";
+import Properties from "./pages/Properties";
+
 // import SpecialsDeals from "./pages/Specials";
 // import Reviews from "./pages/Reviews";
 // import AboutUs from "./pages/About";
@@ -44,7 +46,7 @@ function App() {
     <>
     <ScrollToTop />
       {/* FRONTEND ONLY */}
-      {!isAdminRoute && <Navbar listingId="6a3e9653df70881c017f104c"/>}
+      {!isAdminRoute && <Navbar listingId="6a42e6944d210e7c358051a7"/>}
 
       <Routes>
         {/* FRONTEND ROUTES */}
@@ -52,10 +54,10 @@ function App() {
           <Route path="/:id" element={<PropertyDetail />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/about" element={<About />} />
-          <Route path="/contact-us" element={<Contact listingId="6a3e9653df70881c017f104c"/>} />  
+          <Route path="/contact-us" element={<Contact listingId="6a42e6944d210e7c358051a7"/>} />  
           <Route path="/booking-policy" element={<BookingPolicy />}/>  
-        {/* <Route path="/properties" element={<Properties />} />
-        <Route path="/results" element={<Results />} />
+       <Route path="/properties" element={<Properties />} />
+         {/* <Route path="/results" element={<Results />} />
         <Route path="/BookingPage" element={<BookingPage />} />
        
         <Route path="/specials" element={<SpecialsDeals/>} />
@@ -150,7 +152,7 @@ function App() {
 
 
       {/* FRONTEND ONLY */}
-      {!isAdminRoute && <Footer listingId="6a3e9653df70881c017f104c" />}
+      {!isAdminRoute && <Footer listingId="6a42e6944d210e7c358051a7" />}
     </>
   );
 }

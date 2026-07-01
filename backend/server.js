@@ -33,8 +33,8 @@ import profileRoutes from "./routes/profileRoutes.js";
 const app = express();
 const PORT = process.env.PORT || 4010;
 const allowedOrigins = [
-   "https://rentemeraldcoastcondos.com",
-  "https://www.rentemeraldcoastcondos.com",
+   "https://gulflifesabeach.com",
+  "https://www.gulflifesabeach.com",
   "http://localhost:5173",
 
  

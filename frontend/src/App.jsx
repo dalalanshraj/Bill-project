@@ -50,7 +50,7 @@ function App() {
 
       <Routes>
         {/* FRONTEND ROUTES */}
-        <Route path="/" element={<h1>HOME TEST</h1>} />
+         <Route path="/" element={<HeroSection />} />
           <Route path="/:id" element={<PropertyDetail />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/about" element={<About />} />

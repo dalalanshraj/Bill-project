@@ -44,13 +44,13 @@ function App() {
 
   return (
     <>
-    <ScrollToTop />
+    {/* <ScrollToTop /> */}
       {/* FRONTEND ONLY */}
-      {!isAdminRoute && <Navbar listingId="6a42e6944d210e7c358051a7"/>}
+      {/* {!isAdminRoute && <Navbar listingId="6a42e6944d210e7c358051a7"/>} */}
 
       <Routes>
         {/* FRONTEND ROUTES */}
-         <Route path="/" element={<HeroSection />} />
+        <Route path="/" element={<h1>HOME TEST</h1>} />
           <Route path="/:id" element={<PropertyDetail />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/about" element={<About />} />

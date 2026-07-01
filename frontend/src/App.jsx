@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+ 
 import { Routes, Route, useLocation } from "react-router-dom";
 import "./index.css";
 import "leaflet/dist/leaflet.css";
@@ -39,10 +39,7 @@ import Properties from "./pages/Properties";
 
 function App() {
   const location = useLocation();
-  useEffect(() => {
-    console.log("PATH:", location.pathname);
-    console.trace("PATH TRACE");
-  }, [location.pathname]);
+  
   // 🔑 check: are we on admin page?
   const isAdminRoute = location.pathname.startsWith("/admin");
 

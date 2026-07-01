@@ -213,16 +213,16 @@ export default function Hero({listingId}) {
         </div>
       </section> */}
 
-      {/* <AmenitiesSection
+      <AmenitiesSection
   // listingIds={[
   //   "6a42e6944d210e7c358051a7", // Property 1
   //   "6a43e422d3ad27d20eeaefd9",        // Property 2
   // ]}
-/> */}
-      <GallerySection />
+/>
+      {/* <GallerySection />
       <ReviewsSection  
       // listingId="6a42e6944d210e7c358051a7"
-      />
+      /> */}
     </>
   );
 }

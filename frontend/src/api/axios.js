@@ -17,13 +17,20 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    if (err.response?.status === 401) {
+  (response) => response,
+  (error) => {
+    const status = error.response?.status;
+    const url = error.config?.url || "";
+
+    // Redirect only for admin APIs
+    if (status === 401 && url.startsWith("/admin")) {
       localStorage.removeItem("token");
-      window.location.href = "/admin/login";
+      localStorage.removeItem("user");
+
+      window.location.replace("/admin/login");
     }
-    return Promise.reject(err);
+
+    return Promise.reject(error);
   }
 );
 

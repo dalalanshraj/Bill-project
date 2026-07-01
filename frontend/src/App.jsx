@@ -39,10 +39,10 @@ import Properties from "./pages/Properties";
 
 function App() {
   const location = useLocation();
-   useEffect(() => {
-    console.log("ROUTE CHANGED:", location.pathname);
-  }, [location]);
-
+  useEffect(() => {
+    console.log("PATH:", location.pathname);
+    console.trace("PATH TRACE");
+  }, [location.pathname]);
   // 🔑 check: are we on admin page?
   const isAdminRoute = location.pathname.startsWith("/admin");
 

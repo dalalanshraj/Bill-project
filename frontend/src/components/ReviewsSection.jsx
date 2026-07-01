@@ -10,7 +10,7 @@ export default function ReviewsSection( ) {
 useEffect(() => {
   const fetchReviews = async () => {
     try {
-      const { data } = await api.get("/listings");
+      const { data } = await api.get("/listings/published")
 
       let allReviews = [];
 

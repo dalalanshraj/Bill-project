@@ -11,7 +11,7 @@ export default function AmenitiesSection( ) {
 useEffect(() => {
   const fetchAmenities = async () => {
     try {
-      const { data } = await api.get("/listings");
+      const { data } = await api.get("/listings/published")
 console.log("Listing:", data);
 
 data.forEach((listing) => {

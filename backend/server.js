@@ -112,14 +112,13 @@ app.use("/api/profile", profileRoutes);
 // CONNECT MONGO
 // -------------------------------------------------------
 mongoose
-  .connect(MONGO, {
-    serverSelectionTimeoutMS: 4001,
-    tls: true,
-    ssl: true,
-    tlsAllowInvalidCertificates: true, // ⚠️ dev only
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("✅ MongoDB Connected");
   })
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error("❌ Database Error:", err.message));
+  .catch((err) => {
+    console.error("❌ MongoDB Error:", err);
+  });
 
 app.listen(PORT, () =>
   console.log(`🚀 Server running at http://localhost:${PORT}`)

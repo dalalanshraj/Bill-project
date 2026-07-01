@@ -38,15 +38,18 @@ import Properties from "./pages/Properties";
 
 function App() {
   const location = useLocation();
+   useEffect(() => {
+    console.log("ROUTE CHANGED:", location.pathname);
+  }, [location]);
 
   // 🔑 check: are we on admin page?
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
     <>
-    {/* <ScrollToTop /> */}
+    <ScrollToTop />
       {/* FRONTEND ONLY */}
-      {/* {!isAdminRoute && <Navbar listingId="6a42e6944d210e7c358051a7"/>} */}
+      {!isAdminRoute && <Navbar listingId="6a42e6944d210e7c358051a7"/>}
 
       <Routes>
         {/* FRONTEND ROUTES */}

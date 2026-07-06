@@ -57,7 +57,7 @@ export default function Navbar({ listingId }) {
     "info@example.com";
 
   const phone =
-    listing?.property?.altPhone ||
+    listing?.property?.phone ||
     "000-000-0000";
 
   const title =

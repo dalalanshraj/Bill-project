@@ -36,6 +36,7 @@ const PropertyDetail = () => {
   const [openInquiry, setOpenInquiry] = useState(false);
   const [calendarData, setCalendarData] = useState([]);
   const [owner, setOwner] = useState(null);
+  const [showMore, setShowMore] = useState(false);
 
   // ================= FETCH LISTING =================
   useEffect(() => {
@@ -141,6 +142,23 @@ const PropertyDetail = () => {
     return `${year}-${month}-${day}`;
   };
 
+  const getShortAbout = (text, maxLength = 180) => {
+  if (!text) return "";
+
+  if (text.length <= maxLength) {
+    return text;
+  }
+
+  const shortText = text.slice(0, maxLength);
+
+  const lastDot = shortText.lastIndexOf(".");
+
+  if (lastDot !== -1) {
+    return shortText.slice(0, lastDot + 1);
+  }
+
+  return shortText.trim() + "...";
+};
   // ================= MIN NIGHT AUTO FIX =================
   // 🔹 single function
 
@@ -430,23 +448,18 @@ translate-y-[-50%]
                 {owner?.name}
               </h2>
 
-              <p
-                className="
-          mt-6
-
-          leading-8
-
-          text-white/95
-
-          text-[15px]
-
-          text-center
-
-          line-clamp-5
-        "
-              >
-                {owner?.about}
-              </p>
+            <p
+  className="
+    mt-6
+    leading-8
+    text-white/95
+    text-[15px]
+    text-center
+    line-clamp-3
+  "
+>
+  {getShortAbout(owner?.about)}
+</p>
             </div>
 
             {/* ================= BOOKING ================= */}
@@ -535,7 +548,7 @@ focus:border-[#2f9bad]
                 <button
                   onClick={() => setOpenInquiry(true)}
                   className="
-           px-12 py-4 border-2 text-black uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500"
+           px-8 py-5   text-white bg-black uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500"
                 >
                   Send Inquiry
                 </button>

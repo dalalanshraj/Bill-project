@@ -12,22 +12,22 @@ useEffect(() => {
   const fetchAmenities = async () => {
     try {
       const { data } = await api.get("/listings/published")
-console.log("Listing:", data);
+// console.log("Listing:", data);
 
 data.forEach((listing) => {
-  console.log("Amenities:", listing.amenities);
+  // console.log("Amenities:", listing.amenities);
 });
       let allAmenities = [];
 
       data.forEach((listing) => {
-     console.log(listing);
+    //  console.log(listing);
 
 const amenitiesObject =
   listing.amenities ??
   listing.property?.amenities ??
   {};
 
-console.log("Amenities Object:", amenitiesObject);
+// console.log("Amenities Object:", amenitiesObject);
 
         const amenities = Object.keys(amenitiesObject).filter(
           (key) => amenitiesObject[key] === true

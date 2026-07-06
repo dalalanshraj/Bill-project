@@ -23,8 +23,10 @@ const heroImages = [bg1, bg2, bg3];
 // import FeesTable from "../components/FeesTable.jsx";
 import ReviewsSection from "../components/ReviewsSection.jsx";
 import { Link } from "react-router-dom";
+import PropertyIcon from "../components/propertiesIcon.jsx";
+ 
 
-export default function Hero({listingId}) {
+export default function Hero({listingId , listing}) {
   const [offset, setOffset] = useState(0);
   const [featured, setFeatured] = useState(null);
   const [open, setOpen] = useState(false);
@@ -219,10 +221,13 @@ export default function Hero({listingId}) {
   //   "6a43e422d3ad27d20eeaefd9",        // Property 2
   // ]}
 />
+
+
       <GallerySection />
       <ReviewsSection  
       // listingId="6a42e6944d210e7c358051a7"
       />
+<PropertyIcon />
     </>
   );
 }

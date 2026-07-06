@@ -35,7 +35,7 @@ const PORT = process.env.PORT || 4010;
 const allowedOrigins = [
    "https://gulflifesabeach.com",
   "https://www.gulflifesabeach.com",
-  "http://localhost:5173",
+  "http://localhost:5174",
 
  
 ];

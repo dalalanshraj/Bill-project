@@ -21,7 +21,7 @@ const Properties = () => {
 
       {/* LISTINGS */}
       <div className="p-10 bg-gray-100 ">
-         <div className="text-center mt-24">
+         <div className="text-center mt-34">
        <h1 className="font-playfair text-5xl md:text-7xl font-bold">
   Stay Where Every <br/> Vacation Becomes a Memory
 </h1>
@@ -42,7 +42,7 @@ const Properties = () => {
           </p>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-5 mx-0 md:mx-60 md:w-full ">
           
           {listings.map((listing) => (
             <PropertyCard

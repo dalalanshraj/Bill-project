@@ -272,7 +272,7 @@ export default function About() {
           font-medium
         "
       >
-        Meet Your Hosts
+        Meet Your Host
       </p>
 
       <h2

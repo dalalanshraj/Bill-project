@@ -192,7 +192,7 @@ export default function InquiryModal({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl w-[40%] h-[77%]  p-8 relative mt-33 shadow-2xl border"
+        className="bg-white rounded-2xl w-[100%] h-[77%]  p-8 relative mt-33 shadow-2xl border"
         onClick={(e) => e.stopPropagation()}
       >
         {/* CLOSE */}

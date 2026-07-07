@@ -8,7 +8,7 @@ export default function PropertyIcon() {
       id: 1,
       title: "Grand Panama Beach Resort",
       links: {
-        ecbyo: "https://www.emeraldcoastbyowner.com/e11499",
+        ecbyo: "https://www.emeraldcoastbyowner.com/e10266",
         vrbo: "https://www.vrbo.com/2600532",
         airbnb: "https://www.airbnb.com/h/BeachTimeAtGrandPanamaResortinPCB",
         
@@ -19,7 +19,7 @@ export default function PropertyIcon() {
       id: 2,
       title: "Calypso Tower 3 Resort",
       links: {
-        ecbyo: "https://www.emeraldcoastbyowner.com/10266",
+        ecbyo: "https://www.emeraldcoastbyowner.com/e11499",
         vrbo: "https://www.vrbo.com/3162877",
         airbnb: "https://www.airbnb.com/h/BeachTimeAtCalypsoTower3inPCB",
         

@@ -20,7 +20,7 @@ const propertiesAmenities = [
       "Heated Pool & Hot Tub",
       "Complimentary Beach Chair Service",
       "Free Parking",
-      "Book Direct • Airbnb • VRBO",
+       
     ],
   },
   {
@@ -32,7 +32,7 @@ const propertiesAmenities = [
       "Complimentary Beach Chair Service",
       "Free Parking",
       "Close to Shipwreck Island and many PCB attractions",
-      "Book Direct • Airbnb • VRBO",
+       
     ],
   },
 ];

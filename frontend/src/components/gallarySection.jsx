@@ -98,7 +98,7 @@ export default function GallerySection() {
         {/* ================= HEADING ================= */}
 
       <div className="text-center mb-16">
-  <p
+  {/* <p
     className="
       uppercase
       tracking-[6px]
@@ -109,7 +109,7 @@ export default function GallerySection() {
     "
   >
     Experience Coastal Luxury
-  </p>
+  </p> */}
 
   <h2
     className="

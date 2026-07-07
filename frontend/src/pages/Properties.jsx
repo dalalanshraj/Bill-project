@@ -26,8 +26,8 @@ const Properties = () => {
   Choose Your Perfect <br/> Panama City Beach Vacation
 </h1>
 
-<p className="mt-8 text-gray-600 max-w-4xl mx-auto text-lg md:text-xl leading-9">
-  Experience Panama City Beach through our carefully curated collection of luxury beachfront vacation rentals. Enjoy breathtaking Gulf views, beautifully appointed accommodations, resort-style amenities, and prime locations just moments from the beach, dining, shopping, and local attractions.
+<p className="mt-8 text-gray-600 max-w-4xl mx-auto text-lg md:text-md leading-9">
+  Experience Panama City Beach through our carefully curated collection of luxury beachfront vacation rentals.  
 </p>
         </div>
         {loading && (

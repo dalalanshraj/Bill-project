@@ -109,9 +109,9 @@ export default function Hero({listingId , listing}) {
   {/* Content */}
   <div className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center px-6">
 
-    <p className="uppercase tracking-[6px] text-white/80 text-[10px] md:text-base mt-5 md:mt-0">
+    {/* <p className="uppercase tracking-[6px] text-white/80 text-[10px] md:text-base mt-5 md:mt-0">
       Luxury Beachfront Retreat
-    </p>
+    </p> */}
 
     <h1 className="font-playfair text-white font-bold leading-[1.05] max-w-6xl text-5xl sm:text-6xl md:text-7xl lg:text-[95px]">
       Find Your Perfect Beachfront Vacation Rental

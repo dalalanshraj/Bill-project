@@ -83,7 +83,7 @@ export default function Footer({ listingId }) {
           {/* ================= RIGHT ================= */}
 
           <div className="flex flex-col items-center md:items-end">
-            <div>
+            <div className="ml-27">
  <Link to="/admin/login">
               <button className="px-10 py-4  bg-black text-white uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500">
                 Owner Login →
@@ -94,12 +94,12 @@ export default function Footer({ listingId }) {
 
             {/* POWERED */}
 
-            <div className="mt-10 text-center md:text-right mr-5">
+            <div className="mt-10 text-center md:text-right mr-12">
               <p className="uppercase tracking-[4px] pr-10 text-gray-500 text-sm mb-6">
                 Follow Us
               </p>
 
-              <div className="flex gap-4">
+              <div className="flex gap-4 ml-[7%]">
                 {[FaFacebookF, FaInstagram, FaTwitter].map((Icon, i) => (
                   <div
                     key={i}

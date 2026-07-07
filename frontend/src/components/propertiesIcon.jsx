@@ -84,7 +84,7 @@ export default function PropertyIcon() {
       leading-[2]
     "
           >
-            Whether you prefer to book directly through ECBYO for potential
+            Whether you prefer to book directly through <strong className="text-black">ECBYO</strong> for potential
             savings and personalized service, or through the trusted Airbnb or
             VRBO platforms,you’ll enjoy the same exceptional Gulf Life’s a Beach
             experience, responsive local support, and professionally maintained

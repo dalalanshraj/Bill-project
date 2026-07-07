@@ -587,7 +587,7 @@ focus:border-[#2f9bad]
           <div className="bg-white rounded-2xl w-full max-w-6xl h-[90vh] relative overflow-hidden">
             <button
               onClick={() => setOpenIVacation(false)}
-              className="absolute top-4 right-5 text-3xl z-20"
+              className="absolute top-0 right-5 text-3xl z-20"
             >
               ×
             </button>

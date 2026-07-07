@@ -9,7 +9,35 @@ import "swiper/css/pagination";
 
 import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
 
-export default function PropertyCard({ listing }) {
+export default function PropertyCard({ listing ,index }) {
+const propertiesAmenities = [
+  {
+    id: 1,
+    amenities: [
+      "Beautiful Gulf View",
+      "Direct Beach Access",
+      "Steps from Pier Park",
+      "Heated Pool & Hot Tub",
+      "Complimentary Beach Chair Service",
+      "Free Parking",
+      "Book Direct • Airbnb • VRBO",
+    ],
+  },
+  {
+    id: 2,
+    amenities: [
+      "Beautiful Gulf View",
+      "Direct Beach Access",
+      "Heated Pool & Hot Tub",
+      "Complimentary Beach Chair Service",
+      "Free Parking",
+      "Close to Shipwreck Island and many PCB attractions",
+      "Book Direct • Airbnb • VRBO",
+    ],
+  },
+];
+ const currentPropertyAmenities = propertiesAmenities[index];
+
   const sliderId = listing._id;
   const photos =
     listing?.photos?.length > 0
@@ -29,10 +57,11 @@ export default function PropertyCard({ listing }) {
     listing?.rates?.[0]?.price ||
     listing?.property?.price ||
     199;
-
+    
   return (
-    <Link  to={`/${listing._id}`}
-  className="
+    <Link
+      to={`/${listing._id}`}
+      className="
   group
   bg-white
   rounded-[28px]
@@ -44,25 +73,23 @@ export default function PropertyCard({ listing }) {
   hover:-translate-y-2
   duration-500
 "
-
     >
       {/* IMAGE */}
 
       <div className="relative h-[280px] md:h-[340px] overflow-hidden">
-        
         <Swiper
-  modules={[Navigation, Pagination]}
-  loop
-  pagination={{ clickable: true }}
-  navigation={{
-    prevEl: `.prev-${sliderId}`,
-    nextEl: `.next-${sliderId}`,
-  }}
-  onBeforeInit={(swiper) => {
-    swiper.params.navigation.prevEl = `.prev-${sliderId}`;
-    swiper.params.navigation.nextEl = `.next-${sliderId}`;
-  }}
->
+          modules={[Navigation, Pagination]}
+          loop
+          pagination={{ clickable: true }}
+          navigation={{
+            prevEl: `.prev-${sliderId}`,
+            nextEl: `.next-${sliderId}`,
+          }}
+          onBeforeInit={(swiper) => {
+            swiper.params.navigation.prevEl = `.prev-${sliderId}`;
+            swiper.params.navigation.nextEl = `.next-${sliderId}`;
+          }}
+        >
           {photos.map((photo, index) => (
             <SwiperSlide key={index}>
               <img
@@ -97,8 +124,8 @@ export default function PropertyCard({ listing }) {
 
         {/* Left Arrow */}
 
-     <button
-  className={`
+        <button
+          className={`
     prev-${sliderId}
     absolute
     left-4
@@ -126,14 +153,14 @@ export default function PropertyCard({ listing }) {
     transition-opacity
     duration-200
   `}
->
-  <ChevronLeft size={20} />
-</button>
+        >
+          <ChevronLeft size={20} />
+        </button>
 
         {/* Right Arrow */}
 
-    <button
-  className={`
+        <button
+          className={`
     next-${sliderId}
     absolute
     right-4
@@ -156,9 +183,9 @@ export default function PropertyCard({ listing }) {
     transition-all
     duration-200
   `}
->
-  <ChevronRight size={20} />
-</button>
+        >
+          <ChevronRight size={20} />
+        </button>
 
         {/* Price */}
 
@@ -219,10 +246,6 @@ export default function PropertyCard({ listing }) {
       <div className="bg-white pt-10 px-6 pb-6">
         {/* Property type */}
 
-        <p className="uppercase tracking-[3px] text-xs text-gray-400">
-          Luxury Vacation Rental
-        </p>
-
         {/* Title */}
 
         <h2
@@ -239,7 +262,7 @@ export default function PropertyCard({ listing }) {
 
         {/* Location */}
 
-        <p
+        {/* <p
           className="
           mt-3
           text-gray-500
@@ -247,7 +270,7 @@ export default function PropertyCard({ listing }) {
         "
         >
          <TfiLocationPin className="mt-0" size={20} />  {listing?.location?.address || listing?.property?.city}
-        </p>
+        </p> */}
         {/* DESCRIPTION */}
 
         {/* <p className="mt-5 text-gray-600 leading-7 line-clamp-2">
@@ -280,12 +303,33 @@ export default function PropertyCard({ listing }) {
 
           <div className="text-center py-4 rounded-2xl bg-gray-50">
             <p className="text-2xl font-bold">
-              {listing?.property?.guests || 2}
+              {listing?.property?.maxSleeps || 2}
             </p>
 
             <span className="text-sm text-gray-500">Sleeps</span>
           </div>
+         
         </div>
+        {currentPropertyAmenities?.amenities?.length > 0 && (
+  <div className="mt-7">
+    <h3 className="text-lg font-semibold mb-4">
+      Amenities
+    </h3>
+
+    <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+      {currentPropertyAmenities.amenities.map((amenity, amenityIndex) => (
+        <div
+          key={amenityIndex}
+          className="flex items-center gap-2 text-sm text-gray-600"
+        >
+          <span className="w-2 h-2 rounded-full bg-[#2f9bad] shrink-0" />
+
+          <span>{amenity}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
 
         {/* FEATURES */}
 

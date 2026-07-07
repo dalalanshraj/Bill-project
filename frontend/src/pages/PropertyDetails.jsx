@@ -316,7 +316,14 @@ const PropertyDetail = () => {
                       <p className="text-gray-700 mt-2">-{review.name}</p>
                       <p className="mt-2 mx-3">
                         {review.stayDate
-                          ? new Date(review.stayDate).toLocaleDateString()
+                          ? new Date(review.stayDate).toLocaleDateString(
+                             "en-US",
+                              {
+                                month: "long",
+                                day: "numeric",
+                                year: "numeric",
+                              },
+                          )
                           : "N/A"}
                       </p>
                     </div>
@@ -448,7 +455,7 @@ translate-y-[-50%]
                 {owner?.name}
               </h2>
 
-            <p
+            {/* <p
   className="
     mt-6
     leading-8
@@ -459,7 +466,7 @@ translate-y-[-50%]
   "
 >
   {getShortAbout(owner?.about)}
-</p>
+</p> */}
             </div>
 
             {/* ================= BOOKING ================= */}
@@ -469,7 +476,7 @@ translate-y-[-50%]
 
               {/* DATES */}
 
-              {/* <div className="grid grid-cols-2 gap-4">
+              {/* <div className="grid grid-cols-2 gap-4 ">
                 <DatePicker
                   selected={checkIn}
                   popperPlacement="bottom-start"
@@ -531,11 +538,11 @@ focus:border-[#2f9bad]
 
               {/* Divider */}
 
-              <div className="border-t border-dashed my-4"></div>
+              {/* <div className="border-t border-dashed my-4"></div> */}
 
               {/* BUTTONS */}
 
-              <div className="flex gap-3">
+              <div className="flex gap-3 pt-10">
                 <button
                   onClick={() => setOpenIVacation(true)}
                   className="

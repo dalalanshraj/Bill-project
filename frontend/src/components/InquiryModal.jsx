@@ -192,7 +192,7 @@ export default function InquiryModal({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl w-[100%] h-[77%]  p-8 relative mt-33 shadow-2xl border"
+        className="bg-white rounded-2xl md:w-[50%] w-[100%] h-[77%]  p-8 relative mt-33 shadow-2xl border"
         onClick={(e) => e.stopPropagation()}
       >
         {/* CLOSE */}
@@ -255,9 +255,9 @@ export default function InquiryModal({
           />
 
           {/* DATE PICKER */}
-          <div className="grid grid-cols-2 gap-4 items-start">
+          <div className="grid grid-cols-2 gap-4 items-start ">
             {/* ARRIVAL */}
-            <div className="w-full min-w-0">
+            <div className="w-full min-w-0 ">
               <DatePicker
                 selected={form.Arrival}
                 onChange={(date) => setForm({ ...form, Arrival: date })}

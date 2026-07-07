@@ -11,7 +11,6 @@ export default function PropertyIcon() {
         ecbyo: "https://www.emeraldcoastbyowner.com/e10266",
         vrbo: "https://www.vrbo.com/2600532",
         airbnb: "https://www.airbnb.com/h/BeachTimeAtGrandPanamaResortinPCB",
-        
       },
     },
 
@@ -22,13 +21,12 @@ export default function PropertyIcon() {
         ecbyo: "https://www.emeraldcoastbyowner.com/e11499",
         vrbo: "https://www.vrbo.com/3162877",
         airbnb: "https://www.airbnb.com/h/BeachTimeAtCalypsoTower3inPCB",
-        
       },
     },
   ];
 
   const platforms = [
-     {
+    {
       name: "Emerald Coast By Owner",
       logo: EcbyoLogo,
       key: "ecbyo",
@@ -43,7 +41,6 @@ export default function PropertyIcon() {
       logo: AirbnbLogo,
       key: "airbnb",
     },
-   
   ];
 
   return (
@@ -74,8 +71,25 @@ export default function PropertyIcon() {
               text-black
             "
           >
-            Also available on
+            Book Your Way
           </h2>
+          <p
+            className="
+      mt-8
+      text-gray-600
+      max-w-4xl
+      mx-auto
+      text-lg
+      md:text-xl
+      leading-[2]
+    "
+          >
+            Whether you prefer to book directly through ECBYO for potential
+            savings and personalized service, or through the trusted Airbnb or
+            VRBO platforms,you’ll enjoy the same exceptional Gulf Life’s a Beach
+            experience, responsive local support, and professionally maintained
+            accommodations.
+          </p>
         </div>
 
         {/* TWO CARDS */}

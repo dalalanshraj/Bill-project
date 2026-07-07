@@ -8,28 +8,28 @@ import { Link } from "react-router-dom";
 export default function AboutSection() {
  const sections = [
   {
-    title: "THE CONDOS",
-    subtitle: "Luxury Beachfront Living",
-    description:
-      "Our professionally furnished beachfront condos offer stunning Gulf views, spacious living areas, private balconies, modern interiors, and everything needed for a relaxing coastal vacation.",
-    image: condoImg,
+    title: "THE RESORT",
+  subtitle: "Where Every Stay Feels Extraordinary",
+  description:
+    "Escape to a luxury beachfront resort featuring spectacular Gulf views, world-class amenities, sparkling pools, relaxing hot tubs, private balconies, and spacious accommodations designed to create unforgettable memories on every visit.",
+ image: condoImg,
   },
 
-  {
-    title: "COMFORTABLE BEDROOMS",
-    subtitle: "Rest & Recharge",
-    description:
-      "Featuring king and queen bedrooms, additional sleeping arrangements, and comfortable living spaces, our properties are designed to accommodate couples, families, and groups with ease.",
-    image: bedroomImg,
-  },
+  // {
+  //   title: "COMFORTABLE BEDROOMS",
+  //   subtitle: "Rest & Recharge",
+  //   description:
+  //     "Featuring king and queen bedrooms, additional sleeping arrangements, and comfortable living spaces, our properties are designed to accommodate couples, families, and groups with ease.",
+  //   image: bedroomImg,
+  // },
 
-  {
-     title: "RESORT AMENITIES",
-    subtitle: "Relax Like Never Before",
-    description:
-      "Enjoy heated pools, hot tubs, fitness centers, tiki bars, beach chair service, private beach access, on-site restaurants, and many other premium amenities available throughout our resorts.",
-    image: amenitiesImg,
-  },
+  // {
+  //    title: "RESORT AMENITIES",
+  //   subtitle: "Relax Like Never Before",
+  //   description:
+  //     "Enjoy heated pools, hot tubs, fitness centers, tiki bars, beach chair service, private beach access, on-site restaurants, and many other premium amenities available throughout our resorts.",
+  //   image: amenitiesImg,
+  // },
 
   {
     title: "PRIME BEACH LOCATIONS",

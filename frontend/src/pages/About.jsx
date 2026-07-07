@@ -80,12 +80,12 @@ export default function About() {
 
   const sections = [
     {
-      title: "THE CONDOS",
-      subtitle: "Luxury Beachfront Retreats",
-      description:
-        "Experience two exceptional beachfront vacation rentals offering breathtaking Gulf views, stylish interiors, private balconies, and thoughtfully designed spaces for couples, families, and groups seeking the perfect coastal getaway.",
-      image: getSectionImage("hero"),
-    },
+  title: "THE RESORT",
+  subtitle: "Where Every Stay Feels Extraordinary",
+  description:
+    "Escape to a luxury beachfront resort featuring spectacular Gulf views, world-class amenities, sparkling pools, relaxing hot tubs, private balconies, and spacious accommodations designed to create unforgettable memories on every visit.",
+  image: getSectionImage("hero"),
+},
 
     {
       title: "PRIME LOCATIONS",

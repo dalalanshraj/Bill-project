@@ -20,7 +20,7 @@ import bg4 from "../assets/heroImg4.png";
 const heroImages = [bg1, bg2, bg3];
 
 // import BookingModalContact from "../components/bookingModel.jsx";
-// import FeesTable from "../components/FeesTable.jsx";
+import FeesTable from "../components/FeesTable.jsx";
 import ReviewsSection from "../components/ReviewsSection.jsx";
 import { Link } from "react-router-dom";
 import PropertyIcon from "../components/propertiesIcon.jsx";
@@ -179,7 +179,7 @@ export default function Hero({listingId , listing}) {
       )} */}
       {/* OTHER SECTIONS */}
       <AboutSection  />
-      {/* <FeesTable /> */}
+      <FeesTable />
       {/* <InfoSection /> */}
       {/* <Properties /> */}
 

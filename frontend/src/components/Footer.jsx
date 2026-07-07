@@ -83,16 +83,19 @@ export default function Footer({ listingId }) {
           {/* ================= RIGHT ================= */}
 
           <div className="flex flex-col items-center md:items-end">
-            <Link to="/admin/login">
-              <button className="px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500">
+            <div>
+ <Link to="/admin/login">
+              <button className="px-10 py-4  bg-black text-white uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500">
                 Owner Login →
               </button>
             </Link>
+            </div>
+           
 
             {/* POWERED */}
 
-            <div className="mt-10 text-center md:text-right">
-              <p className="uppercase tracking-[4px] text-gray-500 text-sm mb-6">
+            <div className="mt-10 text-center md:text-right mr-5">
+              <p className="uppercase tracking-[4px] pr-10 text-gray-500 text-sm mb-6">
                 Follow Us
               </p>
 

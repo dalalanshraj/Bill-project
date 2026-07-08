@@ -1,5 +1,5 @@
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
-
+import { Home, KeyRound } from "lucide-react";
 import { useState, useEffect } from "react";
 
 import api from "../api/axios.js";
@@ -76,18 +76,7 @@ export default function Footer({ listingId }) {
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-1">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-14 items-center">
           {/* ================= LEFT ================= */}
-
-          <div className="text-center md:text-left">
-            <img src={logo} alt="logo" className="w-48 mx-auto md:mx-10 mb-6" />
-
-            <p className="text-gray-400 text-sm leading-7">
-             © 2026 <a href="https://digifyamerica.com/">Digify America.</a> All rights reserved.
-            </p>
-          </div>
-
-          {/* ================= CENTER ================= */}
-
-          <div className="text-center">
+  <div className="text-center">
             {/* <h3 className="text-3xl font-semibold mb-6">Find Your Perfect Beachfront Vacation Rental</h3>
 
             <p className="text-gray-300 leading-8">11800 Front Beach Rd, Unit 2-804 Panama City Beach Florida 32407</p> */}
@@ -96,17 +85,80 @@ export default function Footer({ listingId }) {
 
             <p className="text-gray-300 break-all">{email}</p>
           </div>
+       
+
+          {/* ================= CENTER ================= */}
+   <div className="text-center md:text-left">
+            <img src={logo} alt="logo" className="w-48 mx-auto md:mx-10 mb-6" />
+
+            <p className="text-gray-400 text-sm leading-7">
+             © 2026 <a href="https://digifyamerica.com/">Digify America.</a> All rights reserved.
+            </p>
+          </div>
+        
 
           {/* ================= RIGHT ================= */}
 
           <div className="flex flex-col items-center md:items-end">
-            <div className="ml-27">
- <Link to="/admin/login">
-              <button className="px-10 py-4  bg-black text-white uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500">
-                Owner Login →
-              </button>
-            </Link>
-            </div>
+          <Link
+  to="/admin/login"
+  className="
+  mt-10
+    group
+    inline-flex
+    items-center
+    gap-2
+
+    px-4
+    py-2
+
+    rounded-full
+
+    bg-gradient-to-b
+    from-sky-400
+    via-blue-500
+    to-blue-700
+
+    border
+    border-blue-300
+
+    shadow-md
+
+    transition-all
+    duration-300
+
+    hover:scale-105
+    hover:shadow-lg
+  "
+>
+  <span
+    className="
+      relative
+      flex
+      items-center
+      justify-center
+
+      w-5
+      h-5
+
+
+      rounded-full
+      bg-white/90
+      text-blue-800
+    "
+  >
+    <Home size={17} />
+
+    <KeyRound
+      size={12}
+      className="absolute -right-1 -bottom-0.5 text-blue-700"
+    />
+  </span>
+
+  <span className="text-white text-sm font-semibold tracking-wide">
+    Owner Login
+  </span>
+</Link>
            
 
             {/* POWERED */}

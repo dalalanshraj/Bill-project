@@ -76,7 +76,7 @@ export default function Footer({ listingId }) {
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-1">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-14 items-center">
           {/* ================= LEFT ================= */}
-  <div className="text-center">
+  <div className="">
             {/* <h3 className="text-3xl font-semibold mb-6">Find Your Perfect Beachfront Vacation Rental</h3>
 
             <p className="text-gray-300 leading-8">11800 Front Beach Rd, Unit 2-804 Panama City Beach Florida 32407</p> */}

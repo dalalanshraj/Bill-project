@@ -74,7 +74,7 @@ const amenitiesObject =
         font-playfair text-5xl md:text-7xl font-bold
       "
       >
-        Our Amenities
+        Our Common Amenities
       </h2>
 </div>
       {/* PREVIEW */}

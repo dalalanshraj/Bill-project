@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import condoImg from "../assets/about-Img11.png";
 
 export default function About() {
   const [images, setImages] = useState([]);
@@ -79,12 +80,13 @@ export default function About() {
   // =====================================
 
   const sections = [
-    {
-  title: "THE RESORT",
-  subtitle: "Where Every Stay Feels Extraordinary",
+ {
+  title: "OUR RESORTS",
+  subtitle: "Two Exceptional Beachfront Destinations",
   description:
-    "Escape to a luxury beachfront resort featuring spectacular Gulf views, world-class amenities, sparkling pools, relaxing hot tubs, private balconies, and spacious accommodations designed to create unforgettable memories on every visit.",
-  image: getSectionImage("hero"),
+    "Discover two exceptional Panama City Beach destinations — Grand Panama Beach Resort and Calypso Tower 3 Resort. Enjoy breathtaking Gulf views, spacious accommodations, private balconies, resort-style pools, relaxing hot tubs, convenient beach access, and premium amenities designed to create unforgettable beachfront vacations.",
+  image: condoImg,
+  isCollage: true,
 },
 
     {
@@ -324,123 +326,61 @@ export default function About() {
 
         {/* ================= PROPERTY SECTIONS ================= */}
 
-        <div className="space-y-32">
-
+     <div className="space-y-24 md:space-y-32">
           {sections.map((item, index) => (
-
             <div
               key={item.title}
-              className={`
-                grid
-                grid-cols-1
-                lg:grid-cols-2
-
-                gap-16
-                lg:gap-24
-
-                items-center
-
-                ${
-                  index % 2 !== 0
-                    ? "lg:[&>*:first-child]:order-2"
-                    : ""
-                }
-              `}
+              className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center ${
+                index % 2 !== 0
+                  ? "lg:[&>*:first-child]:order-2"
+                  : ""
+              }`}
             >
 
               {/* IMAGE */}
-
-              <div className="w-full">
-
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="
-                    w-full
-
-                    h-[300px]
-                    sm:h-[450px]
-                    lg:h-[550px]
-
-                    object-cover
-                  "
-                />
-
+              <div className="w-full flex items-center justify-center">
+                {item.isCollage ? (
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="
+                        block w-full h-auto object-contain
+                    "
+                  />
+                ) : (
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="
+                      block
+                      w-full
+                      h-[300px]
+                      sm:h-[420px]
+                      lg:h-[500px]
+                      object-cover
+                    "
+                  />
+                )}
               </div>
 
-
               {/* CONTENT */}
+              <div className="flex flex-col justify-center text-center px-2 md:px-8 lg:px-10">
 
-              <div
-                className="
-                  flex
-                  flex-col
-                  justify-center
-
-                  text-center
-
-                  px-2
-                  md:px-8
-                  lg:px-14
-                "
-              >
-
-                <h3
-                  className="
-                    uppercase
-                    tracking-[8px]
-
-                    text-black
-
-                    text-lg
-                    md:text-2xl
-
-                    mb-8
-
-                    font-light
-                  "
-                >
+                <h3 className="uppercase tracking-[5px] md:tracking-[8px] text-black text-lg md:text-2xl mb-6 md:mb-8 font-light">
                   {item.title}
                 </h3>
 
-
-                <h4
-                  className="
-                    uppercase
-
-                    tracking-[6px]
-
-                    text-gray-400
-
-                    text-xs
-                    md:text-sm
-
-                    mb-8
-                  "
-                >
+                <h4 className="uppercase tracking-[4px] md:tracking-[6px] text-gray-400 text-xs md:text-sm mb-6 md:mb-8">
                   {item.subtitle}
                 </h4>
 
-
-                <p
-                  className="
-                    text-gray-600
-
-                    text-lg
-                    md:text-2xl
-
-                    font-light
-                  "
-                >
+                <p className="text-gray-600 text-base md:text-xl lg:text-2xl leading-relaxed font-light">
                   {item.description}
                 </p>
 
               </div>
-
             </div>
-
           ))}
-
         </div>
 
       </div>

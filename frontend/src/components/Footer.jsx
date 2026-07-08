@@ -45,18 +45,35 @@ export default function Footer({ listingId }) {
       {/* ================= MAP ================= */}
 
       <div className="w-full h-[240px] overflow-hidden">
-        <iframe
-          src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3646.3127583903492!2d-85.82724312422495!3d30.187725574851665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88938ecb097a0661%3A0xd797f4a7f130d8d!2s11800%20Front%20Beach%20Rd%20Unit%202-804%2C%20Panama%20City%20Beach%2C%20FL%2032407%2C%20USA!5e1!3m2!1sen!2sin!4v1782848999456!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin `}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
+          <div>
+            <h1  className="text-center text-2xl ">Grand Panama Beach Resort</h1>
+ <iframe
+          src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3493.657505936813!2d-85.82769312438947!3d30.187080874852146!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x889388cc50c4743b%3A0xd1c88c303e56fb54!2sGrand%20Panama%20Beach%20Resort!5e1!3m2!1sen!2sin!4v1783531386496!5m2!1sen!2sin`}
+          className="w-full h-100 border-0"
+          allowFullScreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        ></iframe>
+          </div>
+      <div>
+        <h1 className="text-center text-2xl ">Calypso Tower 3 Resort</h1>
+ <iframe
+          src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6985.35130742772!2d-85.87996839116352!3d30.214750300000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88938c414feb12d5%3A0x96f97f304409d314!2sCalypso%20Tower%203%20Beach%20Resort!5e1!3m2!1sen!2sin!4v1783531536742!5m2!1sen!2sin`}
           className="w-full h-100 border-0"
           allowFullScreen=""
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         ></iframe>
       </div>
+       
+        </div>
+       
+      </div>
 
       {/* ================= FOOTER CONTENT ================= */}
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-16">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 py-1">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-14 items-center">
           {/* ================= LEFT ================= */}
 
@@ -71,9 +88,9 @@ export default function Footer({ listingId }) {
           {/* ================= CENTER ================= */}
 
           <div className="text-center">
-            <h3 className="text-3xl font-semibold mb-6">Find Your Perfect Beachfront Vacation Rental</h3>
+            {/* <h3 className="text-3xl font-semibold mb-6">Find Your Perfect Beachfront Vacation Rental</h3>
 
-            <p className="text-gray-300 leading-8">11800 Front Beach Rd, Unit 2-804 Panama City Beach Florida 32407</p>
+            <p className="text-gray-300 leading-8">11800 Front Beach Rd, Unit 2-804 Panama City Beach Florida 32407</p> */}
 
             <p className="mt-5 text-gray-300">{phone}</p>
 

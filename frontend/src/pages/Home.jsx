@@ -224,10 +224,11 @@ export default function Hero({listingId , listing}) {
 
 
       <GallerySection />
+      <PropertyIcon  />
       <ReviewsSection  
       // listingId="6a42e6944d210e7c358051a7"
       />
-<PropertyIcon />
+
     </>
   );
 }

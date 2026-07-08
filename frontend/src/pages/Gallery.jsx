@@ -90,8 +90,7 @@ export default function Gallery() {
           >
             From breathtaking Gulf views and a spacious private balcony to elegant
     interiors, resort amenities, and direct beach access, explore every space
-    that makes this Panama city beach  the perfect destination for your next beach
-    getaway.
+    that makes  This Panama City beach condos perfect destination for your next beach getaway
           </p>
         </div>
       </section>

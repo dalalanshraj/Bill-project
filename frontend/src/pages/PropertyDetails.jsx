@@ -18,6 +18,7 @@ import { activitiesData } from "../activitiesData.js";
 import InquiryModal from "../components/InquiryModal.jsx";
 import DisplayCalendar from "../components/miniCalendar.jsx";
 import PropertyminiCalendar from "../components/PropertyminiCalendar.jsx";
+import PropertyIcon from "../components/propertiesIcon.jsx";
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -454,94 +455,13 @@ translate-y-[-50%]
               >
                 {owner?.name}
               </h2>
-
-            {/* <p
-  className="
-    mt-6
-    leading-8
-    text-white/95
-    text-[15px]
-    text-center
-    line-clamp-3
-  "
->
-  {getShortAbout(owner?.about)}
-</p> */}
             </div>
-
+<PropertyIcon listing={listing} />
+ 
             {/* ================= BOOKING ================= */}
 
             <div className="p-8">
-              {/* <h3 className="text-2xl font-bold mb-6">Check Availability</h3> */}
-
-              {/* DATES */}
-
-              {/* <div className="grid grid-cols-2 gap-4 ">
-                <DatePicker
-                  selected={checkIn}
-                  popperPlacement="bottom-start"
-  popperStrategy="fixed"
-
-                  onChange={(date) => {
-                    setCheckIn(date);
-                    setCheckOut(null);
-                  }}
-                  excludeDates={blockedDates}
-                  placeholderText="Check In"
-                  minDate={new Date()}
-                  className="
-w-full
-h-14
-border-2
-border-gray-200
-rounded-xl
-text-center
-font-medium
-outline-none
-focus:border-[#2f9bad]"
-                />
-
-                <DatePicker
-                  selected={checkOut}
-                  popperPlacement="bottom-start"
-  popperStrategy="fixed"
-
-                  onChange={(date) => setCheckOut(date)}
-                  excludeDates={blockedDates}
-                  placeholderText="Check Out"
-                  minDate={
-                    checkIn
-                      ? (() => {
-                          const d = new Date(checkIn);
-
-                          d.setHours(12, 0, 0, 0);
-
-                          d.setDate(d.getDate() + getMinNightsForDate(checkIn));
-
-                          return d;
-                        })()
-                      : new Date()
-                  }
-                  className="
-w-full
-h-14
-border-2
-border-gray-200
-rounded-xl
-text-center
-font-medium
-outline-none
-focus:border-[#2f9bad]
-          "
-                />
-              </div> */}
-
-              {/* Divider */}
-
-              {/* <div className="border-t border-dashed my-4"></div> */}
-
-              {/* BUTTONS */}
-
+              
               <div className="flex gap-3 pt-10">
                 <button
                   onClick={() => setOpenIVacation(true)}

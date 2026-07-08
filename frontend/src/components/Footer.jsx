@@ -169,9 +169,9 @@ export default function Footer({ listingId }) {
               </p>
 
               <div className="flex gap-4 ml-[7%]">
-                {[FaFacebookF, FaInstagram, FaTwitter].map((Icon, i) => (
-                  <div
-                    key={i}
+                
+                <a href="https://www.facebook.com/gulflifesabeachpcb/">  <div
+                     
                     className="
                       w-12
                       h-12
@@ -189,9 +189,9 @@ export default function Footer({ listingId }) {
                       cursor-pointer
                     "
                   >
-                    <Icon size={18} />
+                    <FaFacebookF size={18} />
                   </div>
-                ))}
+                </a>
               </div>
             </div>
           </div>

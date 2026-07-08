@@ -141,7 +141,7 @@ export default function GallerySection() {
   >
     From breathtaking Gulf views and a spacious private balcony to elegant
     interiors, resort amenities, and direct beach access, explore every space
-    that makes this San Remo condo the perfect destination for your next beach
+    that makes this Panama city beach  the perfect destination for your next beach
     getaway.
   </p>
 </div>

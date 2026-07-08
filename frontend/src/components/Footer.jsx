@@ -49,7 +49,7 @@ export default function Footer({ listingId }) {
           <div>
             <h1  className="text-center text-2xl ">Grand Panama Beach Resort</h1>
  <iframe
-          src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3493.657505936813!2d-85.82769312438947!3d30.187080874852146!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x889388cc50c4743b%3A0xd1c88c303e56fb54!2sGrand%20Panama%20Beach%20Resort!5e1!3m2!1sen!2sin!4v1783531386496!5m2!1sen!2sin`}
+          src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3474.7185618930394!2d-85.8743764!3d30.214747199999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88938c43fcd78fc9%3A0x2eb32fee9462b3fd!2s15928%20Front%20Beach%20Rd%20%23703%2C%20Panama%20City%20Beach%2C%20FL%2032413%2C%20USA!5e1!3m2!1sen!2sin!4v1783551546317!5m2!1sen!2sin%22 width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin`}
           className="w-full h-100 border-0"
           allowFullScreen=""
           loading="lazy"

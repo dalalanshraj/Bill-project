@@ -329,10 +329,10 @@ export default function Navbar({ listingId }) {
                 leading-8
               "
               >
-                <p>
+                {/* <p>
                   11800 Front Beach Rd, Unit 2-804 Panama City Beach Florida
                   32407
-                </p>
+                </p> */}
 
                
                 <h1>Bill Roberson - Owner</h1>

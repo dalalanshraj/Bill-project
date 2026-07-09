@@ -19,7 +19,11 @@ export default function About() {
 
     if (path.startsWith("http")) return path;
 
-    return base.replace(/\/$/, "") + "/" + path.replace(/^\//, "");
+    return (
+      base.replace(/\/$/, "") +
+      "/" +
+      path.replace(/^\//, "")
+    );
   };
 
   // =====================================
@@ -30,7 +34,8 @@ export default function About() {
     const fetchImages = async () => {
       try {
         const { data } = await api.get("/gallery/published");
-        setImages(data || []);
+
+        setImages(Array.isArray(data) ? data : []);
       } catch (err) {
         console.log("Gallery fetch error:", err);
       }
@@ -40,15 +45,15 @@ export default function About() {
   }, []);
 
   // =====================================
-  // FETCH OWNER PROFILE
+  // FETCH OWNER
   // =====================================
 
   useEffect(() => {
     const fetchOwner = async () => {
       try {
-        const { data } = await api.get(`/profile/public/${OWNER_ID}`);
-
-        console.log("OWNER:", data);
+        const { data } = await api.get(
+          `/profile/public/${OWNER_ID}`
+        );
 
         setOwner(data);
       } catch (err) {
@@ -60,41 +65,47 @@ export default function About() {
   }, []);
 
   // =====================================
-  // GET SECTION IMAGE
+  // FALLBACK IMAGE
   // =====================================
 
-  const getSectionImage = (type) => {
-    const found = images.find(
-      (img) =>
-        img.sectionType === type &&
-        img.status === "published"
-    );
+  const fallbackImage =
+    "https://images.unsplash.com/photo-1505691938895-1758d7feb511";
 
-    return found
-      ? getImageUrl(found.image)
-      : "https://images.unsplash.com/photo-1505691938895-1758d7feb511";
+  // =====================================
+  // GET ALL IMAGES OF ONE SECTION
+  // =====================================
+
+  const getSectionImages = (type) => {
+    return images
+      .filter(
+        (img) =>
+          img.sectionType === type &&
+          img.status === "published"
+      )
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+      .map((img) => getImageUrl(img.image));
   };
 
   // =====================================
-  // SECTIONS
+  // SECTIONS DATA
   // =====================================
 
   const sections = [
- {
-  title: "OUR RESORTS",
-  subtitle: "Two Exceptional Beachfront Destinations",
-  description:
-    "Discover two exceptional Panama City Beach destinations — Grand Panama Beach Resort and Calypso Tower 3 Resort. Enjoy breathtaking Gulf views, spacious accommodations, private balconies, resort-style pools, relaxing hot tubs, convenient beach access, and premium amenities designed to create unforgettable beachfront vacations.",
-  image: condoImg,
-  isCollage: true,
-},
+    {
+      title: "OUR RESORTS",
+      subtitle: "Two Exceptional Beachfront Destinations",
+      description:
+        "Discover two exceptional Panama City Beach destinations — Grand Panama Beach Resort and Calypso Tower 3 Resort. Enjoy breathtaking Gulf views, spacious accommodations, private balconies, resort-style pools, relaxing hot tubs, convenient beach access, and premium amenities designed to create unforgettable beachfront vacations.",
+      image: condoImg,
+      isCollage: true,
+    },
 
     {
       title: "PRIME LOCATIONS",
       subtitle: "Steps from the Beach & Attractions",
       description:
         "Located in the heart of Panama City Beach, our vacation rentals are just minutes from Pier Park, Bay County Pier, restaurants, shopping, entertainment, and direct access to the beautiful white-sand beaches of the Emerald Coast.",
-      image: getSectionImage("gulf-views"),
+      sectionType: "gulf-views",
     },
 
     {
@@ -102,7 +113,7 @@ export default function About() {
       subtitle: "Comfort for Everyone",
       description:
         "Relax in bright, open living spaces featuring comfortable seating, Smart TVs, sleeper sofas, and large windows that fill the rooms with natural light while showcasing spectacular Gulf views.",
-      image: getSectionImage("living-room"),
+      sectionType: "living-room",
     },
 
     {
@@ -110,7 +121,7 @@ export default function About() {
       subtitle: "Cook with Ease",
       description:
         "Each condo includes a fully equipped kitchen with modern appliances, cookware, coffee makers, dining essentials, and everything you need to prepare meals for the entire family.",
-      image: getSectionImage("kitchen"),
+      sectionType: "kitchen",
     },
 
     {
@@ -118,7 +129,7 @@ export default function About() {
       subtitle: "Spectacular Gulf Views",
       description:
         "Enjoy your morning coffee or evening sunset from private furnished balconies overlooking the Gulf of Mexico, resort pools, and the stunning coastline of Panama City Beach.",
-      image: getSectionImage("balcony"),
+      sectionType: "balcony",
     },
 
     {
@@ -126,7 +137,7 @@ export default function About() {
       subtitle: "Relax & Recharge",
       description:
         "Guests can enjoy heated pools, hot tubs, fitness centers, tiki bars, cabanas, beach chair service, on-site restaurants, fire pits, and direct beach access for an unforgettable resort experience.",
-      image: getSectionImage("pool-hot-tub"),
+      sectionType: "pool-hot-tub",
     },
 
     {
@@ -134,7 +145,7 @@ export default function About() {
       subtitle: "Everything You Need",
       description:
         "From beautifully maintained grounds and modern fitness facilities to convenient beach access, resort dining, and family-friendly amenities, every stay is designed to provide comfort, convenience, and lasting memories.",
-      image: getSectionImage("community-amenities"),
+      sectionType: "community-amenities",
     },
 
     {
@@ -142,7 +153,7 @@ export default function About() {
       subtitle: "Create Lasting Memories",
       description:
         "Whether you're planning a romantic escape, family vacation, or group getaway, our beachfront condos provide spacious accommodations and easy access to beaches, water activities, parks, and local attractions for guests of all ages.",
-      image: getSectionImage("family-friendly"),
+      sectionType: "family-friendly",
     },
 
     {
@@ -150,18 +161,70 @@ export default function About() {
       subtitle: "Discover Panama City Beach",
       description:
         "Explore Pier Park, Bay County Pier, waterfront restaurants, local seafood, shopping, nightlife, family attractions, and endless beach activities—all just minutes from your vacation rental.",
-      image: getSectionImage("local-attractions"),
+      sectionType: "local-attractions",
     },
   ];
 
+  // =====================================
+  // CONTENT COMPONENT
+  // =====================================
+
+  const SectionContent = ({ item }) => {
+    return (
+      <div className="flex flex-col justify-center text-center px-2 md:px-6">
+        <h3
+          className="
+            uppercase
+            tracking-[4px]
+            md:tracking-[6px]
+            text-black
+            text-lg
+            md:text-xl
+            xl:text-2xl
+            mb-6
+            font-light
+          "
+        >
+          {item.title}
+        </h3>
+
+        <h4
+          className="
+            uppercase
+            tracking-[3px]
+            md:tracking-[4px]
+            text-gray-400
+            text-xs
+            md:text-sm
+            mb-6
+          "
+        >
+          {item.subtitle}
+        </h4>
+
+        <p
+          className="
+            text-gray-600
+            text-base
+            md:text-lg
+            xl:text-xl
+            leading-relaxed
+            font-light
+          "
+        >
+          {item.description}
+        </p>
+      </div>
+    );
+  };
+
   return (
     <section className="bg-[#f5f5f3] py-20 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-5 md:px-10 mt-16 md:mt-10">
+      <div className="max-w-[1450px] mx-auto px-5 md:px-10 mt-16 md:mt-10">
 
-        {/* ================= PAGE HEADING ================= */}
+        {/* PAGE HEADING */}
 
         <div className="text-center mb-28">
-
           <h1
             className="
               font-playfair
@@ -175,181 +238,212 @@ export default function About() {
             "
           >
             About Us
-            {/* Luxury Beachfront
-            <br />
-            Vacation Rentals */}
           </h1>
+        </div>
 
-          <p
+        {/* OWNER */}
+
+        {owner && (
+          <div
             className="
-              mt-8
-              text-gray-600
-              max-w-5xl
+              max-w-6xl
               mx-auto
-              text-lg
-              md:text-xl
-              leading-[2]
+              mb-28
+              flex
+              flex-col
+              md:flex-row
+              items-center
+              md:items-start
+              gap-8
+              md:gap-12
+              lg:gap-16
             "
           >
-            {/* Experience unforgettable Gulf Coast vacations with our beachfront
-            condos in Panama City Beach, offering beautiful Gulf views,
-            resort-style amenities, comfortable accommodations, and convenient
-            access to beaches, dining, shopping, and local attractions. */}
-          </p>
+            <div className="shrink-0">
+              <img
+                src={getImageUrl(owner.photo)}
+                alt={owner.name || "Property Owner"}
+                className="
+                  w-36
+                  h-36
+                  sm:w-40
+                  sm:h-40
+                  md:w-48
+                  md:h-48
+                  lg:w-36
+                  lg:h-36
+                  rounded-full
+                  object-cover
+                  border-4
+                  border-white
+                  shadow-lg
+                "
+              />
+            </div>
 
-        </div>
-{/* ================= OWNER ABOUT ================= */}
+            <div className="flex-1 text-center md:text-left md:pt-2">
+              <p
+                className="
+                  uppercase
+                  tracking-[5px]
+                  text-[#2f9bad]
+                  text-xs
+                  md:text-[20px]
+                  font-medium
+                "
+              >
+                Meet Your Host
+              </p>
 
-{owner && (
-  <div
-    className="
-      max-w-6xl
-      mx-auto
-      mb-28
+              <h2 className="mt-3 font-playfair text-3xl sm:text-4xl lg:text-3xl font-bold text-black">
+                {owner.name}
+              </h2>
 
-      flex
-      flex-col
-      md:flex-row
+              <p className="mt-5 text-gray-600 text-base sm:text-lg md:text-xl leading-8 md:leading-9 font-light whitespace-pre-line">
+                {owner.about}
+              </p>
+            </div>
+          </div>
+        )}
 
-      items-center
-      md:items-start
+        {/* PROPERTY SECTIONS */}
 
-      gap-8
-      md:gap-12
-      lg:gap-16
-    "
-  >
-    {/* OWNER IMAGE */}
+        <div className="space-y-24 md:space-y-32">
+          {sections.map((item, index) => {
+            /*
+              COLLAGE SECTION
+            */
 
-    <div className="shrink-0">
-      <img
-        src={getImageUrl(owner.photo)}
-        alt={owner.name || "Property Owner"}
-        className="
-          w-36
-          h-36
+            if (item.isCollage) {
+              return (
+                <div
+                  key={item.title}
+                  className="
+                    grid
+                    grid-cols-1
+                    lg:grid-cols-2
+                    gap-12
+                    lg:gap-20
+                    items-center
+                  "
+                >
+                  <div className="w-full">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="block w-full h-auto object-contain"
+                    />
+                  </div>
 
-          sm:w-40
-          sm:h-40
+                  <SectionContent item={item} />
+                </div>
+              );
+            }
 
-          md:w-48
-          md:h-48
+            /*
+              GET SECTION IMAGES
+            */
 
-          lg:w-36
-          lg:h-36
+            const sectionImages = getSectionImages(
+              item.sectionType
+            );
 
-          rounded-full
-          object-cover
+            const firstImage =
+              sectionImages[0] || fallbackImage;
 
-          border-4
-          border-white
+            const secondImage = sectionImages[1];
 
-          shadow-lg
-        "
-      />
-    </div>
+            const hasTwoImages =
+              sectionImages.length >= 2;
 
-    {/* OWNER ABOUT */}
+            /*
+              TWO IMAGE LAYOUT
 
-    <div
-      className="
-        flex-1
+              LEFT IMAGE | CONTENT | RIGHT IMAGE
+            */
 
-        text-center
-        md:text-left
+            if (hasTwoImages) {
+              return (
+                <div
+                  key={item.title}
+                  className="
+                    grid
+                    grid-cols-1
+                    lg:grid-cols-[1fr_0.9fr_1fr]
+                    gap-8
+                    lg:gap-10
+                    xl:gap-14
+                    items-center
+                  "
+                >
+                  {/* LEFT IMAGE */}
 
-        md:pt-2
-      "
-    >
-      <p
-        className="
-          uppercase
-          tracking-[5px]
+                  <div className="w-full">
+                    <img
+                      src={firstImage}
+                      alt={`${item.title} 1`}
+                      className="
+                        block
+                        w-full
+                        h-[300px]
+                        sm:h-[420px]
+                        lg:h-[520px]
+                        object-cover
+                      "
+                    />
+                  </div>
 
-          text-[#2f9bad]
+                  {/* CENTER CONTENT */}
 
-          text-xs
-          md:text-[20px]
+                  <SectionContent item={item} />
 
-          font-medium
-        "
-      >
-        Meet Your Host
-      </p>
+                  {/* RIGHT IMAGE */}
 
-      <h2
-        className="
-          mt-3
+                  <div className="w-full">
+                    <img
+                      src={secondImage}
+                      alt={`${item.title} 2`}
+                      className="
+                        block
+                        w-full
+                        h-[300px]
+                        sm:h-[420px]
+                        lg:h-[520px]
+                        object-cover
+                      "
+                    />
+                  </div>
+                </div>
+              );
+            }
 
-          font-playfair
+            /*
+              ONE IMAGE NORMAL ALTERNATING LAYOUT
+            */
 
-          text-3xl
-          sm:text-4xl
-          lg:text-3xl
+            return (
+              <div
+                key={item.title}
+                className="
+                  grid
+                  grid-cols-1
+                  lg:grid-cols-2
+                  gap-12
+                  lg:gap-20
+                  items-center
+                "
+              >
+                {/* IMAGE */}
 
-          font-bold
-
-          text-black
-        "
-      >
-        {owner.name}
-      </h2>
-
-      <p
-        className="
-          mt-5
-
-          text-gray-600
-
-          text-base
-          sm:text-lg
-          md:text-xl
-
-          leading-8
-          md:leading-9
-
-          font-light
-
-          whitespace-pre-line
-        "
-      >
-        {owner.about}
-      </p>
-    </div>
-  </div>
-)}
-
-        {/* ================= OWNER ABOUT SECTION ================= */}
-
-
-
-
-        {/* ================= PROPERTY SECTIONS ================= */}
-
-     <div className="space-y-24 md:space-y-32">
-          {sections.map((item, index) => (
-            <div
-              key={item.title}
-              className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center ${
-                index % 2 !== 0
-                  ? "lg:[&>*:first-child]:order-2"
-                  : ""
-              }`}
-            >
-
-              {/* IMAGE */}
-              <div className="w-full flex items-center justify-center">
-                {item.isCollage ? (
+                <div
+                  className={
+                    index % 2 !== 0
+                      ? "lg:order-2"
+                      : "lg:order-1"
+                  }
+                >
                   <img
-                    src={item.image}
-                    alt={item.title}
-                    className="
-                        block w-full h-auto object-contain
-                    "
-                  />
-                ) : (
-                  <img
-                    src={item.image}
+                    src={firstImage}
                     alt={item.title}
                     className="
                       block
@@ -360,29 +454,23 @@ export default function About() {
                       object-cover
                     "
                   />
-                )}
+                </div>
+
+                {/* CONTENT */}
+
+                <div
+                  className={
+                    index % 2 !== 0
+                      ? "lg:order-1"
+                      : "lg:order-2"
+                  }
+                >
+                  <SectionContent item={item} />
+                </div>
               </div>
-
-              {/* CONTENT */}
-              <div className="flex flex-col justify-center text-center px-2 md:px-8 lg:px-10">
-
-                <h3 className="uppercase tracking-[5px] md:tracking-[8px] text-black text-lg md:text-2xl mb-6 md:mb-8 font-light">
-                  {item.title}
-                </h3>
-
-                <h4 className="uppercase tracking-[4px] md:tracking-[6px] text-gray-400 text-xs md:text-sm mb-6 md:mb-8">
-                  {item.subtitle}
-                </h4>
-
-                <p className="text-gray-600 text-base md:text-xl lg:text-2xl leading-relaxed font-light">
-                  {item.description}
-                </p>
-
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-
       </div>
     </section>
   );

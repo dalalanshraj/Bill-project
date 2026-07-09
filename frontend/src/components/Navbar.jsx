@@ -1,14 +1,7 @@
 import { useState, useEffect } from "react";
-import {
-  FaFacebookF,
-  FaInstagram,
-  FaTwitter,
-} from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
-import {
-  Link,
-  useLocation,
-} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import api from "../api/axios";
 
@@ -17,11 +10,9 @@ import WhiteLogo from "../assets/logo/LOGO.png";
 import BlackLogo from "../assets/logo/LOGO3.png";
 
 export default function Navbar({ listingId }) {
-
   const [open, setOpen] = useState(false);
 
-  const [listing, setListing] =
-    useState(null);
+  const [listing, setListing] = useState(null);
 
   const location = useLocation();
 
@@ -30,7 +21,6 @@ export default function Navbar({ listingId }) {
   // =====================================
 
   useEffect(() => {
-
     if (!listingId) return;
 
     api
@@ -41,39 +31,28 @@ export default function Navbar({ listingId }) {
       })
 
       .catch(console.log);
-
   }, [listingId]);
 
   // =====================================
   // BACKEND DATA
   // =====================================
 
-  const address =
-    listing?.location?.address ||
-    "Panama City Beach";
+  const address = listing?.location?.address || "Panama City Beach";
 
-  const email =
-    listing?.property?.altEmail ||
-    "info@example.com";
+  const email = listing?.property?.email || "info@example.com";
 
-  const phone =
-    listing?.property?.phone ||
-    "000-000-0000";
+  const phone = listing?.property?.phone || "000-000-0000";
 
-  const title =
-    listing?.property?.title ||
-    "Luxury Condo";
+  const title = listing?.property?.title || "Luxury Condo";
 
   // =====================================
   // PAGE CHECK
   // =====================================
 
-  const pathname =
-    location.pathname;
+  const pathname = location.pathname;
 
   // HOME PAGE
-  const isHome =
-    pathname === "/";
+  const isHome = pathname === "/";
 
   // SINGLE PROPERTY PAGE
   const isPropertyPage =
@@ -87,10 +66,7 @@ export default function Navbar({ listingId }) {
   // LOGO CHANGE
   // =====================================
 
-  const currentLogo =
-    isHome || isPropertyPage
-      ? WhiteLogo
-      : BlackLogo;
+  const currentLogo = isHome || isPropertyPage ? WhiteLogo : BlackLogo;
 
   // =====================================
   // MENU
@@ -124,7 +100,6 @@ export default function Navbar({ listingId }) {
 
   return (
     <div className="relative">
-
       {/* ================= NAVBAR ================= */}
 
       <header
@@ -142,13 +117,11 @@ export default function Navbar({ listingId }) {
         z-[999999]
       "
       >
-
         {/* ================= LOGO ================= */}
 
         <Link to="/">
-
           <img
-           src={open ? BlackLogo : currentLogo}
+            src={open ? BlackLogo : currentLogo}
             alt="logo"
             className="
               w-32
@@ -156,16 +129,12 @@ export default function Navbar({ listingId }) {
               object-contain
             "
           />
-
         </Link>
 
         {/* ================= TOGGLE ================= */}
 
         <button
-          onClick={() =>
-            setOpen(!open)
-          }
-
+          onClick={() => setOpen(!open)}
           className="
           relative
           z-[999999]
@@ -178,7 +147,6 @@ export default function Navbar({ listingId }) {
           cursor-pointer
         "
         >
-
           {/* TOP */}
           <span
             className={`
@@ -194,10 +162,7 @@ export default function Navbar({ listingId }) {
                 open
                   ? "rotate-45 bg-black"
                   : `-translate-y-3 ${
-                      isHome ||
-                      isPropertyPage
-                        ? "bg-white"
-                        : "bg-black"
+                      isHome || isPropertyPage ? "bg-white" : "bg-black"
                     }`
               }
             `}
@@ -218,10 +183,7 @@ export default function Navbar({ listingId }) {
                 open
                   ? "opacity-0"
                   : `opacity-100 ${
-                      isHome ||
-                      isPropertyPage
-                        ? "bg-white"
-                        : "bg-black"
+                      isHome || isPropertyPage ? "bg-white" : "bg-black"
                     }`
               }
             `}
@@ -242,17 +204,12 @@ export default function Navbar({ listingId }) {
                 open
                   ? "-rotate-45 bg-black"
                   : `translate-y-3 ${
-                      isHome ||
-                      isPropertyPage
-                        ? "bg-white"
-                        : "bg-black"
+                      isHome || isPropertyPage ? "bg-white" : "bg-black"
                     }`
               }
             `}
           />
-
         </button>
-
       </header>
 
       {/* ================= OVERLAY ================= */}
@@ -270,14 +227,9 @@ export default function Navbar({ listingId }) {
         duration-700
         ease-in-out
         overflow-y-auto
-        ${
-          open
-            ? "translate-x-0"
-            : "translate-x-full"
-        }
+        ${open ? "translate-x-0" : "translate-x-full"}
       `}
       >
-
         <div
           className="
           min-h-screen
@@ -294,26 +246,16 @@ export default function Navbar({ listingId }) {
           py-50
         "
         >
-
           {/* ================= LEFT ================= */}
 
           <div className="w-full lg:w-auto">
-
             <ul className="space-y-5 md:space-y-7">
-
-              {menuItems.map(
-                (item, i) => (
-
-                  <li key={i}>
-
-                    <Link
-                      to={item.path}
-
-                      onClick={() =>
-                        setOpen(false)
-                      }
-
-                      className="
+              {menuItems.map((item, i) => (
+                <li key={i}>
+                  <Link
+                    to={item.path}
+                    onClick={() => setOpen(false)}
+                    className="
                       relative
                       inline-block
                       text-4xl
@@ -324,12 +266,11 @@ export default function Navbar({ listingId }) {
                       text-black
                       group
                     "
-                    >
+                  >
+                    {item.name}
 
-                      {item.name}
-
-                      <span
-                        className="
+                    <span
+                      className="
                         absolute
                         left-0
                         bottom-1
@@ -343,17 +284,11 @@ export default function Navbar({ listingId }) {
                         duration-500
                         group-hover:w-full
                       "
-                      />
-
-                    </Link>
-
-                  </li>
-
-                )
-              )}
-
+                    />
+                  </Link>
+                </li>
+              ))}
             </ul>
-
           </div>
 
           {/* ================= RIGHT ================= */}
@@ -369,11 +304,9 @@ export default function Navbar({ listingId }) {
             lg:w-auto
           "
           >
-
             {/* CONTACT */}
 
             <div className="max-w-sm">
-
               <h3
                 className="
                 uppercase
@@ -396,10 +329,14 @@ export default function Navbar({ listingId }) {
                 leading-8
               "
               >
+                <p>
+                  11800 Front Beach Rd, Unit 2-804 Panama City Beach Florida
+                  32407
+                </p>
 
-                <p>11800 Front Beach Rd, Unit 2-804 Panama City Beach Florida 32407</p>
-
-                <a
+               
+                <h1>Bill Roberson - Owner</h1>
+ <a
                   href={`mailto:${email}`}
                   className="
                   hover:text-pink-500
@@ -410,7 +347,6 @@ export default function Navbar({ listingId }) {
                 >
                   {email}
                 </a>
-
                 <a
                   href={`tel:${phone}`}
                   className="
@@ -421,41 +357,9 @@ export default function Navbar({ listingId }) {
                 >
                   {phone}
                 </a>
-
-              </div>
-
-            </div>
-
-            {/* SOCIAL */}
-
-            <div>
-
-              <h3
-                className="
-                uppercase
-                tracking-[4px]
-                text-gray-400
-                text-xs
-                md:text-sm
-                mb-8
-              "
-              >
-                {title}
-              </h3>
-
-              <div className="flex gap-4 mt-8">
-
-                {[
-                  FaFacebookF,
-                  FaInstagram,
-                  FaTwitter,
-                ].map(
-                  (Icon, i) => (
-
-                    <div
-                      key={i}
-
-                      className="
+                     <a href="https://www.facebook.com/gulflifesabeachpcb/">
+                  <div
+                    className="
                       w-11
                       h-11
                       rounded-full
@@ -471,25 +375,19 @@ export default function Navbar({ listingId }) {
                       duration-300
                       cursor-pointer
                     "
-                    >
-
-                      <Icon size={16} />
-
-                    </div>
-
-                  )
-                )}
-
+                  >
+                    <FaFacebookF size={16} />
+                  </div>
+                </a>
               </div>
-
             </div>
 
+            {/* SOCIAL */}
+
+            
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 }

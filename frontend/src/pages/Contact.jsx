@@ -333,7 +333,7 @@ for (const recipient of recipients) {
                     <h3 className="font-semibold text-xl mb-2">Location</h3>
 
                     <p className="text-gray-600 leading-7">
-                      {listing?.location?.address || "Panama City Beach"}
+                        Panama City Beach
                     </p>
                   </div>
                 </div>

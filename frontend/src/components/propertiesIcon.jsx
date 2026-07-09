@@ -168,8 +168,8 @@ export default function PropertyIcon({ listing }) {
           <p className="mt-8 text-gray-600 max-w-4xl mx-auto text-lg md:text-xl leading-[2]">
             Whether you prefer to book directly through{" "}
             <strong className="text-black">ECBYO</strong> for potential savings
-            and personalized service, or through the trusted Airbnb or VRBO
-            platforms, you’ll enjoy the same exceptional Gulf Life’s a Beach
+            and personalized service, or  through the other platforms Airbnb or VRBO  
+             you’ll enjoy the same exceptional Gulf Life’s a Beach
             experience, responsive local support, and professionally maintained
             accommodations.
           </p>

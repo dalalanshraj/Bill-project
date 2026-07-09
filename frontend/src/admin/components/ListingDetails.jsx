@@ -137,10 +137,7 @@ export default function ListingCard({
           {new Date(listing.createdAt).toLocaleDateString()}
         </p>
 
-        <p className="md:col-span-2">
-          <span className="font-medium">Updated:</span>{" "}
-          {new Date(listing.updatedAt).toLocaleDateString()}
-        </p>
+
       </div>
     </div> 
 

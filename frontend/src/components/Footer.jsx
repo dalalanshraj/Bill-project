@@ -59,7 +59,7 @@ export default function Footer({ listingId }) {
       <div>
         <h1 className="text-center text-2xl ">Calypso Tower 3 Resort</h1>
  <iframe
-          src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6985.35130742772!2d-85.87996839116352!3d30.214750300000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88938c414feb12d5%3A0x96f97f304409d314!2sCalypso%20Tower%203%20Beach%20Resort!5e1!3m2!1sen!2sin!4v1783531536742!5m2!1sen!2sin`}
+          src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3645.3386868232233!2d-85.87683032422397!3d30.214026374838568!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88938d5efbe3b079%3A0x48909627206b2991!2sCalypso%20Resort%20and%20Towers%20(Towers%20I%20%26%20II)!5e1!3m2!1sen!2sus!4v1783553683084!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin`}
           className="w-full h-100 border-0"
           allowFullScreen=""
           loading="lazy"
@@ -77,13 +77,13 @@ export default function Footer({ listingId }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-14 items-center">
           {/* ================= LEFT ================= */}
   <div className="">
-            {/* <h3 className="text-3xl font-semibold mb-6">Find Your Perfect Beachfront Vacation Rental</h3>
+            <h3 className="text-3xl font-semibold mb-6">Bill Roberson - Owner</h3>
 
-            <p className="text-gray-300 leading-8">11800 Front Beach Rd, Unit 2-804 Panama City Beach Florida 32407</p> */}
+            {/* <p className="text-gray-300 leading-8">11800 Front Beach Rd, Unit 2-804 Panama City Beach Florida 32407</p> */}
 
             <p className="mt-5 text-gray-300">{phone}</p>
 
-            <p className="text-gray-300 break-all">{email}</p>
+           <a href="mailto:gulflifesabeach@outlook.com"> <p className="text-gray-300 break-all">{email}</p></a>
           </div>
        
 

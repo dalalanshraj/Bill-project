@@ -357,28 +357,54 @@ export default function Navbar({ listingId }) {
                 >
                   {phone}
                 </a>
-                     <a href="https://www.facebook.com/gulflifesabeachpcb/">
-                  <div
-                    className="
-                      w-11
-                      h-11
+                    <div className="flex gap-2 mt-4">
+              <a href="https://www.facebook.com/gulflifesabeachpcb/">
+                {" "}
+                <div
+                  className="
+                      w-12
+                      h-12
                       rounded-full
                       border
-                      border-gray-300
+                      border-gray-700
                       flex
                       items-center
                       justify-center
-                      hover:bg-blue-500
+                       hover:bg-blue-500
                       hover:text-white
                       hover:border-pink-500
                       transition-all
                       duration-300
                       cursor-pointer
                     "
-                  >
-                    <FaFacebookF size={16} />
-                  </div>
-                </a>
+                >
+                  <FaFacebookF size={18} />
+                </div>
+              </a>
+              <a href="https://www.instagram.com/gulflifesabeachpcb?utm_source=qr">
+                {" "}
+                <div
+                  className="
+                      w-12
+                      h-12
+                      rounded-full
+                      border
+                      border-gray-700
+                      flex
+                      items-center
+                      justify-center
+                       hover:bg-blue-500
+                      hover:text-white
+                      hover:border-pink-500
+                      transition-all
+                      duration-300
+                      cursor-pointer
+                    "
+                >
+                  <FaInstagram size={18} />
+                </div>
+              </a>
+            </div>
               </div>
             </div>
 

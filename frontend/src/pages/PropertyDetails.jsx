@@ -144,34 +144,34 @@ const PropertyDetail = () => {
   };
 
   const getShortAbout = (text, maxLength = 180) => {
-  if (!text) return "";
+    if (!text) return "";
 
-  if (text.length <= maxLength) {
-    return text;
-  }
+    if (text.length <= maxLength) {
+      return text;
+    }
 
-  const shortText = text.slice(0, maxLength);
+    const shortText = text.slice(0, maxLength);
 
-  const lastDot = shortText.lastIndexOf(".");
+    const lastDot = shortText.lastIndexOf(".");
 
-  if (lastDot !== -1) {
-    return shortText.slice(0, lastDot + 1);
-  }
+    if (lastDot !== -1) {
+      return shortText.slice(0, lastDot + 1);
+    }
 
-  return shortText.trim() + "...";
-};
+    return shortText.trim() + "...";
+  };
   // ================= MIN NIGHT AUTO FIX =================
   // 🔹 single function
 
   const formatIVacationDate = (date) => {
-  if (!date) return "";
+    if (!date) return "";
 
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const year = date.getFullYear();
 
-  return `${month}/${day}/${year}`; // Example: 07/15/2026
-};
+    return `${month}/${day}/${year}`; // Example: 07/15/2026
+  };
 
   return (
     <>
@@ -318,13 +318,13 @@ const PropertyDetail = () => {
                       <p className="mt-2 mx-3">
                         {review.stayDate
                           ? new Date(review.stayDate).toLocaleDateString(
-                             "en-US",
+                              "en-US",
                               {
                                 month: "long",
                                 day: "numeric",
                                 year: "numeric",
                               },
-                          )
+                            )
                           : "N/A"}
                       </p>
                     </div>
@@ -360,137 +360,135 @@ const PropertyDetail = () => {
         {/* CALENDAR */}
         {/* <a href=""> <button>book now</button>
        </a> */}
-        <div className="lg:col-span-1">
-          <div
-            className="
-sticky
-top-24
+      <div className="lg:col-span-1">
+  <div
+    className="
+      sticky
+      top-1
+      bg-white
+      rounded-[32px]
+      relative
+      shadow-[0_25px_70px_rgba(0,0,0,.12)]
+    "
+  >
+    {/* ================= OWNER ================= */}
 
-bg-white
-
-rounded-[32px]
-
-relative
-
-shadow-[0_25px_70px_rgba(0,0,0,.12)]
-"
-          >
-            {/* ================= OWNER ================= */}
-
-            <div
-              className="
+    <div
+      className="
         relative
-
         pt-20
         pb-10
         px-8
-        
         bg-gradient-to-br
         from-[#0c8b8d]
         via-[#1587d6]
         to-[#2557e5]
-
         text-white
       "
-            >
-              {/* IMAGE */}
+    >
+      {/* IMAGE */}
 
-              <div
-                className="
+      <div
+        className="
           absolute
-
-       top-0
-translate-y-[-50%]
+          top-0
+          translate-y-[-50%]
           left-1/2
           -translate-x-1/2
-
           w-24
           h-24
-
           rounded-full
-
           overflow-hidden
-
           border-[5px]
           border-white
-
           shadow-2xl
-
           bg-white
         "
-              >
-                <img
-                  src={`${import.meta.env.VITE_API_URL}${owner?.photo}`}
-                  alt={owner?.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+      >
+        <img
+          src={`${import.meta.env.VITE_API_URL}${owner?.photo}`}
+          alt={owner?.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-              <p
-                className="
+      <p
+        className="
           text-center
-
           uppercase
-
           tracking-[5px]
-
           text-xs
-
           text-white/80
         "
-              >
-                Property Host
-              </p>
+      >
+        Property Host
+      </p>
 
-              <h2
-                className="
+      <h2
+        className="
           mt-2
-
           text-center
-
           text-3xl
-
           font-bold
         "
-              >
-                {owner?.name}
-              </h2>
-            </div>
-<PropertyIcon listing={listing} />
- 
-            {/* ================= BOOKING ================= */}
+      >
+        {owner?.name}
+      </h2>
+    </div>
 
-            <div className="p-8">
-              
-              <div className="flex gap-3 pt-10">
-                <button
-                  onClick={() => setOpenIVacation(true)}
-                  className="
-           px-12 py-4 bg-black text-white uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500
+    <PropertyIcon listing={listing} />
+
+    {/* ================= BOOKING ================= */}
+
+    <div className="p-8">
+      <div className="flex gap-3 pt-10">
+        <button
+          onClick={() => setOpenIVacation(true)}
+          className="
+            px-12
+            py-4
+            bg-black
+            text-white
+            uppercase
+            tracking-[4px]
+            text-sm
+            hover:bg-blue-500
+            transition-all
+            duration-500
           "
-                >
-                  Book Now
-                </button>
+        >
+          Book Now
+        </button>
 
-                <button
-                  onClick={() => setOpenInquiry(true)}
-                  className="
-           px-8 py-5   text-white bg-black uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500"
-                >
-                  Send Inquiry
-                </button>
-              </div>
-            </div>
-          </div>
+        <button
+          onClick={() => setOpenInquiry(true)}
+          className="
+            px-8
+            py-5
+            text-white
+            bg-black
+            uppercase
+            tracking-[4px]
+            text-sm
+            hover:bg-blue-500
+            transition-all
+            duration-500
+          "
+        >
+          Send Inquiry
+        </button>
+      </div>
+    </div>
+  </div>
 
-          {openInquiry && (
-  <InquiryModal
-    propertyId={id}
-    listing={listing}
-    onClose={() => setOpenInquiry(false)}
-  />
-)}
-        </div>
+  {openInquiry && (
+    <InquiryModal
+      propertyId={id}
+      listing={listing}
+      onClose={() => setOpenInquiry(false)}
+    />
+  )}
+</div>
       </div>
 
       {/* BOOKING MODAL */}
@@ -512,19 +510,17 @@ translate-y-[-50%]
               ×
             </button>
 
-           <iframe
-  title="Booking"
-  src={`https://ivacationonline.com/cframe/calendar.asp?PropertyID=${
-    listing.property.iVacationPropertyId
-  }&P=MPS&CheckIn=${encodeURIComponent(
-    formatIVacationDate(checkIn)
-  )}&CheckOut=${encodeURIComponent(
-    formatIVacationDate(checkOut)
-  )}`}
-  width="100%"
-  height="100%"
-  frameBorder="0"
-/>
+            <iframe
+              title="Booking"
+              src={`https://ivacationonline.com/cframe/calendar.asp?PropertyID=${
+                listing.property.iVacationPropertyId
+              }&P=MPS&CheckIn=${encodeURIComponent(
+                formatIVacationDate(checkIn),
+              )}&CheckOut=${encodeURIComponent(formatIVacationDate(checkOut))}`}
+              width="100%"
+              height="100%"
+              frameBorder="0"
+            />
           </div>
         </div>
       )}

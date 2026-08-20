@@ -21,7 +21,7 @@ const Properties = () => {
 
       {/* LISTINGS */}
       <div className="p-10 bg-gray-100 ">
-         <div className="text-center mt-34">
+         <div className="text-center mt-24">
        <h1 className="font-playfair text-5xl md:text-7xl font-bold">
   Choose Your Perfect <br/> Panama City Beach Vacation
 </h1>

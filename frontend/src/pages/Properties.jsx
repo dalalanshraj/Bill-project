@@ -21,8 +21,8 @@ const Properties = () => {
 
       {/* LISTINGS */}
       <div className="p-10 bg-gray-100 ">
-         <div className="text-center mt-24">
-       <h1 className="font-playfair text-5xl md:text-7xl font-bold">
+         <div className="text-center mt-20">
+       <h1 className="font-playfair text-3xl md:text-6xl font-bold">
   Choose Your Perfect <br/> Panama City Beach Vacation
 </h1>
 
@@ -42,7 +42,7 @@ const Properties = () => {
           </p>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-5  md:w-full ">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-5 items-center md:w-full ">
           
         {listings.map((listing, index) => (
   <PropertyCard

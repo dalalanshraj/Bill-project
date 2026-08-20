@@ -62,16 +62,18 @@ const propertiesAmenities = [
     <Link
       to={`/${listing._id}`}
       className="
-  group
-  bg-white
-  rounded-[28px]
-  overflow-hidden
-  shadow-xl
-  flex
-  flex-col
-  h-full
-  hover:-translate-y-2
-  duration-500
+ group
+    bg-white
+    rounded-[28px]
+    overflow-hidden
+    shadow-xl
+    flex
+    flex-col
+    h-full
+    w-full
+    max-w-[720px]
+    hover:-translate-y-2
+    duration-500
 "
     >
       {/* IMAGE */}

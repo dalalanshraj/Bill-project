@@ -70,8 +70,7 @@ const propertiesAmenities = [
     flex
     flex-col
     h-full
-    w-full
-    max-w-[720px]
+   w-full max-w-[420px]
     hover:-translate-y-2
     duration-500
 "

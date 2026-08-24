@@ -18,40 +18,48 @@ const Properties = () => {
 
   return (
     <>
-
       {/* LISTINGS */}
-      <div className="p-10 bg-gray-100 ">
-         <div className="text-center mt-20">
-       <h1 className="font-playfair text-3xl md:text-6xl font-bold">
-  Choose Your Perfect <br/> Panama City Beach Vacation
-</h1>
+      <div className="p-10 bg-gray-100">
+        
+        {/* HEADER */}
+        <div className="text-center mt-20">
+          <h1 className="font-playfair text-3xl md:text-6xl font-bold">
+            Choose Your Perfect <br />
+            Panama City Beach Vacation
+          </h1>
 
-<p className="mt-8 text-gray-600 max-w-4xl mx-auto text-lg md:text-md leading-9">
-  Experience Panama City Beach through our carefully curated collection of luxury beachfront vacation rentals.  
-</p>
+          <p className="mt-8 text-gray-600 max-w-4xl mx-auto text-lg leading-9">
+            Experience Panama City Beach through our carefully curated
+            collection of luxury beachfront vacation rentals.
+          </p>
         </div>
+
+        {/* LOADING */}
         {loading && (
-          <p className="text-center text-gray-500">
+          <p className="text-center text-gray-500 mt-10">
             Loading properties...
           </p>
         )}
 
+        {/* EMPTY */}
         {!loading && listings.length === 0 && (
-          <p className="text-center text-red-500">
+          <p className="text-center text-red-500 mt-10">
             No properties available
           </p>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-5 items-center md:w-full ">
-          
-        {listings.map((listing, index) => (
-  <PropertyCard
-    key={listing._id}
-    listing={listing}
-    index={index}
-  />
-))}
-        </div>
+        {/* PROPERTY GRID */}
+        {!loading && listings.length > 0 && (
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-10 max-w-7xl mx-auto justify-items-center">
+            {listings.map((listing, index) => (
+              <PropertyCard
+                key={listing._id}
+                listing={listing}
+                index={index}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </>
   );

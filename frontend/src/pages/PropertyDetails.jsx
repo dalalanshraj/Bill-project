@@ -360,9 +360,9 @@ const PropertyDetail = () => {
         {/* CALENDAR */}
         {/* <a href=""> <button>book now</button>
        </a> */}
-      <div className="lg:col-span-1">
-  <div
-    className="
+        <div className="lg:col-span-1">
+          <div
+            className="
       sticky
       top-1
       bg-white
@@ -370,11 +370,11 @@ const PropertyDetail = () => {
       relative
       shadow-[0_25px_70px_rgba(0,0,0,.12)]
     "
-  >
-    {/* ================= OWNER ================= */}
+          >
+            {/* ================= OWNER ================= */}
 
-    <div
-      className="
+            <div
+              className="
         relative
         pt-20
         pb-10
@@ -385,11 +385,11 @@ const PropertyDetail = () => {
         to-[#2557e5]
         text-white
       "
-    >
-      {/* IMAGE */}
+            >
+              {/* IMAGE */}
 
-      <div
-        className="
+              <div
+                className="
           absolute
           top-0
           translate-y-[-50%]
@@ -404,47 +404,47 @@ const PropertyDetail = () => {
           shadow-2xl
           bg-white
         "
-      >
-        <img
-          src={`${import.meta.env.VITE_API_URL}${owner?.photo}`}
-          alt={owner?.name}
-          className="w-full h-full object-cover"
-        />
-      </div>
+              >
+                <img
+                  src={`${import.meta.env.VITE_API_URL}${owner?.photo}`}
+                  alt={owner?.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
 
-      <p
-        className="
+              <p
+                className="
           text-center
           uppercase
           tracking-[5px]
           text-xs
           text-white/80
         "
-      >
-        Property Host
-      </p>
+              >
+                Property Host
+              </p>
 
-      <h2
-        className="
+              <h2
+                className="
           mt-2
           text-center
           text-3xl
           font-bold
         "
-      >
-        {owner?.name}
-      </h2>
-    </div>
+              >
+                {owner?.name}
+              </h2>
+            </div>
 
-    <PropertyIcon listing={listing} />
+            <PropertyIcon listing={listing} />
 
-    {/* ================= BOOKING ================= */}
+            {/* ================= BOOKING ================= */}
 
-    <div className="p-8">
-      <div className="flex gap-3 pt-10">
-        <button
-          onClick={() => setOpenIVacation(true)}
-          className="
+            <div className="p-8">
+              <div className="flex gap-3 pt-10">
+                <button
+                  onClick={() => setOpenIVacation(true)}
+                  className="
             px-12
             py-4
             bg-black
@@ -456,13 +456,13 @@ const PropertyDetail = () => {
             transition-all
             duration-500
           "
-        >
-          Book Now
-        </button>
+                >
+                  Book Now
+                </button>
 
-        <button
-          onClick={() => setOpenInquiry(true)}
-          className="
+                <button
+                  onClick={() => setOpenInquiry(true)}
+                  className="
             px-8
             py-5
             text-white
@@ -474,21 +474,21 @@ const PropertyDetail = () => {
             transition-all
             duration-500
           "
-        >
-          Send Inquiry
-        </button>
-      </div>
-    </div>
-  </div>
+                >
+                  Send Inquiry
+                </button>
+              </div>
+            </div>
+          </div>
 
-  {openInquiry && (
-    <InquiryModal
-      propertyId={id}
-      listing={listing}
-      onClose={() => setOpenInquiry(false)}
-    />
-  )}
-</div>
+          {openInquiry && (
+            <InquiryModal
+              propertyId={id}
+              listing={listing}
+              onClose={() => setOpenInquiry(false)}
+            />
+          )}
+        </div>
       </div>
 
       {/* BOOKING MODAL */}
